@@ -149,7 +149,7 @@ script:
         description: <mô tả> # bắt buộc
       script_configuration: 
         general: # key-value (string-string), có thể null
-          working_dir: "C:\Test\T650C"
+          working_dir: "C:\\Test\\T650C"
         fixture_configuration: # danh sách object, có thể null
           - fixture_1:  # danh sách key-value
             port: "COM3"
@@ -363,9 +363,9 @@ flowchart TD
 
 | Executer | Method | with | Kết quả | Mô tả | Chú ý |
 |----------|--------|------|-------|-------| -------|
-| `return` - điều khiển kết quả test | `return.PASS` | `~` | Trả về `PASS` cho `test_item` này, bỏ qua các bước tiếp theo trong `test_item`. | Dùng để kết thúc `test_item` với kết quả `PASS`. | - |
-| | `return.FAIL` | - `error_code: <tên lỗi>` | Trả về `FAIL` cho `test_item` này, bỏ qua các bước tiếp theo trong `test_item`. | Dùng để kết thúc `test_item` với kết quả `FAIL` và ghi mã lỗi. | Mã lỗi nên đề là `UPPER_CASE_WITH_UNDERSCORES`. |
-| `mes` - giao tiếp với MES | `mes.is_online` | `~` | Chế độ PRODUCTION => `true`, else => `false` | Kiểm tra chế độ của chương trình | - |
+| `return` - điều khiển kết quả test | `return.PASS` | `~` | `PASS` | Dùng để kết thúc `test_item` với kết quả `PASS`. Bỏ qua các bước tiếp theo trong `test_item`. | - |
+| | `return.FAIL` | - `error_code: <tên lỗi>` | `FAIL` | Dùng để kết thúc `test_item` với kết quả `FAIL` và ghi mã lỗi. Bỏ qua các bước tiếp theo trong `test_item`.| Mã lỗi nên đề là `UPPER_CASE_WITH_UNDERSCORES`. |
+| `mes` - giao tiếp với MES | `mes.is_online` | `~` | `true` \| `false` | Kiểm tra chế độ của chương trình | - |
 | | `mes.CHECK_MBS_NO` | `~` | `PASS` | `FAIL` | Kiểm tra đầu vào MBSNO. Mọi trạm test qua MES đều cần. | Nếu chế độ là OFFLINE => trả về PASS. |
 | | `mes.GET_CSN` | `~` | `PASS` \| `FAIL` |Lấy giá trị CSN của MBSNO từ MES và lưu vào `context` với tên `MES[csn]` | Chế độ OFFLINE sẽ lỗi |
 | | `mes.GET_CONTROL_TABLE` | `~` | `PASS` \| `FAIL` | Lấy thông tin guankongbiao từ MES và lưu vào `context` lần lượt với tên `MES[<tên biến>]` | Chế độ OFFLINE sẽ lỗi. Liên hệ với MES để lấy các trường thông tin cần thiết. |
@@ -374,7 +374,33 @@ flowchart TD
 | | `mes.UPLOAD_BT_MAC` | - `mac: <MAC>` | `PASS` \| `FAIL` | Upload BT MAC đã ghi lên MES. | Chế độ OFFLINE sẽ lỗi. Dành cho các trạm cần upload BT MAC lên MES. `<MAC>` đã được đọc và lưu vào `context` ở item trước đó. |
 | | `mes.UPLOAD_WIFI_MAC` | - `mac: <MAC>` | `PASS` \| `FAIL` | Upload WIFI MAC đã ghi lên MES. | Chế độ OFFLINE sẽ lỗi. Dành cho các trạm cần upload WIFI MAC lên MES. `<MAC>` đã được đọc và lưu vào `context` ở item trước đó. |
 | | `mes.UPLOAD_ETH_MAC` | - `mac: <MAC>` | `PASS` \| `FAIL` | Upload ETH MAC đã ghi lên MES. | Chế độ OFFLINE sẽ lỗi. Dành cho các trạm cần upload ETH MAC lên MES. `<MAC>` đã được đọc và lưu vào `context` ở item trước đó. |
-
+| `logger` - ghi log | `logger.info` | - `message: <chuỗi>` | `true` | Ghi một thông điệp ở mức INFO vào log. | `<chuỗi>` có thể là chuỗi tĩnh hoặc sử dụng String Resolve để tạo chuỗi động. |
+| `com` - đọc/gửi lệnh qua <b>SERIAL PORT</b> | `com..open` | - `name: <tên định danh>` <br> - `port: <tên cổng>` <br> - `baudrate: <tốc độ baud>` | `true` | Mở kết nối đến cổng COM. | `<tên định danh>` dùng để tham chiếu cổng COM này trong các lệnh tiếp theo. |
+| | `com.close` | - `name: <tên định danh>` | `true` | Đóng kết nối đến cổng COM. | - |
+| | `com.wait_bytes_count` | - `name: <tên định danh>` <br> - `expect_count: <số byte>` <br> - `timeout: <thời gian chờ (s)>` | `true` \| `false` | Chờ đến khi có đủ số byte nhận được từ cổng COM. | Trả về `false` nếu vượt quá thời gian chờ. |
+| | `com.wait_string` | - `name: <tên định danh>` <br> - `expect: <chuỗi mong đợi>` <br> - `timeout: <thời gian chờ (s)>` | `true` \| `false` | Chờ đến khi nhận được chuỗi mong đợi từ cổng COM. | - Trả về `false` nếu vượt quá thời gian chờ. <br> - `expect`: dùng chuỗi string hoặc `re_<expression>` để khớp với một biểu thức chính quy.  |
+| | `com.send_string` | - `name: <tên định danh>` <br> - `command: <chuỗi gửi>` - `sleep: <thời gian delay sau khi gửi (s) >` | `true` | Gửi một chuỗi đến cổng COM. | - Gửi enter bằng cách sử dụng `\r\n` |
+| | `com.send_wait` | - `name: <tên định danh>` <br> - `command: <chuỗi gửi>` <br> - `retry_times: <số lần retry` <br> - `expect: <chuỗi mong đợi>` <br> - `timeout: <thời gian chờ (s)>` | `true` \| `false` | Gửi một chuỗi đến cổng COM và chờ phản hồi mong đợi. | - Trả về `false` nếu không thành công. <br> - `expect`: dùng chuỗi string hoặc `re_<expression>` để khớp với một biểu thức chính quy.  |
+| | `com.check_log` | - `name: <tên định danh>` <br> - `expect: <chuỗi mong đợi>` | `true` \| `false` | Kiểm tra xem chuỗi mong đợi có xuất hiện trong log nhận được từ cổng COM hay không. | - Trả về `false` nếu không tìm thấy. <br> - `expect`: dùng chuỗi string hoặc `re_<expression>` để khớp với một biểu thức chính quy.  |
+| | `com.read_value` | - `name: <tên định danh>` <br> - `expect: <chuỗi mong đợi>` <br> - `match_index: <index của chỗi match cần lấy>` <br> - `replace: <chuỗi cần thay thế>` <br> `replace_with: <giá trị thay thế>` <br>  - `var_name: <tên biến lưu giá trị>` | `true` \| `false` | Đọc một giá trị từ log nhận được và lưu vào `context`. | - Trả về `false` nếu không tìm thấy. <br> - `expect`: dùng chuỗi string hoặc `re_<expression>` để khớp với một biểu thức chính quy. <br> - `index`: vị trí nhóm cần lấy <br> - `replace`: dùng trực tiếp regex <br> - `replace_with`: dùng chuỗi string <br> |
+| | `com.wait_check` | - `name: <tên định danh>` <br> `expect_wait: <chuỗi mong đợi>` <br> - `expect_check: <chuỗi kiểm tra>` <br> `timeout: <thời gian chờ (s)>` | `true` \| `false` | Chờ đến khi nhận được chuỗi mong đợi và kiểm tra chuỗi kiểm tra có xuất hiện trong log hay không. | - Trả về `false` nếu không thành công. <br> - `expect_wait`, `expect_check`: dùng chuỗi string hoặc `re_<expression>` để khớp với một biểu thức chính quy.  |
+| `dialog` - hiển thị hộp thoại | `dialog.show` | - `title: <tiêu đề>` <br> - `message: <nội dung>` <br> | `true` | Hiển thị một hộp thoại thông báo và chờ xác nhận OK. | |
+| | `dialog.confirm` | - `title: <tiêu đề>` <br> - `message: <nội dung>` | `true` \| `false` | Hiển thị một hộp thoại xác nhận và chờ người dùng chọn `YES/OK` hoặc `No/Cancel`. | |
+| | `dialog.input` | - `title: <tiêu đề>` <br> - `message: <nội dung>` <br> - `var_name: <tên biến lưu giá trị>` | `true` | Hiển thị một hộp thoại nhập liệu và lưu giá trị nhập vào vào `context`. | |
+| `func` - các hàm chức năng khác | `func.sleep` | - `time: <thời gian (s)>` | `true` | Tạm dừng một khoảng thời gian. | |
+| | `func.date_time_check` | - `prod_date_time: thời gian CẦN so sánh` <br> - `prod_date_time_format: định dạng thời gian của prod_date_time (theo C#)` <br> - `source: <nguồn, chọn pc \| mes>` <br> - `duration: khoảng thời gian cho phép sai lệch (s)` | `true` \| `false` | Kiểm tra thời gian sản xuất có nằm trong khoảng cho phép hay không. | - Định dạng thời gian theo chuẩn C# datetime. Ví dụ: dddd/MM/yyyy HH:mm:ss |
+| | `func.string_math` | - `source: <nguồn>` <br> - `expect: <giá trị mong đợi>` | `true` \| `false` | Kiểm tra xem giá trị nguồn có chứa chuỗi mong đợi hay không | `expect`: dùng chuỗi string hoặc `re_<expression>` để khớp với một biểu thức chính quy.  |
+| `if` - điều kiện | `if.condition` | - `condition: <biểu thức điều kiện>` | `true` \| `false` | Đánh giá biểu thức điều kiện và trả về kết quả. | Biểu thức điều kiện có thể sử dụng String Resolve `$if ...` |
+| `pms` - điều khiển tool PMS (T650 series) | `pms.AUTO` | - `working_path: <đường dẫn thư mục làm việc>` <br> - `exe_name: <tên file thực thi>` <br> - `bt_mac: <địa chỉ mac bluetooth>` <br> - `wifi_mac: <địa chỉ mac wifi>` <br> - `eth_mac: <địa chỉ mac ethernet>` | `PASS` \| `FAIL` | Tự động chạy tool PMS với các tham số đã cho. | Lưu ý:<br> - `exe_path` lấy bản PMS_Simulation_Window_V1.09.exe <br> - `bt_mac`, `wifi_mac`, `eth_mac` nếu không dùng để null (`~`) |
+| `mt` - điều khiển tool MT (T650 series) | `mt.AUTO` | - `working_path: <đường dẫn thư mục làm việc>` <br> - `exe_name: <tên file thực thi>` <br> - `ict_sn_01: <serial number cho board 1>` <br> - `ict_sn_02: <serial number cho board 2>` | `PASS` \| `FAIL` | Tự động chạy tool MT với các tham số đã cho. | Lưu ý:<br> - `exe_path` lấy bản PCBA_tests.exe <br> - `ict_sn_01`, `ict_sn_02` nếu không dùng để null (`~`), nếu sử dụng dùng `$context input_str` <br> - Sử dụng kèm các `method` check bên dưới để kiểm tra kết quả test | 
+| | `mt.check_log` | - `expect: <chuỗi mong đợi>` | `true` \| `false` | Kiểm tra xem chuỗi mong đợi có xuất hiện trong log của tool MT hay không. | - Trả về `false` nếu không tìm thấy. <br> - `expect`: dùng chuỗi string hoặc `re_<expression>` để khớp với một biểu thức chính quy.  |
+| | `mt.check_board_log` | - `board_id: <id của board>` <br> - `expect: <chuỗi mong đợi>` | `true` \| `false` | Kiểm tra xem chuỗi mong đợi có xuất hiện trong log của board cụ thể trong tool MT hay không. | - Trả về `false` nếu không tìm thấy. <br> - `expect`: dùng chuỗi string hoặc `re_<expression>` để khớp với một biểu thức chính quy.  |
+| | `mt.check_tasklist` | - `board_id: <id của board>` <br> - `expect: <chuỗi mong đợi>` | `true` \| `false` | Kiểm tra xem chuỗi mong đợi có xuất hiện trong tasklist của board cụ thể trong tool MT hay không. | - Trả về `false` nếu không tìm thấy. <br> - `expect`: dùng chuỗi string hoặc `re_<expression>` để khớp với một biểu thức chính quy.  |
+| `qcm` - tool QCMWriteImei | `qcm.AUTO` | - `imei`: <imei ghi vào, thường là `$context MES[imei]`> | `PASS` \| `FAIL` | Ghi IMEI vào thiết bị sử dụng tool QCMWriteImei. | - Chương trình <b>QCMWriteImei</b> cần được ĐĂNG NHẬP VÀ MỞ BẰNG TAY. <br> |
+| | `qcm.auto` | - `imei`: <imei ghi vào, thường là `$context MES[imei]`> | `true` \| `false` | Ghi IMEI vào thiết bị sử dụng tool QCMWriteImei. Tương tự như `AUTO` nhưng không thoát ngay. | - Chương trình <b>QCMWriteImei</b> cần được ĐĂNG NHẬP VÀ MỞ BẰNG TAY. <br> - Sử dụng khi cần thoát màn hình `AT` bằng cách thêm một vài lệnh ở `on_success` và `on_fail`. <br> - Lưu ý: GHI NHẬN tool <b>QCMWriteImei</b> bug khi fail, COM vãn bị sử dụng nên k gửi lệnh thoát được. |
+| `qfil` - tool QFIL Flash Image | `qfil.AUTO` | - `working_path`: đường dẫn QFIL. <br> - `comport`: cổng COM để FLASH, sử dụng 1, 2 3 thay vì COM1, COM2 COM3. Để null nếu chỉ dùng 1 slot <br> - `image_path`: đường dẫn thư mục chứa image .mbn <br> - `timeout`: <thời gian chờ tối đa (s)> | `PASS` \| `FAIL` | Flash image vào thiết bị sử dụng tool QFIL. | - Nên configure để QFIL tự tải về và dùng luôn QFIL đã được tải về đó. |
+| `vtp` - tự động tool VTP | `vtp.AUTO` | - `working_path`: đường dẫn thư mục chứa VTP.exe <br> - `exe_name`: tên file thực thi VTP.exe <br> - `xml_name`: tên script xml vtp cần chạy <br> - `timeout`: thời gian chờ tối đa (s) | `PASS` \| `FAIL` | Tự động chạy tool VTP với các tham số đã cho. | - Nên configure vtp để tự tải xuống. <br> - Đảm bảo tool vtp có thê chạy bình thường. Chú ý số SN_LENGTH ở vtp phải là 14 |
 
 
 # XỬ LÝ LỖI
+- Đang cập nhật
