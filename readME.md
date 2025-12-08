@@ -1,7 +1,10 @@
 # GIỚI THIỆU
 - AUTHOR: Bau.Linh
-
+  
 Đây là tài liệu cung cấp thông tin hướng dẫn về `script.yaml`, bao gồm các định dạng, cấu trúc, thành phần, và cách sử dụng các tính năng như String Resolve, Executer & Method, cũng như xử lý lỗi.
+
+# Thay đổi / cập nhật
+- Thêm `script_version`, có thể thay đổi version hiển thị chương trình.
 
 # TỔNG QUAN
 `script.yaml` là kịch bản tự động hóa được sử dụng cho chương trình <b>ScriptRunner2.exe</b>
@@ -34,7 +37,7 @@ script:
   test_environments: ~ 
   test_configurations: ~
   test_sequences: ~
-  test_targets: ~    
+  test_targets: ~ 
 ```
 Hướng dẫn:
 
@@ -66,37 +69,37 @@ mes_defect_code:
 - <b>Ví dụ:</b>
 ```yaml
 test_environments: 
-    - &env
-      # những item sẽ được tải xuống.
-      # là 1 danh sách object có các trường: name, type, from,  to, extract_to
-      # có thể dùng &<name> để tham chiếu
-      downloads:
-        - name: "vtp" 
-          # name: tên hiển thị của item tải về, không ảnh hưởng đến quá trình tải
-          type: "folder" # loại tải về: folder, file, compressed
-          # type có thể là: folder, file, compressed
-          from: "/SFTP.conf.pe.02/V6ENV/vtp_ver24011801" 
-          # from: đường dẫn trên server sftp, có thể tuyệt đối hoặc tương đối
-          # tuyệt đối dạng: /SFTP.conf.pe.02/V6ENV/vtp_ver24011801
-          # tương đối dạng: ./setup/vtp_ver24011801
-          # kỹ sư EE sẽ tự verify đường dẫn này trên server sftp.
-          to: "./setup/vtp" # đường dẫn lưu trữ trên máy local
-          # to: đường dẫn lưu trữ trên máy local. Có thể sử dụng tuyệt đối hoặc tương đối
-          # tương đối sẽ lưu vào: {thư mục exe}/setup/{PRODUCT}/{STATION}/{MODEL_ID}/{đường dẫn tương đối}
-          extract_to: ~
-          # dành cho file nén (compressed).
-          # để là null (~). Giải nén vào ./setup/{tên file}
-          # đường dẫn tương đối
-          # đường dẫn tuyệt đối
+ - &env
+ # những item sẽ được tải xuống.
+ # là 1 danh sách object có các trường: name, type, from,  to, extract_to
+ # có thể dùng &<name> để tham chiếu
+ downloads:
+ - name: "vtp" 
+ # name: tên hiển thị của item tải về, không ảnh hưởng đến quá trình tải
+ type: "folder" # loại tải về: folder, file, compressed
+ # type có thể là: folder, file, compressed
+ from: "/SFTP.conf.pe.02/V6ENV/vtp_ver24011801" 
+ # from: đường dẫn trên server sftp, có thể tuyệt đối hoặc tương đối
+ # tuyệt đối dạng: /SFTP.conf.pe.02/V6ENV/vtp_ver24011801
+ # tương đối dạng: ./setup/vtp_ver24011801
+ # kỹ sư EE sẽ tự verify đường dẫn này trên server sftp.
+ to: "./setup/vtp" # đường dẫn lưu trữ trên máy local
+ # to: đường dẫn lưu trữ trên máy local. Có thể sử dụng tuyệt đối hoặc tương đối
+ # tương đối sẽ lưu vào: {thư mục exe}/setup/{PRODUCT}/{STATION}/{MODEL_ID}/{đường dẫn tương đối}
+ extract_to: ~
+ # dành cho file nén (compressed).
+ # để là null (~). Giải nén vào ./setup/{tên file}
+ # đường dẫn tương đối
+ # đường dẫn tuyệt đối
 
-        # ví dụ item thứ 2.
-        - name: "vtp_env" #  thư mục vtp chỉ chứa file vtp, môi trường vtp nên configure riêng theo từng model
-          type: "folder" 
-          from: "./setup/VN6301ABAR0B" # đường dẫn tương đối
-          to: "./setup/vtp" # đường dẫn lưu trữ trên máy local
-          extract_to: ~
+ # ví dụ item thứ 2.
+ - name: "vtp_env" #  thư mục vtp chỉ chứa file vtp, môi trường vtp nên configure riêng theo từng model
+ type: "folder" 
+ from: "./setup/VN6301ABAR0B" # đường dẫn tương đối
+ to: "./setup/vtp" # đường dẫn lưu trữ trên máy local
+ extract_to: ~
 ```
-    
+ 
 **Cấu trúc chi tiết của `test_environments`:**
 | key                 | kiểu dữ liệu     | bắt buộc | cho phép null không | mô tả                                           |
 | ------------------- | ---------------- | -------- | ------------------- | ----------------------------------------------- |
@@ -135,27 +138,28 @@ test_environments:
 
 
 ## `test_configurations`
-- <b>Mô tả:</b> Các môi trường tải xuống từ SFTP.
+- <b>Mô tả:</b> Cấu hình test cho từng script, từng slot.
 - <b>Type:</b> danh sách object
 - <b>Ví dụ:</b>
 ```yaml
 script:
   test_configurations: 
-    - &t650c_configuration
-      flags: ~ 
-      script_information: 
-        station_name: <tên trạm> # bắt buộc
-        description: <mô tả> # bắt buộc
-      script_configuration: 
-        general: # key-value (string-string), có thể null
-          working_dir: "C:\\Test\\T650C"
-        fixture_configuration: # danh sách object, có thể null
-          - fixture_1:  # danh sách key-value
-            port: "COM3"
-            baud_rate: "9600"
-          - fixture_2:
-            port: "COM4"
-            baud_rate: "115200"
+ - &t650c_configuration
+ flags: ~ 
+ script_information: 
+ station_name: <tên trạm> # bắt buộc
+ description: <mô tả> # bắt buộc
+ script_version: "1.0.0.0" # phiên bản hiển thị
+ script_configuration: 
+ general: # key-value (string-string), có thể null
+ working_dir: "C:\\Test\\T650C"
+ fixture_configuration: # danh sách object, có thể null
+ - fixture_1:  # danh sách key-value
+ port: "COM3"
+ baud_rate: "9600"
+ - fixture_2:
+ port: "COM4"
+ baud_rate: "115200"
 ```
 
 **Cấu trúc chi tiết của `test_configurations`:**
@@ -166,6 +170,7 @@ script:
 | `script_information`    | object                  | có       | không               | thông tin về kịch bản test                   |
 | `station_name`          | string                  | có       | không               | tên trạm kiểm tra                            |
 | `description`           | string                  | có       | không               | mô tả kịch bản test                          |
+| `script_version`        | string                  | có       | không               | phiên bản hiển thị của kịch bản test         |
 | `script_configuration`  | object                  | có       | không               | cấu hình chi tiết cho kịch bản test          |
 | `general`               | mapping (string-string) | không    | có                  | cấu hình chung cho kịch bản test             |
 | `fixture_configuration` | danh sách object        | không    | có                  | cấu hình cho các thiết bị kiểm tra (fixture) |
@@ -182,6 +187,7 @@ script:
 | `skip_upload_defect_code` | Bỏ qua bước upload mã lỗi lên MES nếu test FAIL.       |
 | `fixture_control`         | Gửi mã fixture_code lên MES.                           |
 
+
 ## `test_targets`
 - <b>Mô tả:</b> Configure các `script` tương ứng với các `MODEL_ID` khác nhau.
 - <b>Type:</b> danh sách object
@@ -189,13 +195,13 @@ script:
 ```yaml
 test_targets: 
   - model_id: VN6503ABMX0B | VN6503ABMX01 
-    environment: *env_saa
-    test_config: *t650_saa
-    test_sequence: *t650c_test_sequence
+ environment: *env_saa
+ test_config: *t650_saa
+ test_sequence: *t650c_test_sequence
   - model_id: VN6503ABMX0C
-    environment: *env_naa
-    test_config: *t650_naa
-    test_sequence: *t650c_test_sequence
+ environment: *env_naa
+ test_config: *t650_naa
+ test_sequence: *t650c_test_sequence
 ```
 **Cấu trúc chi tiết của `test_targets`:**
 
@@ -219,70 +225,70 @@ test_targets:
 - <b>Ví dụ:</b>
 ```yaml
 test_sequences: 
-    - &t650c_test_sequence
-      test_items:
-        - name: CHECK_MBS_NO 
-          lower_limit: ~ 
-          upper_limit: ~ 
-          steps: 
-            - do: mes.CHECK_MBS_NO 
-              with: ~
-              on_success: ~
-              on_fail: ~
+ - &t650c_test_sequence
+ test_items:
+ - name: CHECK_MBS_NO 
+ lower_limit: ~ 
+ upper_limit: ~ 
+ steps: 
+ - do: mes.CHECK_MBS_NO 
+ with: ~
+ on_success: ~
+ on_fail: ~
 
-        - name: MES_GET_ETH_MAC
-          steps: 
-            - do: mes.GET_MAC_LIST
-              with: ~
-              on_success: ~
-              on_fail: ~
+ - name: MES_GET_ETH_MAC
+ steps: 
+ - do: mes.GET_MAC_LIST
+ with: ~
+ on_success: ~
+ on_fail: ~
 
-        - name: PMS_AUTO_TEST
-          steps: 
-            - do: pms.AUTO
-              with:
-                working_path: C:\\T650C_SA_K81DL_TOOL20230929\\V1.21.2\PMS_Simulation_Window_V1.09
-                exe_name: PMS_Simulation_Window_V1.09.exe
-                bt_mac: ~
-                wifi_mac: ~
-                eth_mac: 123456789012 
-              on_success: ~
-              on_fail: ~
+ - name: PMS_AUTO_TEST
+ steps: 
+ - do: pms.AUTO
+ with:
+ working_path: C:\\T650C_SA_K81DL_TOOL20230929\\V1.21.2\PMS_Simulation_Window_V1.09
+ exe_name: PMS_Simulation_Window_V1.09.exe
+ bt_mac: ~
+ wifi_mac: ~
+ eth_mac: 123456789012 
+ on_success: ~
+ on_fail: ~
 
-        - name: MT_AUTO_TEST
-          steps: 
-            - do: mt.AUTO
-              with: 
-                working_path: C:\T650C_SA_K81DL_TOOL20230929\V1.21.2
-                exe_name: PCBA_tests.exe
-                ict_sn_01: $context input_str
-                ict_sn_02: ~
-              on_success: ~
-              on_fail: ~
+ - name: MT_AUTO_TEST
+ steps: 
+ - do: mt.AUTO
+ with: 
+ working_path: C:\T650C_SA_K81DL_TOOL20230929\V1.21.2
+ exe_name: PCBA_tests.exe
+ ict_sn_01: $context input_str
+ ict_sn_02: ~
+ on_success: ~
+ on_fail: ~
 
-        - name: CHECK_RESULT
-          steps: 
-            - do: mt.check_tasklist
-              with: 
-                board_id: 01
-                expect: K81-Firmware,Complete
-              on_success: ~ 
-              on_fail: 
-                - do: return.FAIL
-                  with:
-                    error_code: DOWNLOAD_K81_FIRMWARE_FAIL
-            
-            - do: mt.check_tasklist
-              with: 
-                board_id: 01
-                expect: K81-APP,Complete
-              on_success: 
-                - do: return.PASS
-                  with: ~
-              on_fail: 
-                - do: return.FAIL
-                  with:
-                    error_code: DOWNLOAD_K81_APP_FAIL
+ - name: CHECK_RESULT
+ steps: 
+ - do: mt.check_tasklist
+ with: 
+ board_id: 01
+ expect: K81-Firmware,Complete
+ on_success: ~ 
+ on_fail: 
+ - do: return.FAIL
+ with:
+ error_code: DOWNLOAD_K81_FIRMWARE_FAIL
+ 
+ - do: mt.check_tasklist
+ with: 
+ board_id: 01
+ expect: K81-APP,Complete
+ on_success: 
+ - do: return.PASS
+ with: ~
+ on_fail: 
+ - do: return.FAIL
+ with:
+ error_code: DOWNLOAD_K81_APP_FAIL
 ```
 **Cấu trúc chi tiết của `test_sequences`:**
 | key              | kiểu dữ liệu            | bắt buộc | cho phép null không | mô tả                                           |
@@ -309,27 +315,27 @@ test_sequences:
 **Sơ đồ logic thực hiện test_sequences:**
 ```mermaid
 flowchart TD
-    A0([Bắt đầu]) --> A1[TEST ITEM]
+ A0([Bắt đầu]) --> A1[TEST ITEM]
 
-    %% Xử lý từng Step trong Item
-    A1 -- Thực thi --> B1[STEP]
-    B1 --> C1{Kết quả}
+ %% Xử lý từng Step trong Item
+ A1 -- Thực thi --> B1[STEP]
+ B1 --> C1{Kết quả}
 
-    C1 -- PASSED --> D0{next test item?}
-    C1 -- FAILED --> D1[ON_FAIL]
-    C1 -- on_success --> D2[Thực thi on_success]
-    C1 -- on_fail --> D3[Thực thi on_fail]
-    
-    D2 -- Không return --> E0{next step?}
-    D3 -- Không return --> E0{next step?}
+ C1 -- PASSED --> D0{next test item?}
+ C1 -- FAILED --> D1[ON_FAIL]
+ C1 -- on_success --> D2[Thực thi on_success]
+ C1 -- on_fail --> D3[Thực thi on_fail]
+ 
+ D2 -- Không return --> E0{next step?}
+ D3 -- Không return --> E0{next step?}
 
-    E0 -- Có --> B1
-    E0 -- Không --> F1(LỖI)
+ E0 -- Có --> B1
+ E0 -- Không --> F1(LỖI)
 
-    D0 -- Không --> G(KẾT THÚC TEST SUCCESS)
+ D0 -- Không --> G(KẾT THÚC TEST SUCCESS)
 
-    D0 -- Có --> A1
-    D1 --> F(TEST FAIL)
+ D0 -- Có --> A1
+ D1 --> F(TEST FAIL)
 
 ```
 
@@ -340,7 +346,7 @@ flowchart TD
 ```yaml
 - do: logger.info
   with:
-    message: $str người dùng đã nhập MBSNO là {$context input_str}
+ message: $str người dùng đã nhập MBSNO là {$context input_str}
 ```
 
 **Các biến động có thể sử dụng:**
@@ -362,18 +368,18 @@ flowchart TD
   - `<toán tử>`: bao gồm `==`, `!=`, `>`, `<`, `>=`, `<=`.
   - `<giá trị>`: giá trị so sánh, có thể là chuỗi hoặc số.
   - Ví dụ:
-    ```yaml
-    - do: logger.info
-      with:
-        message: $if {$context input_str} == 123456 # => message: True nếu input_str là 123456, ngược lại: message: False
-    ```
+ ```yaml
+ - do: logger.info
+ with:
+ message: $if {$context input_str} == 123456 # => message: True nếu input_str là 123456, ngược lại: message: False
+ ```
 
   - Hỗ trợ lồng nhiều biểu thức với nhau, mỗi biểu thức con được bọc trong `{ biểu thức }` . Ví dụ:
-   ```yaml
-    - do: logger.info
-      with:
-        message: $str Giá trị imei là { $context MES[imei] }
-    ```
+ ```yaml
+ - do: logger.info
+ with:
+ message: $str Giá trị imei là { $context MES[imei] }
+ ```
 
 # EXECUTER & METHOD
 ## Mô tả chung
@@ -418,7 +424,7 @@ flowchart TD
 |                                             | `dialog.input`            | - `title: <tiêu đề>` <br> - `message: <nội dung>` <br> - `var_name: <tên biến lưu giá trị>`                                                                                                                                                                                                                                                               | `true`            | Hiển thị một hộp thoại nhập liệu và lưu giá trị nhập vào vào `context`.                                               |                                                                                                                                                                                                                                                                                       |
 | `func` - các hàm chức năng khác             | `func.sleep`              | - `time: <thời gian (s)>`                                                                                                                                                                                                                                                                                                                                 | `true`            | Tạm dừng một khoảng thời gian.                                                                                        |                                                                                                                                                                                                                                                                                       |
 |                                             | `func.date_time_check`    | - `prod_date_time: thời gian CẦN so sánh` <br> - `prod_date_time_format: định dạng thời gian của prod_date_time (theo C#)` <br> - `prod_date_time_utc`: Sử dụng định dạng UTC cho `prod_date_time`, giờ sẽ tự `+7` (sang múi giờ VN) trước khi so sánh.  <br>  source: <nguồn, chọn pc \| mes>` <br> - `duration: khoảng thời gian cho phép sai lệch (s)` | `true` \| `false` | Kiểm tra thời gian sản xuất có nằm trong khoảng cho phép hay không.                                                   | - Định dạng thời gian theo chuẩn C# datetime. Ví dụ: dddd/MM/yyyy HH:mm:ss                                                                                                                                                                                                            |
-|                                             | `func.string_math`        | - `source: <nguồn>` <br> - `expect: <giá trị mong đợi>`                                                                                                                                                                                                                                                                                                   | `true` \| `false` | Kiểm tra xem giá trị nguồn có chứa chuỗi mong đợi hay không                                                           | `expect`: dùng chuỗi string hoặc `re_<expression>` để khớp với một biểu thức chính quy.                                                                                                                                                                                               |
+|                                             | `func.string_match`       | - `source: <nguồn>` <br> - `expect: <giá trị mong đợi>`                                                                                                                                                                                                                                                                                                   | `true` \| `false` | Kiểm tra xem giá trị nguồn có chứa chuỗi mong đợi hay không                                                           | `expect`: dùng chuỗi string hoặc `re_<expression>` để khớp với một biểu thức chính quy.                                                                                                                                                                                               |
 |                                             | `func.reverse_string`     | - `source:` nguồn chuỗi dữ liệu <br> - `var_name`: tên biến để lưu vào `context`                                                                                                                                                                                                                                                                          | `true`            | Đảo ngược chuỗi dữ liệu từ nguồn và lưu vào biến trong `context`.                                                     | -                                                                                                                                                                                                                                                                                     |
 | `if` - điều kiện                            | `if.condition`            | - `condition: <biểu thức điều kiện>`                                                                                                                                                                                                                                                                                                                      | `true` \| `false` | Đánh giá biểu thức điều kiện và trả về kết quả.                                                                       | Biểu thức điều kiện có thể sử dụng String Resolve `$if ...`                                                                                                                                                                                                                           |
 | `pms` - điều khiển tool PMS (T650 series)   | `pms.AUTO`                | - `working_path: <đường dẫn thư mục làm việc>` <br> - `exe_name: <tên file thực thi>` <br> - `bt_mac: <địa chỉ mac bluetooth>` <br> - `wifi_mac: <địa chỉ mac wifi>` <br> - `eth_mac: <địa chỉ mac ethernet>`                                                                                                                                             | `PASS` \| `FAIL`  | Tự động chạy tool PMS với các tham số đã cho.                                                                         | Lưu ý:<br> - `exe_path` lấy bản PMS_Simulation_Window_V1.09.exe <br> - `bt_mac`, `wifi_mac`, `eth_mac` nếu không dùng để null (`~`)                                                                                                                                                   |
