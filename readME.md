@@ -352,7 +352,7 @@ flowchart TD
 
 ---
 
-## STRING RESOLVE
+## 4. STRING RESOLVE
 - <b>Mô tả:</b> Cung cấp các biến động để sử dụng trong `with`. Cú pháp sử dụng là: `$<key> <value>`
 - <b>Ví dụ:</b>
 ```yaml
@@ -395,7 +395,7 @@ flowchart TD
 
 ---
 
-## EXECUTER & METHOD
+## 5. EXECUTER & METHOD
 ### Mô tả chung
 <b>Mô tả:</b> Cung cấp thông tin về các `executer`, `method` và `with` tương ứng có thể sử dụng trong `do`.
 <b>Ví dụ:</b>
@@ -465,5 +465,75 @@ flowchart TD
 |                                             | `cam.get_ocr_string`                | - `wait_string`: Chuỗi OCR mong đợi. <br> - `timeout`: Thời gian chờ (s) <br> - `save_image_with_name`: tên file lưu chữ ảnh chụp. <br> - `var_name`: tên biến sẽ được lưu vào `context`                                                                                                             | `true` `false` | Đọc text từ ảnh camera, đợi `wait_string` xuất hiện, sau đó lưu chuỗi `wait_string` vào `context` với tên `var_name`. | - Trả về `false` nếu không tìm thấy. <br> - `wait_string`: dùng chuỗi string hoặc `re_<expression>` để khớp với một biểu thức chính quy.  <br> - `save_image_with_name`: Lưu ảnh đã được xử lý OCR lại, nếu k lưu thì để là null `~`                                                  |
 | `cmd` - thưc thi lệnh CMD và lấy log        | `cmd.execute`                       | - `name`: tên lệnh <br> - `command`: lệnh thực thi - `working_path`: thư mục thực thi lệnh <br> - `timeout`: thời gian timeout của lệnh                                                                                                                                                              | `true` `false` | Thực thi lệnh CMD và lấy log trả về                                                                                   | - Trả về `false` nếu lệnh thực thi lỗi hoặc timeout. <br> - Log của lệnh được lưu vào `context` với tên `CMD[<name>][log]`                                                                                                                                                            |
 
-# XỬ LÝ LỖI
-- Đang cập nhật 
+---
+
+## 6. XỬ LÝ LỖI
+- <b>Luôn xem kèm log trong `StartUp` và log test. Log có thể chứa đầy đủ thông tin cụ thể về lỗi.</b>
+
+### Hướng dẫn xử lý lỗi khi mở chương trình ScriptRunner2.
+| Tên lỗi                                   | Mô tả                                                                     | Cách khắc phục                                                                                               |
+| ----------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+|                                           | Không mở được, yêu cầ cài .Net 8                                          | Dùng `PEDownloaderV4` chọn `Tools` -> `getter`. Trong thư mục tải xuống có bao gồm .Net 8. Cài bản x86       |
+| `APP_OPEN_UNKNOWN_ERROR`                  | Lỗi không xác định                                                        | Gửi log cho người phát triển để được hỗ trợ.                                                                 |
+| `APP_OPEN_INVALID_PARAMETERS`             | Tham số khởi động không hợp lệ                                            | Xem log. Kiểm tra lại tham số khởi động khi chạy bằng command line.                                          |
+| `APP_OPEN_SFTP_CONNECT_ERROR`             | Lỗi kết nối SFTP                                                          | Kiểm tra kết nối với máy chủ SFTP. `vns2001.iec2.iac`. Đường dẫn các files tải xuống có tồn tại không.       |
+| `APP_OPEN_CHECK_NAME_ERROR`               | Lỗi kiểm tra tên chương trình                                             | Đảm bảo tên file thực thi là `ScriptRunner2.exe`                                                             |
+| `APP_OPEN_GET_CURRENT_STATION_INFO_ERROR` | Lỗi lấy thông tin trạm hiện tại                                           | Chương trình cần được mở thông qua MES. Kiểm tra lại log.                                                    |
+| `APP_OPEN_LOAD_CONFIG_FAIL`               | Lỗi đọc file `user_config.yaml`                                           | Trong thư mục setup xóa file đó đi.                                                                          |
+| `APP_OPEN_LOAD_COUNTERS_FAIL`             | Lỗi đọc file `counters.yaml`                                              | Trong thư mục setup xóa file đó đi.                                                                          |
+| `APP_OPEN_DISABLE_SFTP_ERROR`             | Lỗi môi trường chưa có nhưng lại chạy OFFLINE                             | Liên hệ dev để được hướng dẫn                                                                                |
+| `APP_OPEN_SFTP_SCRIPT_NOT_FOUND`          | Lỗi file `script.yaml` không tồn tại                                      | Kiểm tra đường dẫn trên SFTP theo mã hàng. Lưu ý tên phân biệt hoa thường, có dấu cách, không ký tự đặc biệt |
+| `APP_OPEN_SCRIPT_FORMAT_INVALID`          | Lỗi `script.yaml` viết không đúng                                         | Xem log báo lỗi dòng nào rồi thực hiện kiểm tra lại file `script.yaml`                                       |
+| `APP_OPEN_MODEL_ID_NOT_SET`               | Lỗi `model_id` chưa được set theo model này.                              | Thêm script cho model id này                                                                                 |
+| `APP_OPEN_INVALID_DOWNLOAD_TYPE`          | Lỗi `script.yaml`. `downloads.type` là `file`, `folder` hoặc `compressed` |                                                                                                              |
+| `APP_OPEN_UNKNOW_FLAG`                    | Lỗi `script.yaml`. Kiểm tra `flags` trong `test_configures`               | Cờ không được hỗ trợ. Có thể là chương trình chưa update nếu cờ mới được thêm vào                            |
+
+
+### Hướng dẫn xử lý lỗi `script.yaml`
+| Tên lỗi                         | Mô tả                                                                          | Cách khắc phục                                                                                        |
+| ------------------------------- | ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| `NO_TEST_STEP`                  | Lỗi `script.yaml`, `steps` trống.                                              |                                                                                                       |
+| `NO_RETURN_STATEMENT`           | Lỗi thiếu `return` ở `step` cuối cùng.                                         |                                                                                                       |
+| `UNDEFINE_ERROR`                | Chưa định nghĩa tên lỗi.                                                       | `return.FAIL` kèm `with.error_code: <tên lỗi>`                                                        |
+| `EXECUTER_NOT_FOUND`            | Không có executer với tên đó.                                                  | Có thể là ghi sai tên hoặc chương trình chưa cập nhật.                                                |
+| `METHOD_NOT_FOUND`              | executer không có method với tên đó.                                           | Có thể là ghi sai tên hoặc chương trình chưa cập nhật.                                                |
+| `UNKNOW_RESOLVER`               | Trong with pattern `$<key> <query>` không đúng.                                |                                                                                                       |
+| `CANNOT_RESOLVE_STRING`         | Lỗi khi đọc convert `$<key> <query>`                                           |                                                                                                       |
+| `MISSING_PARAMETER_KEY`         | `with` thiếu `key`                                                             |                                                                                                       |
+| `INVALID_PARAMETER_TYPE`        | `with.key` giá trị không đúng. Ví dụ `time: abc` ? thời gian cần là số.        |                                                                                                       |
+| `SCRIPT_CONFIG_KEY_NOT_FOUND`   | Trong script_config không có key đó.                                           |                                                                                                       |
+| `CONTEXT_KEY_NOT_FOUND`         | Trong context không có tên biến này.                                           |                                                                                                       |
+| `FORMAT_INVALID`                | Kiểm tra format không khớp.                                                    | Xem log.                                                                                              |
+| `CHECK_MBS_NO`                  | Kiểm tra đầu vào trạm.                                                         |                                                                                                       |
+| `MES_ERROR`                     | Lỗi api MES.                                                                   |                                                                                                       |
+| `FILE_NOT_FOUND`                | Thiếu file.                                                                    |                                                                                                       |
+| `FOLDER_NOT_FOUND`              | Không có thư mục.                                                              |                                                                                                       |
+| `UNEXPECTED_ERROR`              | Lỗi không xác định.                                                            |                                                                                                       |
+| `VALIDATE_INFO`                 | Xác thực thông tin lỗi.                                                        | MAC cần là 12 ký tự, imei 15 ký tự ...                                                                |
+| `JLINK_FLASH_FAIL`              | JLINK FLASH FAIL                                                               |                                                                                                       |
+| `JLINK_TIMEOUT`                 | JLINK chạy quá timeout.                                                        | Jlink bị treo và không thoát?                                                                         |
+| `JLINK_ERROR`                   | Lỗi chưa biết. Xem log.                                                        |                                                                                                       |
+| `MIB_CHECK_INPUT_FAIL`          | `with` chứa k đủ thông tin. Xem log.                                           |                                                                                                       |
+| `MIB_TOOL_WINCONNECT_NOT_OPEN`  | Tool WINCONNECT chưa được mở.                                                  |                                                                                                       |
+| `MIB_TOOL_NOT_OPEN`             | Tool MIB chưa được mở.                                                         |                                                                                                       |
+| `MIB_WINCONNECT_CHECK_FAIL`     | Chưa biết.                                                                     |                                                                                                       |
+| `MIB_DL_FAIL`                   | MIB DL FAIL (Dựa trên thông tin của WinConnect)                                |                                                                                                       |
+| `PROCESS_START_FAIL`            | Không strrt được process                                                       | Xem log.                                                                                              |
+| `PROCESS_TIMEOUT`               | Quá thời gian chờ.                                                             |                                                                                                       |
+| `ATMEL_FLASH_FAIL`              | Tool ATMEL FLASH FAIL.                                                         | Cần config tool AtmelSecuredAccess trong thư mục tải về.                                              |
+| `MT_TOOL_INVALID_ICT_SN_LENGTH` | SN nhập vào phải là 14 ký tự.                                                  |                                                                                                       |
+| `QCM_INVALID_INPUT_IMEI`        | IMEI phải là 15 ký tự.                                                         |                                                                                                       |
+| `QCM_IMEI_WRITE_FAILED`         | Ghi IMEI lỗi.                                                                  |                                                                                                       |
+| `QFIL_IMAGE_PATH_NOT_FOUND`     | Đường dẫn đến image không tồn tại.                                             |                                                                                                       |
+| `QFIL_TIMEOUT`                  | QFIL flash quá thời gian chờ.                                                  |                                                                                                       |
+| `QFIL_FLASH_IMAGE_FAILED`       | QFIL flash FAIL.                                                               |                                                                                                       |
+| `VTP_XML_FILE_NOT_FOUND`        | File xml vtp không tồn tại với tên được cung cấp.                              |                                                                                                       |
+| `VTP_SN_LENGTH_INVALID`         | SN phải là 14 ký tự. (VTP cần cài đặt là 14 ký tự. config trên file ở ./setup) |                                                                                                       |
+| `VTP_TEST_TIMEOUT`              | VTP test quá thời gian chờ.                                                    |                                                                                                       |
+| `VTP_TEST_FAIL`                 | VTP test fail nhưng k lấy được tên item FAIL.                                  |                                                                                                       |
+| `CAMERA_NOT_RUNNING`            | Chưa bật camera.                                                               |                                                                                                       |
+| `OCR_SERVICE_NOT_READY`         | Lỗi khởi tạo OCR.                                                              |                                                                                                       |
+| `CAMERA_WAS_CLOSED`             | Camera bị đóng trong quá trình test.                                           |                                                                                                       |
+| `COMPORT_INVALID_OBJECT`        | Tên `name` của `with` không chính xác.                                         |                                                                                                       |
+| `COM_OPEN_ERRROR`               | Không mở được cổng com.                                                        | Kiểm tra com có bị mở bới chương trình khác không, có đúng cổng không. Nếu k disable com rồi bật lại. |
+
