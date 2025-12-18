@@ -456,6 +456,24 @@ Ví dụ:
       name: android_com
       command: logcat -c # rõ ràng.
 ```
+- ❌ Không thêm các tham số không cần thiết.
+Ví dụ:
+```yaml
+# không nên
+  ...
+  - do: com.send_string
+    with:
+      name: com
+      command: X 
+      expect: PLEASE SELECT A TEST # đây là lệnh gửi, cho thêm chờ ở đây không có tác dụng gì. Nhìn dễ nhầm lẫn
+      sleep: 3
+  # nên
+  - do: com.send_string
+    with:
+      name: com
+      expect: WAIT_TEST_APP
+      sleep: 3
+```
 - ❌ setup môi trường chỉ nên chứa đủ cái nó cần. Không nên bỏ tất cả vào rồi để tải xuống. Các file môi trường cần được tinh gọn và kiểm tra trước khi up lên. Ví dụ trạm K81 FLASH BOOTLOADER thì chỉ nên chứa file bootloader, k nên kèm những thứ ở trạm khác.
 ví dụ:
 ```text
@@ -470,3 +488,4 @@ ví dụ:
         📄 other_files
     📄 script.yaml
 ```
+
