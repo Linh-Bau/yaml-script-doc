@@ -25,15 +25,15 @@ Nó cho phép viết các kịch bản test đơn giản đến phức tạp m�
 | 4    | String Resolve                 | Hướng dẫn sử dụng tính năng String Resolve             |
 | 5    | Executer & Method              | Hướng dẫn sử dụng Executer và Method trong script.yaml |
 | 6    | Xử Lý Lỗi                      | Hướng dẫn cách xử lý lỗi                               |
+| 7    | Ví dụ và hướng dẫn             | Ví dụ và hướng dẫn.                                    |
 
 ---
 
 ##  1. ĐỊNH DẠNG CHUNG YAML
-**DO**:
-- Sử dụng dấu cách (space) để thụt lề, không sử dụng tab.
-- Sử dụng dấu gạch ngang (-) để liệt kê các mục trong danh sách.
-- Sử dụng dấu hai chấm (:) để phân tách khóa và giá trị.
-- Giữ nguyên định dạng YAML chuẩn để đảm bảo tính tương thích.
+**🚨 CHÚ Ý**:
+- Sử dụng dấu cách ` ` để thụt lề, không sử dụng tab.
+- Sử dụng dấu gạch ngang `-` để liệt kê các mục trong danh sách.
+- Sử dụng dấu hai chấm `:` để phân tách khóa và giá trị.
 - Sử dụng dấu ngoặc kép ("") hoặc dấu nháy đơn ('') cho các chuỗi có chứa ký tự đặc biệt.
 - Các khóa `key` viết dạng `lower_case_with_underscores`.
 
@@ -81,28 +81,28 @@ mes_defect_code:
 - <b>Ví dụ:</b>
 ```yaml
 test_environments: 
- - &env
- # những item sẽ được tải xuống.
- # là 1 danh sách object có các trường: name, type, from,  to, extract_to
- # có thể dùng &<name> để tham chiếu
- downloads:
-  - name: "vtp" 
-    # name: tên hiển thị của item tải về, không ảnh hưởng đến quá trình tải
-    type: "folder" # loại tải về: folder, file, compressed
-    # type có thể là: folder, file, compressed
-    from: "/SFTP.conf.pe.02/V6ENV/vtp_ver24011801" 
-    # from: đường dẫn trên server sftp, có thể tuyệt đối hoặc tương đối
-    # tuyệt đối dạng: /SFTP.conf.pe.02/V6ENV/vtp_ver24011801
-    # tương đối dạng: ./setup/vtp_ver24011801
-    # kỹ sư EE sẽ tự verify đường dẫn này trên server sftp.
-    to: "./setup/vtp" # đường dẫn lưu trữ trên máy local
-    # to: đường dẫn lưu trữ trên máy local. Có thể sử dụng tuyệt đối hoặc tương đối
-    # tương đối sẽ lưu vào: {thư mục exe}/setup/{PRODUCT}/{STATION}/{MODEL_ID}/{đường dẫn tương đối}
-    extract_to: ~
-    # dành cho file nén (compressed).
-    # để là null (~). Giải nén vào ./setup/{tên file}
-    # đường dẫn tương đối
-    # đường dẫn tuyệt đối
+- &env
+  # những item sẽ được tải xuống.
+  # là 1 danh sách object có các trường: name, type, from,  to, extract_to
+  # có thể dùng &<name> để tham chiếu
+  downloads:
+    - name: "vtp" 
+      # name: tên hiển thị của item tải về, không ảnh hưởng đến quá trình tải
+      type: "folder" # loại tải về: folder, file, compressed
+      # type có thể là: folder, file, compressed
+      from: "/SFTP.conf.pe.02/V6ENV/vtp_ver24011801" 
+      # from: đường dẫn trên server sftp, có thể tuyệt đối hoặc tương đối
+      # tuyệt đối dạng: /SFTP.conf.pe.02/V6ENV/vtp_ver24011801
+      # tương đối dạng: ./setup/vtp_ver24011801
+      # kỹ sư EE sẽ tự verify đường dẫn này trên server sftp.
+      to: "./setup/vtp" # đường dẫn lưu trữ trên máy local
+      # to: đường dẫn lưu trữ trên máy local. Có thể sử dụng tuyệt đối hoặc tương đối
+      # tương đối sẽ lưu vào: {thư mục exe}/setup/{PRODUCT}/{STATION}/{MODEL_ID}/{đường dẫn tương đối}
+      extract_to: ~
+      # dành cho file nén (compressed).
+      # để là null (~). Giải nén vào ./setup/{tên file}
+      # đường dẫn tương đối
+      # đường dẫn tuyệt đối
 
   # ví dụ item thứ 2.
   - name: "vtp_env" #  thư mục vtp chỉ chứa file vtp, môi trường vtp nên configure riêng theo từng model
@@ -210,13 +210,13 @@ script:
 ```yaml
 test_targets: 
   - model_id: VN6503ABMX0B | VN6503ABMX01 
- environment: *env_saa
- test_config: *t650_saa
- test_sequence: *t650c_test_sequence
+    environment: *env_saa
+    test_config: *t650_saa
+    test_sequence: *t650c_test_sequence
   - model_id: VN6503ABMX0C
- environment: *env_naa
- test_config: *t650_naa
- test_sequence: *t650c_test_sequence
+    environment: *env_naa
+    test_config: *t650_naa
+    test_sequence: *t650c_test_sequence
 ```
 **Cấu trúc chi tiết của `test_targets`:**
 
@@ -459,7 +459,6 @@ flowchart TD
 |                                             | `if.is_less_than`                   | - `source: <giá trị cần so sánh>` <br> - `upper_limit: <giá trị so sánh>`                                                                                                                                                                                                                            | `true` `false` | Kiểm tra điều kiện `source` < `upper_limit`.                                                                                                                                                              |                                                                                                                                                                                                                                                                                       |
 |                                             | `if.is_less_than_or_equal`          | - `source: <giá trị cần so sánh>` <br> - `upper_limit: <giá trị so sánh>`                                                                                                                                                                                                                            | `true` `false` | Kiểm tra điều kiện `source` < `upper_limit`.                                                                                                                                                              |                                                                                                                                                                                                                                                                                       |
 |                                             | `if.in_between`                     | - `source: <giá trị cần so sánh>` <br> - `lower_limit: <giá trị so sánh>` <br> - `upper_limit: <giá trị so sánh>`                                                                                                                                                                                    | `true` `false` | Kiểm tra điều kiện `source` >= `lower_limit` & `source` <= `upper_limit`.                                                                                                                                 |                                                                                                                                                                                                                                                                                       |
-| `cmd` -Chạy lệnh CMD                        | `cmd.execute`                       | - `name: <tên định danh>` <br> `command: <lệnh thực thi>` <br> `working_path: <thư mục thực thi CMD>` <br> - `timeout: <thời gian timeout>`                                                                                                                                                          | `true` `false` | Đánh giá biểu thức điều kiện và trả về kết quả.                                                                                                                                                           | Biểu thức điều kiện có thể sử dụng String Resolve `$if ...`                                                                                                                                                                                                                           |
 | `atmel` - tool AtmelSecureAccess            | `atmel.AUTO`                        | - `working_path`: đường dẫn chuong trình AtmelSecureAccess. <br>                                                                                                                                                                                                                                     | `PASS` `FAIL`  | Sử dụng tool AtmelSecureAccess flash key vào sản phẩm. Dùng cho UX100/UX110                                                                                                                               | - Config để tự tải tool AtmelSecureAccess xuống. Ở lần tải đầu tiên. Cần configuration AtmelSecureAccess ở thư mục tải về.                                                                                                                                                            |
 | `icimei` - tool icimei.exe                  | `icimei.AUTO`                       | - `working_path: <đường dẫn thư mục chứa chương trình>` <br> - `comport: <cổng com để ghi imei>` <br> - `imei: <imei ghi vào (độ dài là 15)>`                                                                                                                                                        | `PASS` `FAIL`  | Sử dụng tool `icimie.exe` ghi imei vào sản phẩm.                                                                                                                                                          | - Config để tự tải tool xuống. <br> - trước khi chạy tool sản phẩm cần được vào chế độ AT trước.                                                                                                                                                                                      |
 |                                             | `icimei.auto`                       | - `working_path: <đường dẫn thư mục chứa chương trình>` <br> - `comport: <cổng com để ghi imei>` <br> - `imei: <imei ghi vào (độ dài là 15)>`                                                                                                                                                        | `true` `false` | Tương tự `AUTO`, nhưng sẽ thực hiện `on_success` nếu thành công, ngược lại thực hiện `on_fail`. Lưu ý: Chỉ lỗi `ICIMEI_TIMEOUT` và `ICIMEI_WRITE_IMEI_FAIL` mới trả về `true` `false`. Lỗi khác sẽ `FAIL` | - Config để tự tải tool xuống. <br> - trước khi chạy tool sản phẩm cần được vào chế độ AT trước.                                                                                                                                                                                      |
@@ -551,3 +550,5 @@ flowchart TD
 | `COMPORT_INVALID_OBJECT`        | Tên `name` của `with` không chính xác.                                         |                                                                                                       |
 | `COM_OPEN_ERRROR`               | Không mở được cổng com.                                                        | Kiểm tra com có bị mở bới chương trình khác không, có đúng cổng không. Nếu k disable com rồi bật lại. |
 
+
+## 7. VÍ DỤ VÀ HƯỚNG DẪN
