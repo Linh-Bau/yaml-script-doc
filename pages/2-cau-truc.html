@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cấu trúc script</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+    <main>
+        <h1 id="cau-truc">Cấu trúc script</h1>
+        <p>Giới thiệu cấu trúc tổng thể của một file YAML script, các trường bắt buộc và ví dụ mẫu.</p>
+        <pre><code class="language-yaml">
+script:
+  mes_defect_code: ~
+  test_environments: ~ 
+  test_configurations: ~
+  test_sequences: ~
+  test_targets: ~ 
+        </code></pre>
+        <p><b>File script.yaml bao gồm 5 phần chính:</b></p>
+        <ul>
+            <li><b>mes_defect_code:</b> Khai báo các mã lỗi dùng chung trong MES.</li>
+            <li><b>test_environments:</b> Khai báo các môi trường test.</li>
+            <li><b>test_configurations:</b> Khai báo các cấu hình test.</li>
+            <li><b>test_sequences:</b> Khai báo các chuỗi test.</li>
+            <li><b>test_targets:</b> Khai báo các mục tiêu test cụ thể.</li>
+        </ul>
+        <h2>1 - mes_defect_code</h2>
+        <p><b>Mô tả:</b> Danh sách mã lỗi MES cung cấp.<br>
+            <b>Type:</b> Mapping (string-string)
+        </p>
+        <pre><code class="language-yaml">mes_defect_code:
+  ERROR_001: OS01
+  ERROR_002: OS02
+</code></pre>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Kiểu dữ liệu</th>
+                    <th>Bắt buộc</th>
+                    <th>Cho phép null</th>
+                    <th>Mô tả</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>mes_defect_code</td>
+                    <td>Mapping</td>
+                    <td>Không</td>
+                    <td>Không</td>
+                    <td>Danh sách mã lỗi MES</td>
+                </tr>
+                <tr>
+                    <td>error_name</td>
+                    <td>String</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Tên lỗi chương trình</td>
+                </tr>
+                <tr>
+                    <td>defect_code</td>
+                    <td>String</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Mã lỗi MES tương ứng</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>2 - test_environments</h2>
+        <p><b>Mô tả:</b> Các môi trường tải xuống từ SFTP.<br>
+            <b>Type:</b> Danh sách object
+        </p>
+        <pre><code class="language-yaml">test_environments:
+- &env
+  downloads:
+    - name: "vtp"
+      type: "folder"
+      from: "/SFTP.conf.pe.02/V6ENV/vtp_ver24011801"
+      to: "./setup/vtp"
+      extract_to: ~
+    - name: "vtp_env"
+      type: "folder"
+      from: "./setup/VN6301ABAR0B"
+      to: "./setup/vtp"
+      extract_to: ~
+</code></pre>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Kiểu dữ liệu</th>
+                    <th>Bắt buộc</th>
+                    <th>Cho phép null</th>
+                    <th>Mô tả</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>test_environments</td>
+                    <td>Danh sách object</td>
+                    <td>Không</td>
+                    <td>Không</td>
+                    <td>Danh sách môi trường tải xuống từ SFTP</td>
+                </tr>
+                <tr>
+                    <td>downloads</td>
+                    <td>Danh sách object</td>
+                    <td>Không</td>
+                    <td>Không</td>
+                    <td>Danh sách mục tải về trong môi trường</td>
+                </tr>
+                <tr>
+                    <td>name</td>
+                    <td>String</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Tên hiển thị mục tải về</td>
+                </tr>
+                <tr>
+                    <td>type</td>
+                    <td>String</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Loại mục tải về: folder, file, compressed</td>
+                </tr>
+                <tr>
+                    <td>from</td>
+                    <td>String</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Đường dẫn trên server SFTP</td>
+                </tr>
+                <tr>
+                    <td>to</td>
+                    <td>String</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Đường dẫn lưu trữ trên máy local</td>
+                </tr>
+                <tr>
+                    <td>extract_to</td>
+                    <td>String</td>
+                    <td>Không</td>
+                    <td>Có</td>
+                    <td>Đường dẫn giải nén cho file nén (compressed)</td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tên môi trường</th>
+                    <th>Đường dẫn</th>
+                    <th>Mô tả</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>adb</td>
+                    <td><code>/SFTP.conf.pe.02/V6ENV/adb</code></td>
+                    <td>Công cụ adb cho việc giao tiếp với thiết bị Android.</td>
+                </tr>
+                <tr>
+                    <td>AtmelSecureAccess tool</td>
+                    <td><code>/SFTP.conf.pe.02/V6ENV/AtmelSecureAccess</code></td>
+                    <td>Thư viện và công cụ Atmel Secure Access. Dành cho trạm UX100, UX110 OS DL</td>
+                </tr>
+                <tr>
+                    <td>QFIL</td>
+                    <td><code>/SFTP.conf.pe.02/V6ENV/qfil_env</code></td>
+                    <td>Công cụ QFIL để flash os image cho thiết bị Android.</td>
+                </tr>
+                <tr>
+                    <td>OCR</td>
+                    <td><code>/SFTP.conf.pe.02/V6ENV/tessdata</code></td>
+                    <td>Thư viện ngôn ngữ cho OCR Tesserect. Dành cho các trạm dùng CAMERA VISION</td>
+                </tr>
+                <tr>
+                    <td>vtp</td>
+                    <td><code>/SFTP.conf.pe.02/V6ENV/vtp_ver24011801</code></td>
+                    <td>Chứa tool VTP.exe của khách hàng. Yêu cầu: Cần phải setup thêm môi trường riêng cho từng model
+                        (xem ví dụ ở dưới).</td>
+                </tr>
+                <tr>
+                    <td>jlink</td>
+                    <td><code>/SFTP.conf.pe.02/V6ENV/jlink_env</code></td>
+                    <td>Công cụ JLink để nạp firmware.</td>
+                </tr>
+                <tr>
+                    <td>icimei_tool</td>
+                    <td><code>/SFTP.conf.pe.02/V6ENV/icimei_tool</code></td>
+                    <td>Công cụ ghi imei vào sản phẩm.</td>
+                </tr>
+                <tr>
+                    <td>qwit_tool</td>
+                    <td><code>/SFTP.conf.pe.02/V6ENV/Quectel_Write_IMEI_OFFLINE_V1.8_For_VeriFone</code></td>
+                    <td>Công cụ ghi imei vào sản phẩm.</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>3 - test_configurations</h2>
+        <p><b>Mô tả:</b> Cấu hình test cho từng script, từng slot.<br>
+            <b>Type:</b> Danh sách object
+        </p>
+        <pre><code class="language-yaml">script:
+  test_configurations:
+    - &t650c_configuration
+      flags: ~
+      script_information:
+        station_name: Tên trạm
+        description: Mô tả
+        script_version: "1.0.0.0"
+      script_configuration:
+        general:
+        working_dir: "C:\\Test\\T650C"
+      fixture_configuration:
+        - fixture_1:
+            port: "COM3"
+            baud_rate: "9600"
+        - fixture_2:
+            port: "COM4"
+            baud_rate: "115200"
+</code></pre>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Kiểu dữ liệu</th>
+                    <th>Bắt buộc</th>
+                    <th>Cho phép null</th>
+                    <th>Mô tả</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>test_configurations</td>
+                    <td>Danh sách object</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Danh sách cấu hình test</td>
+                </tr>
+                <tr>
+                    <td>flags</td>
+                    <td>Danh sách string</td>
+                    <td>Không</td>
+                    <td>Có</td>
+                    <td>Cờ tùy chọn cho cấu hình test</td>
+                </tr>
+                <tr>
+                    <td>script_information</td>
+                    <td>Object</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Thông tin về kịch bản test</td>
+                </tr>
+                <tr>
+                    <td>station_name</td>
+                    <td>String</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Tên trạm kiểm tra</td>
+                </tr>
+                <tr>
+                    <td>description</td>
+                    <td>String</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Mô tả kịch bản test</td>
+                </tr>
+                <tr>
+                    <td>script_version</td>
+                    <td>String</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Phiên bản hiển thị của kịch bản test</td>
+                </tr>
+                <tr>
+                    <td>script_configuration</td>
+                    <td>Object</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Cấu hình chi tiết cho kịch bản test</td>
+                </tr>
+                <tr>
+                    <td>general</td>
+                    <td>Mapping (string-string)</td>
+                    <td>Không</td>
+                    <td>Có</td>
+                    <td>Cấu hình chung cho kịch bản test</td>
+                </tr>
+                <tr>
+                    <td>fixture_configuration</td>
+                    <td>Danh sách object</td>
+                    <td>Không</td>
+                    <td>Có</td>
+                    <td>Cấu hình cho các thiết bị kiểm tra (fixture)</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>4 - test_targets</h2>
+        <p><b>Mô tả:</b> Configure các script tương ứng với các MODEL_ID khác nhau.<br>
+            <b>Type:</b> Danh sách object
+        </p>
+        <pre><code class="language-yaml">test_targets:
+  - model_id: VN6503ABMX0B | VN6503ABMX01
+    environment: *env_saa
+    test_config: *t650_saa
+    test_sequence: *t650c_test_sequence
+  - model_id: VN6503ABMX0C
+    environment: *env_naa
+    test_config: *t650_naa
+    test_sequence: *t650c_test_sequence
+</code></pre>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Kiểu dữ liệu</th>
+                    <th>Bắt buộc</th>
+                    <th>Cho phép null</th>
+                    <th>Mô tả</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>test_targets</td>
+                    <td>Danh sách object</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Danh sách mục tiêu kiểm tra</td>
+                </tr>
+                <tr>
+                    <td>model_id</td>
+                    <td>String</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Danh sách các model ID, cách nhau bằng dấu gạch dọc</td>
+                </tr>
+                <tr>
+                    <td>environment</td>
+                    <td>Reference</td>
+                    <td>Có</td>
+                    <td>Có</td>
+                    <td>Tham chiếu đến môi trường test đã định nghĩa trong test_environments</td>
+                </tr>
+                <tr>
+                    <td>test_config</td>
+                    <td>Reference</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Tham chiếu đến cấu hình test đã định nghĩa trong test_configurations</td>
+                </tr>
+                <tr>
+                    <td>test_sequence</td>
+                    <td>Reference</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Tham chiếu đến kịch bản test đã định nghĩa trong test_sequences</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>3.5 - test_sequences</h2>
+        <p><b>Mô tả:</b> Chứa danh sách các kịch bản cụ thể, mỗi kịch bản là một danh sách test_item, mỗi test_item có
+            các bước test cụ thể.<br>
+            <b>Type:</b> Danh sách object
+        </p>
+        <pre><code class="language-yaml">test_sequences:
+  - &t650c_test_sequence
+    test_items:
+      - name: CHECK_MBS_NO
+        lower_limit: ~
+        upper_limit: ~
+        steps:
+          - do: mes.CHECK_MBS_NO
+            with: ~
+            on_success: ~
+            on_fail: ~
+      - name: MES_GET_ETH_MAC
+        steps:
+          - do: mes.GET_MAC_LIST
+            with: ~
+            on_success: ~
+            on_fail: ~
+      - name: PMS_AUTO_TEST
+        steps:
+          - do: pms.AUTO
+            with:
+              working_path: C:\\T650C_SA_K81DL_TOOL20230929\\V1.21.2\\PMS_Simulation_Window_V1.09
+              exe_name: PMS_Simulation_Window_V1.09.exe
+              bt_mac: ~
+              wifi_mac: ~
+              eth_mac: 123456789012
+            on_success: ~
+            on_fail: ~
+      - name: MT_AUTO_TEST
+        steps:
+          - do: mt.AUTO
+            with:
+              working_path: C:\\T650C_SA_K81DL_TOOL20230929\\V1.21.2
+              exe_name: PCBA_tests.exe
+              ict_sn_01: $context input_str
+              ict_sn_02: ~
+            on_success: ~
+            on_fail: ~
+      - name: CHECK_RESULT
+        steps:
+          - do: mt.check_tasklist
+            with:
+              board_id: 01
+              expect: K81-Firmware,Complete
+            on_success: ~
+            on_fail:
+              - do: return.FAIL
+                with:
+                  error_code: DOWNLOAD_K81_FIRMWARE_FAIL
+      - do: mt.check_tasklist
+        with:
+          board_id: 01
+          expect: K81-APP,Complete
+        on_success:
+          - do: return.PASS
+            with: ~
+        on_fail:
+          - do: return.FAIL
+            with:
+              error_code: DOWNLOAD_K81_APP_FAIL
+</code></pre>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Kiểu dữ liệu</th>
+                    <th>Bắt buộc</th>
+                    <th>Cho phép null</th>
+                    <th>Mô tả</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>test_sequences</td>
+                    <td>Danh sách object</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Danh sách kịch bản test</td>
+                </tr>
+                <tr>
+                    <td>test_items</td>
+                    <td>Danh sách object</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Danh sách mục kiểm tra trong kịch bản</td>
+                </tr>
+                <tr>
+                    <td>name</td>
+                    <td>String</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Tên mục kiểm tra</td>
+                </tr>
+                <tr>
+                    <td>lower_limit</td>
+                    <td>String</td>
+                    <td>Không</td>
+                    <td>Có</td>
+                    <td>Giới hạn dưới cho mục kiểm tra</td>
+                </tr>
+                <tr>
+                    <td>upper_limit</td>
+                    <td>String</td>
+                    <td>Không</td>
+                    <td>Có</td>
+                    <td>Giới hạn trên cho mục kiểm tra</td>
+                </tr>
+                <tr>
+                    <td>steps</td>
+                    <td>Danh sách object</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Danh sách các bước thực hiện trong mục kiểm tra</td>
+                </tr>
+                <tr>
+                    <td>do</td>
+                    <td>String</td>
+                    <td>Có</td>
+                    <td>Không</td>
+                    <td>Hành động cần thực hiện</td>
+                </tr>
+                <tr>
+                    <td>with</td>
+                    <td>Mapping (string-string)</td>
+                    <td>Không</td>
+                    <td>Có</td>
+                    <td>Tham số truyền vào cho hành động</td>
+                </tr>
+                <tr>
+                    <td>on_success</td>
+                    <td>Danh sách object</td>
+                    <td>Không</td>
+                    <td>Có</td>
+                    <td>Các hành động khi bước thực hiện thành công</td>
+                </tr>
+                <tr>
+                    <td>on_fail</td>
+                    <td>Danh sách object</td>
+                    <td>Không</td>
+                    <td>Có</td>
+                    <td>Các hành động khi bước thực hiện thất bại</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+</body>
+
+</html>

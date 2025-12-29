@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📃 IACV - YAML SCRIPT DOCUMENT</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-yaml.min.js"></script>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <h2 class="logo">YAML SCRIPT DOCUMENT</h2>
+        <ul class="menu">
+            <li><a href="#" page_uri="./pages/1-gioi-thieu.html">GIỚI THIỆU</a></li>
+            <li><a href="#" page_uri="./pages/2-cau-truc.html">CẤU TRÚC</a></li>
+            <li><a href="#" page_uri="./pages/3-string-resolver.html">STRING RESOLVER</a></li>
+            <li><a href="#" page_uri="./pages/4-executer-method.html">EXECUTERS AND METHODS</a></li>
+            <li><a href="#" page_uri="./pages/5-error-handling.html">XỬ LÝ LỖI</a></li>
+            <li><a href="#" page_uri="./pages/6-vi-du.html">VÍ DỤ</a></li>
+        </ul>
+
+        <!-- Nội dung dưới cùng -->
+        <div class="sidebar-bottom">
+            <span>© 2026 IACV - LINH BAU</span>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+
+    </main>
+
+    <script>
+        // SPA menu: load page content into main
+        document.querySelectorAll('.menu a[page_uri]').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const page = link.getAttribute('page_uri');
+                fetch(page)
+                    .then(res => res.text())
+                    .then(html => {
+                        const temp = document.createElement('div');
+                        temp.innerHTML = html;
+                        const mainContent = temp.querySelector('main');
+                        if (mainContent) {
+                            document.querySelector('main.content').innerHTML = mainContent.innerHTML;
+                        } else {
+                            document.querySelector('main.content').innerHTML = html;
+                        }
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        if (window.Prism) Prism.highlightAll();
+                    });
+            });
+        });
+        // Load Giới thiệu page by default on first load
+        window.addEventListener('DOMContentLoaded', function () {
+            const defaultPage = document.querySelector('.menu a[page_uri]');
+            if (defaultPage) {
+                const page = defaultPage.getAttribute('page_uri');
+                fetch(page)
+                    .then(res => res.text())
+                    .then(html => {
+                        const temp = document.createElement('div');
+                        temp.innerHTML = html;
+                        const mainContent = temp.querySelector('main');
+                        if (mainContent) {
+                            document.querySelector('main.content').innerHTML = mainContent.innerHTML;
+                        } else {
+                            document.querySelector('main.content').innerHTML = html;
+                        }
+                        if (window.Prism) Prism.highlightAll();
+                    });
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Giới thiệu</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+    <main>
+        <h1 id="gioi-thieu">Giới thiệu</h1>
+        <p>Đây là tài liệu cung cấp thông tin hướng dẫn về `script.yaml`, bao gồm các định dạng, cấu trúc, thành phần,
+            và cách sử dụng các tính năng như String Resolve, Executer & Method, cũng như xử lý lỗi.</p>
+        <div>
+            <h2> 1 - Cài đặt ScriptRunner2 và môi trường cần thiết</h2>
+            <ul>
+                <li><span> Sử dụng tool <b>PEDownloaderV4.exe</b> -> <b>tool</b> -> <b>getter</b>. Tải xuống
+                        <b>Getter</b>.
+                        Cài môi trường <b>windowsdesktop-runtime-8.0.20-win-x86.exe</b>, <b>VC_redist.x86.exe</b> (Đối
+                        với
+                        trạm <b>Camera vision</b>, các trạm khác không cần.)</span></li>
+                <li><span>VSCODE extentions: `YAML`(Red Hat)</span></li>
+            </ul>
+        </div>
+        <div>
+            <h2> 2 - Quy chuẩn cho script.yaml</h2>
+            <p>
+                <b>
+                    Để cho format thống nhất. Khi viết script tuân theo những nguyên tắc sau.
+                </b>
+            </p>
+            <ol>
+                <li>
+                    <p>Tên <code>key</code> trong <code>yaml</code> luôn viết dạng <b>lower_case</b>.</p>
+                    <pre>
+                        <code class="language-yaml">
+key: value # key là phần giá trị bên trái, đại diện tên khóa. bên phải là giá trị của khóa.
+                    </code></pre>
+                </li>
+                <li>
+                    <p>Name của <code>test_item</code> luôn để là <b>UPPER_CASE</b> và không chứa ký tự đặc biệt.</p>
+                    <pre><code class="language-yaml">
+- name: CHECK_MBS_NO # OK
+  lower_limit: ~ 
+  upper_limit: ~ 
+
+- name: CHECK MBS NO # KHÔNG TỐT, CHỨA DẤU CÁCH
+  lower_limit: ~ 
+  upper_limit: ~ 
+
+- name: check mbs no # KHÔNG TỐT, CHỮ THƯỜNG
+  lower_limit: ~ 
+  upper_limit: ~ 
+
+- name: check/mbs\no # KHÔNG TỐT, chứa ký tự đặc biệt
+  lower_limit: ~ 
+  upper_limit: ~ 
+</code></pre>
+                </li>
+                <li>
+                    <p>Return <code>error_code</code> luôn để là <b>UPPER_CASE</b> và không chứa ký tự đặc biệt.</p>
+                    <pre><code class="language-yaml">- do: return.FAIL
+  with:
+    error_code: DOWNLOAD_K81_FIRMWARE_FAIL # OK
+
+  error_code: DOWNLOAD K81 FIRMWARE_FAIL # Không tốt
+  error_code: DOWNLOAD K81-FIRMWARE_FAIL # Không tốt
+</code></pre>
+                </li>
+                <li>
+                    <p>Đặt tên môi trường sẽ đặt là <code>env_&lt;tên_riêng&gt;</code>,
+                        <code>cf_&lt;tên_riêng&gt;</code>,
+                        <code>seq_&lt;tên_riêng&gt;</code>. Chú ý tên viết thường, không có dấu cách.
+                    </p>
+                    <pre><code class="language-yaml">script:
+  mes_defect_code: ~
+  test_environments: ~
+  test_configurations:
+    - &cf_dev # ...
+  test_sequences:
+    - &seq_dev #...
+  test_targets:
+    - model_id: Demo
+      environment: ~
+      test_config: *cf_dev
+      test_sequence: *seq_dev
+</code></pre>
+                </li>
+            </ol>
+        </div>
+    </main>
+
+</body>
+
+</html>

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Xử lý lỗi</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+    <main>
+        <h1 id="error-handling">Xử lý lỗi</h1>
+        <b>Luôn xem kèm log trong `StartUp` và log test. Log có thể chứa đầy đủ thông tin cụ thể về lỗi.</b>
+        <h3>Hướng dẫn xử lý lỗi khi mở chương trình ScriptRunner2</h3>
+        <div class="table-responsive">
+            <table class="doc-table">
+                <thead>
+                    <tr>
+                        <th>Tên lỗi</th>
+                        <th>Mô tả</th>
+                        <th>Cách khắc phục</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td>Không mở được, yêu cầu cài .Net 8</td>
+                        <td>Dùng <code>PEDownloaderV4</code> chọn <code>Tools</code> → <code>getter</code>. Trong
+                            thư mục tải xuống có bao gồm .Net 8. Cài bản x86</td>
+                    </tr>
+                    <tr>
+                        <td><code>APP_OPEN_UNKNOWN_ERROR</code></td>
+                        <td>Lỗi không xác định</td>
+                        <td>Gửi log cho người phát triển để được hỗ trợ.</td>
+                    </tr>
+                    <tr>
+                        <td><code>APP_OPEN_INVALID_PARAMETERS</code></td>
+                        <td>Tham số khởi động không hợp lệ</td>
+                        <td>Xem log. Kiểm tra lại tham số khởi động khi chạy bằng command line.</td>
+                    </tr>
+                    <tr>
+                        <td><code>APP_OPEN_SFTP_CONNECT_ERROR</code></td>
+                        <td>Lỗi kết nối SFTP</td>
+                        <td>Kiểm tra kết nối với máy chủ SFTP. <code>vns2001.iec2.iac</code>. Đường dẫn các files
+                            tải xuống có tồn tại không.</td>
+                    </tr>
+                    <tr>
+                        <td><code>APP_OPEN_CHECK_NAME_ERROR</code></td>
+                        <td>Lỗi kiểm tra tên chương trình</td>
+                        <td>Đảm bảo tên file thực thi là <code>ScriptRunner2.exe</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>APP_OPEN_GET_CURRENT_STATION_INFO_ERROR</code></td>
+                        <td>Lỗi lấy thông tin trạm hiện tại</td>
+                        <td>Chương trình cần được mở thông qua MES. Kiểm tra lại log.</td>
+                    </tr>
+                    <tr>
+                        <td><code>APP_OPEN_LOAD_CONFIG_FAIL</code></td>
+                        <td>Lỗi đọc file <code>user_config.yaml</code></td>
+                        <td>Trong thư mục setup xóa file đó đi.</td>
+                    </tr>
+                    <tr>
+                        <td><code>APP_OPEN_LOAD_COUNTERS_FAIL</code></td>
+                        <td>Lỗi đọc file <code>counters.yaml</code></td>
+                        <td>Trong thư mục setup xóa file đó đi.</td>
+                    </tr>
+                    <tr>
+                        <td><code>APP_OPEN_DISABLE_SFTP_ERROR</code></td>
+                        <td>Lỗi môi trường chưa có nhưng lại chạy OFFLINE</td>
+                        <td>Liên hệ dev để được hướng dẫn</td>
+                    </tr>
+                    <tr>
+                        <td><code>APP_OPEN_SFTP_SCRIPT_NOT_FOUND</code></td>
+                        <td>Lỗi file <code>script.yaml</code> không tồn tại</td>
+                        <td>Kiểm tra đường dẫn trên SFTP theo mã hàng. Lưu ý tên phân biệt hoa thường, có dấu cách,
+                            không ký tự đặc biệt</td>
+                    </tr>
+                    <tr>
+                        <td><code>APP_OPEN_SCRIPT_FORMAT_INVALID</code></td>
+                        <td>Lỗi <code>script.yaml</code> viết không đúng</td>
+                        <td>Xem log báo lỗi dòng nào rồi thực hiện kiểm tra lại file <code>script.yaml</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>APP_OPEN_MODEL_ID_NOT_SET</code></td>
+                        <td>Lỗi <code>model_id</code> chưa được set theo model này.</td>
+                        <td>Thêm script cho model id này</td>
+                    </tr>
+                    <tr>
+                        <td><code>APP_OPEN_INVALID_DOWNLOAD_TYPE</code></td>
+                        <td>Lỗi <code>script.yaml</code>. <code>downloads.type</code> là <code>file</code>,
+                            <code>folder</code> hoặc <code>compressed</code>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>APP_OPEN_UNKNOW_FLAG</code></td>
+                        <td>Lỗi <code>script.yaml</code>. Kiểm tra <code>flags</code> trong
+                            <code>test_configures</code>
+                        </td>
+                        <td>Cờ không được hỗ trợ. Có thể là chương trình chưa update nếu cờ mới được thêm vào</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Hướng dẫn xử lý lỗi <code>script.yaml</code></h3>
+        <table class="doc-table">
+            <thead>
+                <tr>
+                    <th>Tên lỗi</th>
+                    <th>Mô tả</th>
+                    <th>Cách khắc phục</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>NO_TEST_STEP</code></td>
+                    <td>Lỗi <code>script.yaml</code>, <code>steps</code> trống.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>NO_RETURN_STATEMENT</code></td>
+                    <td>Lỗi thiếu <code>return</code> ở <code>step</code> cuối cùng.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>UNDEFINE_ERROR</code></td>
+                    <td>Chưa định nghĩa tên lỗi.</td>
+                    <td><code>return.FAIL</code> kèm <code>with.error_code: &lt;tên lỗi&gt;</code></td>
+                </tr>
+                <tr>
+                    <td><code>EXECUTER_NOT_FOUND</code></td>
+                    <td>Không có executer với tên đó.</td>
+                    <td>Có thể là ghi sai tên hoặc chương trình chưa cập nhật.</td>
+                </tr>
+                <tr>
+                    <td><code>METHOD_NOT_FOUND</code></td>
+                    <td>executer không có method với tên đó.</td>
+                    <td>Có thể là ghi sai tên hoặc chương trình chưa cập nhật.</td>
+                </tr>
+                <tr>
+                    <td><code>UNKNOW_RESOLVER</code></td>
+                    <td>Trong with pattern <code>$&lt;key&gt; &lt;query&gt;</code> không đúng.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>CANNOT_RESOLVE_STRING</code></td>
+                    <td>Lỗi khi đọc convert <code>$&lt;key&gt; &lt;query&gt;</code></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>MISSING_PARAMETER_KEY</code></td>
+                    <td><code>with</code> thiếu <code>key</code></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>INVALID_PARAMETER_TYPE</code></td>
+                    <td><code>with.key</code> giá trị không đúng. Ví dụ <code>time: abc</code> ? thời gian cần là số.
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>SCRIPT_CONFIG_KEY_NOT_FOUND</code></td>
+                    <td>Trong script_config không có key đó.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>CONTEXT_KEY_NOT_FOUND</code></td>
+                    <td>Trong context không có tên biến này.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>FORMAT_INVALID</code></td>
+                    <td>Kiểm tra format không khớp.</td>
+                    <td>Xem log.</td>
+                </tr>
+                <tr>
+                    <td><code>CHECK_MBS_NO</code></td>
+                    <td>Kiểm tra đầu vào trạm.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>MES_ERROR</code></td>
+                    <td>Lỗi api MES.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>FILE_NOT_FOUND</code></td>
+                    <td>Thiếu file.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>FOLDER_NOT_FOUND</code></td>
+                    <td>Không có thư mục.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>UNEXPECTED_ERROR</code></td>
+                    <td>Lỗi không xác định.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>VALIDATE_INFO</code></td>
+                    <td>Xác thực thông tin lỗi.</td>
+                    <td>MAC cần là 12 ký tự, imei 15 ký tự ...</td>
+                </tr>
+                <tr>
+                    <td><code>JLINK_FLASH_FAIL</code></td>
+                    <td>JLINK FLASH FAIL</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>JLINK_TIMEOUT</code></td>
+                    <td>JLINK chạy quá timeout.</td>
+                    <td>Jlink bị treo và không thoát?</td>
+                </tr>
+                <tr>
+                    <td><code>JLINK_ERROR</code></td>
+                    <td>Lỗi chưa biết. Xem log.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>MIB_CHECK_INPUT_FAIL</code></td>
+                    <td><code>with</code> chứa k đủ thông tin. Xem log.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>MIB_TOOL_WINCONNECT_NOT_OPEN</code></td>
+                    <td>Tool WINCONNECT chưa được mở.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>MIB_TOOL_NOT_OPEN</code></td>
+                    <td>Tool MIB chưa được mở.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>MIB_WINCONNECT_CHECK_FAIL</code></td>
+                    <td>Chưa biết.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>MIB_DL_FAIL</code></td>
+                    <td>MIB DL FAIL (Dựa trên thông tin của WinConnect)</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>PROCESS_START_FAIL</code></td>
+                    <td>Không strrt được process</td>
+                    <td>Xem log.</td>
+                </tr>
+                <tr>
+                    <td><code>PROCESS_TIMEOUT</code></td>
+                    <td>Quá thời gian chờ.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>ATMEL_FLASH_FAIL</code></td>
+                    <td>Tool ATMEL FLASH FAIL.</td>
+                    <td>Cần config tool AtmelSecuredAccess trong thư mục tải về.</td>
+                </tr>
+                <tr>
+                    <td><code>MT_TOOL_INVALID_ICT_SN_LENGTH</code></td>
+                    <td>SN nhập vào phải là 14 ký tự.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>QCM_INVALID_INPUT_IMEI</code></td>
+                    <td>IMEI phải là 15 ký tự.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>QCM_IMEI_WRITE_FAILED</code></td>
+                    <td>Ghi IMEI lỗi.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>QFIL_IMAGE_PATH_NOT_FOUND</code></td>
+                    <td>Đường dẫn đến image không tồn tại.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>QFIL_TIMEOUT</code></td>
+                    <td>QFIL flash quá thời gian chờ.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>QFIL_FLASH_IMAGE_FAILED</code></td>
+                    <td>QFIL flash FAIL.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>VTP_XML_FILE_NOT_FOUND</code></td>
+                    <td>File xml vtp không tồn tại với tên được cung cấp.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>VTP_SN_LENGTH_INVALID</code></td>
+                    <td>SN phải là 14 ký tự. (VTP cần cài đặt là 14 ký tự. config trên file ở ./setup)</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>VTP_TEST_TIMEOUT</code></td>
+                    <td>VTP test quá thời gian chờ.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>VTP_TEST_FAIL</code></td>
+                    <td>VTP test fail nhưng k lấy được tên item FAIL.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>CAMERA_NOT_RUNNING</code></td>
+                    <td>Chưa bật camera.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>OCR_SERVICE_NOT_READY</code></td>
+                    <td>Lỗi khởi tạo OCR.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>CAMERA_WAS_CLOSED</code></td>
+                    <td>Camera bị đóng trong quá trình test.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>COMPORT_INVALID_OBJECT</code></td>
+                    <td>Tên <code>name</code> của <code>with</code> không chính xác.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>COM_OPEN_ERRROR</code></td>
+                    <td>Không mở được cổng com.</td>
+                    <td>Kiểm tra com có bị mở bới chương trình khác không, có đúng cổng không. Nếu k disable com rồi bật
+                        lại.</td>
+                </tr>
+            </tbody>
+    </main>
+</body>
+
+</html>

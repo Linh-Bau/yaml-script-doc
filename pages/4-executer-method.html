@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Executer & Method</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+    <main>
+        <h1 id="executers-and-methods">Executer &amp; Method</h1>
+        <p>Bảng các executer và method hỗ trợ, mô tả chi tiết từng method.</p>
+        <p><b>Danh sách các executer và method hỗ trợ trong ScriptRunner2.</b></p>
+        <div class="table-responsive">
+            <table class="doc-table">
+                <thead>
+                    <tr>
+                        <th>Executer</th>
+                        <th>Method</th>
+                        <th>with</th>
+                        <th>Kết quả</th>
+                        <th>Mô tả</th>
+                        <th>Chú ý</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>return</code> - điều khiển kết quả test</td>
+                        <td><code>return.PASS</code></td>
+                        <td>test_item_value: &lt;giá trị, có thể bỏ qua&gt;</td>
+                        <td>PASS</td>
+                        <td>Dùng để kết thúc <code>test_item</code> với kết quả <code>PASS</code>. Bỏ qua các bước tiếp
+                            theo
+                            trong <code>test_item</code>.</td>
+                        <td>- Nếu <code>test_item</code> có <code>lower_limit</code> hoặc <code>upper_limit</code> là
+                            số, sẽ tự
+                            check <code>test_item_value</code> với limit, nếu quá limit sẽ trả về &lt;tên
+                            item&gt;_TO_LOW hoặc
+                            &lt;tên item&gt;_TO_HIGH</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>return.FAIL</code></td>
+                        <td>- error_code: &lt;tên lỗi&gt;<br>- more_infomation: &lt;chi tiết, có thể bỏ qua&gt;<br>-
+                            test_item_value: &lt;giá trị trả về, có thể bỏ qua&gt;</td>
+                        <td>FAIL</td>
+                        <td>Dùng để kết thúc <code>test_item</code> với kết quả <code>FAIL</code> và ghi mã lỗi. Bỏ qua
+                            các bước
+                            tiếp theo trong <code>test_item</code>.</td>
+                        <td>Mã lỗi nên đề là <code>UPPER_CASE_WITH_UNDERSCORES</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><code>mes</code> - giao tiếp với MES</td>
+                        <td><code>mes.is_online</code></td>
+                        <td>~</td>
+                        <td>true false</td>
+                        <td>Trả về <code>on_success</code> nếu chương trình chạy mode PRODUCTION, và ngược lại.</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>mes.CHECK_MBS_NO</code></td>
+                        <td>~</td>
+                        <td>PASS FAIL</td>
+                        <td>Kiểm tra đầu vào MBSNO. Mọi trạm test qua MES đều cần.</td>
+                        <td>Nếu chế độ là OFFLINE => trả về PASS.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>mes.GET_CSN</code></td>
+                        <td>~</td>
+                        <td>PASS FAIL</td>
+                        <td>Lấy giá trị CSN của MBSNO từ MES và lưu vào <code>context</code> với tên
+                            <code>MES[csn]</code></td>
+                        <td>Chế độ OFFLINE sẽ lỗi</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>mes.GET_CONTROL_TABLE</code></td>
+                        <td>~</td>
+                        <td>PASS FAIL</td>
+                        <td>Lấy thông tin guankongbiao từ MES và lưu vào <code>context</code> lần lượt với tên
+                            <code>MES[&lt;tên biến&gt;]</code>
+                        </td>
+                        <td>Chế độ OFFLINE sẽ lỗi. Liên hệ với MES để lấy các trường thông tin cần thiết.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>mes.GET_PTID</code></td>
+                        <td>~</td>
+                        <td>PASS FAIL</td>
+                        <td>Lấy PTID theo MBSNO</td>
+                        <td>Chế độ OFFLINE sẽ lỗi. Dành cho các trạm cần lấy thông tin PTID.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>mes.GET_MAC_LIST</code></td>
+                        <td>~</td>
+                        <td>PASS FAIL</td>
+                        <td>Lấy một MAC mới hoặc MAC đã được ghép với MBSNO từ MES và lưu vào <code>context</code> với
+                            tên
+                            <code>MES[mac]</code>
+                        </td>
+                        <td>Chế độ OFFLINE sẽ lỗi. Dành cho các trạm cần ghi <code>BT MAC</code>, <code>WIFI MAC</code>,
+                            hoặc
+                            <code>ETH MAC</code> mà cần lấy MAC mới từ MES.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>mes.GET_MAC_LIST_EX</code></td>
+                        <td>~</td>
+                        <td>PASS FAIL</td>
+                        <td>Lấy danh sách MAC và lưu vào context. Cần liên hệ MES để có thể lấy được MAC.</td>
+                        <td>Chế độ OFFLINE sẽ lỗi. Dành cho các trạm cần ghi <code>BT MAC</code>, <code>WIFI MAC</code>,
+                            hoặc
+                            <code>ETH MAC</code> mà cần lấy MAC mới từ MES.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>mes.GET_VARIABLES_BY_STATION_JSON</code></td>
+                        <td>~</td>
+                        <td>PASS FAIL</td>
+                        <td>Lấy các biến MES cung cấp xuống. Thường sẽ dùng cái này để lấy <code>imei</code></td>
+                        <td>Chế độ OFFLINE sẽ lỗi. Dành cho các trạm cần ghi <code>BT MAC</code>, <code>WIFI MAC</code>,
+                            hoặc
+                            <code>ETH MAC</code> mà cần lấy MAC mới từ MES.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>mes.GET_VARIABLES_CHECK_JSON</code></td>
+                        <td>~</td>
+                        <td>PASS FAIL</td>
+                        <td>- API mes cung cấp lấy giá trị 1 biến.</td>
+                        <td>Chế độ OFFLINE sẽ lỗi.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>mes.SAVE_VARIABLE_IGNORE_NON_SETTING_JSON</code></td>
+                        <td>~</td>
+                        <td>PASS FAIL</td>
+                        <td>- API mes cung cấp đặt giá trị cho 1 biến.</td>
+                        <td>Chế độ OFFLINE sẽ lỗi.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>mes.GET_NEW_IMEI</code></td>
+                        <td>~</td>
+                        <td>PASS FAIL</td>
+                        <td>Lấy một IMEI mới từ MES và lưu vào <code>context</code> với tên <code>MES[imei]</code></td>
+                        <td>Chế độ OFFLINE sẽ lỗi. Dành cho các trạm cần ghi IMEI mới lấy từ MES.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>mes.GET_IMEI_FROM_SNO_CODE</code></td>
+                        <td>~</td>
+                        <td>PASS FAIL</td>
+                        <td>Lấy một IMEI mới từ MES và lưu vào <code>context</code> với tên <code>MES[imei]</code></td>
+                        <td>Chế độ OFFLINE sẽ lỗi. Dành cho các trạm cần ghi IMEI mới lấy từ MES.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>mes.UPLOAD_BT_MAC</code></td>
+                        <td>- mac: &lt;MAC&gt;</td>
+                        <td>PASS FAIL</td>
+                        <td>Upload BT MAC đã ghi lên MES.</td>
+                        <td>Chế độ OFFLINE sẽ lỗi. Dành cho các trạm cần upload BT MAC lên MES. <code>&lt;MAC&gt;</code>
+                            đã được
+                            đọc và lưu vào <code>context</code> ở item trước đó.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>mes.UPLOAD_WIFI_MAC</code></td>
+                        <td>- mac: &lt;MAC&gt;</td>
+                        <td>PASS FAIL</td>
+                        <td>Upload WIFI MAC đã ghi lên MES.</td>
+                        <td>Chế độ OFFLINE sẽ lỗi. Dành cho các trạm cần upload WIFI MAC lên MES.
+                            <code>&lt;MAC&gt;</code> đã
+                            được đọc và lưu vào <code>context</code> ở item trước đó.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>mes.UPLOAD_ETH_MAC</code></td>
+                        <td>- mac: &lt;MAC&gt;</td>
+                        <td>PASS FAIL</td>
+                        <td>Upload ETH MAC đã ghi lên MES.</td>
+                        <td>Chế độ OFFLINE sẽ lỗi. Dành cho các trạm cần upload ETH MAC lên MES.
+                            <code>&lt;MAC&gt;</code> đã
+                            được đọc và lưu vào <code>context</code> ở item trước đó.</td>
+                    </tr>
+                    <tr>
+                        <td><code>logger</code> - ghi log</td>
+                        <td><code>logger.info</code></td>
+                        <td>- message: &lt;chuỗi&gt;</td>
+                        <td>true</td>
+                        <td>Ghi một thông điệp ở mức INFO vào log.</td>
+                        <td>&lt;chuỗi&gt; có thể là chuỗi tĩnh hoặc sử dụng String Resolve để tạo chuỗi động.</td>
+                    </tr>
+                    <tr>
+                        <td><code>com</code> - đọc/gửi lệnh qua <b>SERIAL PORT</b></td>
+                        <td><code>com.open</code></td>
+                        <td>- name: &lt;tên định danh&gt;<br>- port: &lt;tên cổng&gt;<br>- baudrate: &lt;tốc độ baud&gt;
+                        </td>
+                        <td>true</td>
+                        <td>Mở kết nối đến cổng COM.</td>
+                        <td>&lt;tên định danh&gt; dùng để tham chiếu cổng COM này trong các lệnh tiếp theo.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>com.close</code></td>
+                        <td>- name: &lt;tên định danh&gt;</td>
+                        <td>true</td>
+                        <td>Đóng kết nối đến cổng COM.</td>
+                        <td>- Chương trình sẽ tự đóng cổng COM tự động. Cần dùng khi cần kiểm soát đóng cổng COM để thực
+                            hiện
+                            lệnh tiếp theo.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>com.wait_bytes_count</code></td>
+                        <td>- name: &lt;tên định danh&gt;<br>- expect_count: &lt;số byte&gt;<br>- timeout: &lt;thời gian
+                            chờ
+                            (s)&gt;</td>
+                        <td>true false</td>
+                        <td>Chờ đến khi có đủ số byte nhận được từ cổng COM.</td>
+                        <td>Trả về <code>false</code> nếu vượt quá thời gian chờ.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>com.wait_string</code></td>
+                        <td>- name: &lt;tên định danh&gt;<br>- expect: &lt;chuỗi mong đợi&gt;<br>- timeout: &lt;thời
+                            gian chờ
+                            (s)&gt;</td>
+                        <td>true false</td>
+                        <td>Chờ đến khi nhận được chuỗi mong đợi từ cổng COM.</td>
+                        <td>- Trả về <code>false</code> nếu vượt quá thời gian chờ.<br>- <code>expect</code>: dùng chuỗi
+                            string
+                            hoặc <code>re_&lt;expression&gt;</code> để khớp với một biểu thức chính quy.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>com.send_string</code></td>
+                        <td>- name: &lt;tên định danh&gt;<br>- command: &lt;chuỗi gửi&gt;<br>- sleep: &lt;thời gian
+                            delay sau
+                            khi gửi (s)&gt;</td>
+                        <td>true</td>
+                        <td>Gửi một chuỗi đến cổng COM.</td>
+                        <td>- Gửi enter bằng cách sử dụng <code>\r\n</code></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>com.send_wait</code></td>
+                        <td>- name: &lt;tên định danh&gt;<br>- command: &lt;chuỗi gửi&gt;<br>- retry_times: &lt;số lần
+                            retry&gt;<br>- expect: &lt;chuỗi mong đợi&gt;<br>- timeout: &lt;thời gian chờ (s)&gt;</td>
+                        <td>true false</td>
+                        <td>Gửi một chuỗi đến cổng COM và chờ phản hồi mong đợi.</td>
+                        <td>- Trả về <code>false</code> nếu không thành công.<br>- <code>expect</code>: dùng chuỗi
+                            string hoặc
+                            <code>re_&lt;expression&gt;</code> để khớp với một biểu thức chính quy.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>com.check_log</code></td>
+                        <td>- name: &lt;tên định danh&gt;<br>- expect: &lt;chuỗi mong đợi&gt;</td>
+                        <td>true false</td>
+                        <td>Kiểm tra xem chuỗi mong đợi có xuất hiện trong log nhận được từ cổng COM hay không.</td>
+                        <td>- Trả về <code>false</code> nếu không tìm thấy.<br>- <code>expect</code>: dùng chuỗi string
+                            hoặc
+                            <code>re_&lt;expression&gt;</code> để khớp với một biểu thức chính quy.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>com.read_value</code></td>
+                        <td>- name: &lt;tên định danh&gt;<br>- expect: &lt;chuỗi mong đợi&gt;<br>- match_index:
+                            &lt;index của
+                            chỗi match cần lấy&gt;<br>- replace: &lt;chuỗi cần thay thế&gt;<br>replace_with: &lt;giá trị
+                            thay
+                            thế&gt;<br>- var_name: &lt;tên biến lưu giá trị&gt;</td>
+                        <td>true false</td>
+                        <td>Đọc một giá trị từ log nhận được và lưu vào <code>context</code>.</td>
+                        <td>- Trả về <code>false</code> nếu không tìm thấy.<br>- <code>expect</code>: dùng chuỗi string
+                            hoặc
+                            <code>re_&lt;expression&gt;</code> để khớp với một biểu thức chính quy.<br>-
+                            <code>index</code>: vị
+                            trí nhóm cần lấy<br>- <code>replace</code>: dùng trực tiếp regex<br>-
+                            <code>replace_with</code>:
+                            dùng chuỗi string
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>com.wait_check</code></td>
+                        <td>- name: &lt;tên định danh&gt;<br>- expect_wait: &lt;chuỗi mong đợi&gt;<br>- expect_check:
+                            &lt;chuỗi
+                            kiểm tra&gt;<br>timeout: &lt;thời gian chờ (s)&gt;</td>
+                        <td>true false</td>
+                        <td>Chờ đến khi nhận được chuỗi mong đợi và kiểm tra chuỗi kiểm tra có xuất hiện trong log hay
+                            không.
+                        </td>
+                        <td>- Trả về <code>false</code> nếu không thành công.<br>- <code>expect_wait</code>,
+                            <code>expect_check</code>: dùng chuỗi string hoặc <code>re_&lt;expression&gt;</code> để khớp
+                            với một
+                            biểu thức chính quy.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>com.clear_log</code></td>
+                        <td>- name: &lt;tên định danh&gt;</td>
+                        <td>true</td>
+                        <td>- Xóa log tạm của com hiện tại. Thường dùng với <code>read_value</code>,
+                            <code>check_log</code> phía
+                            trên.</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>dialog</code> - hiển thị hộp thoại</td>
+                        <td><code>dialog.show</code></td>
+                        <td>- title: &lt;tiêu đề&gt;<br>- message: &lt;nội dung&gt;</td>
+                        <td>true</td>
+                        <td>Hiển thị một hộp thoại thông báo và chờ xác nhận OK.</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>dialog.confirm</code></td>
+                        <td>- title: &lt;tiêu đề&gt;<br>- message: &lt;nội dung&gt;</td>
+                        <td>true false</td>
+                        <td>Hiển thị một hộp thoại xác nhận và chờ người dùng chọn <code>YES/OK</code> hoặc
+                            <code>No/Cancel</code>.
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>dialog.input</code></td>
+                        <td>- title: &lt;tiêu đề&gt;<br>- message: &lt;nội dung&gt;<br>- var_name: &lt;tên biến lưu giá
+                            trị&gt;
+                        </td>
+                        <td>true</td>
+                        <td>Hiển thị một hộp thoại nhập liệu và lưu giá trị nhập vào vào <code>context</code>.</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>dialog.show_with_auto_close</code></td>
+                        <td>- title: &lt;tiêu đề&gt;<br>- message: &lt;nội dung&gt;<br>- timeout: &lt;thời gian hiển
+                            thị&gt;
+                        </td>
+                        <td>true</td>
+                        <td>Hiển thị một hộp thoại thông báo và chờ xác nhận OK, sẽ tự thoát sau thời gian timeout.</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>func</code> - các hàm chức năng khác</td>
+                        <td><code>func.sleep</code></td>
+                        <td>- time: &lt;thời gian (s)&gt;</td>
+                        <td>true</td>
+                        <td>Tạm dừng một khoảng thời gian.</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>func.check_context_key_exist</code></td>
+                        <td>- key: &lt;tên key&gt;</td>
+                        <td>true false</td>
+                        <td>Kiểm tra xem trong context có key đó không.</td>
+                        <td>- Thông thường, dùng hàm này khi lấy thông tin trên MES. Và kiểm tra xem có trường thông tin
+                            được
+                            trả về không. Cần dùng khi xác định luôn lỗi là bên MES. Nếu k dùng, k sao cả.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>func.date_time_check</code></td>
+                        <td>- prod_date_time: &lt;thời gian CẦN so sánh&gt;<br>- prod_date_time_format: &lt;định dạng
+                            thời gian
+                            của prod_date_time (theo C#)&gt;<br>- prod_date_time_utc: &lt;dùng khi giờ sản phẩm là giờ
+                            UTC&gt;<br>- source: &lt;nguồn, chọn pc | mes&gt;<br>- duration: &lt;khoảng thời gian cho
+                            phép sai
+                            lệch (s)&gt;</td>
+                        <td>true false</td>
+                        <td>Kiểm tra ngày giờ có nằm trong khoảng thời gian cho phép không.</td>
+                        <td>- Định dạng thời gian theo chuẩn C# datetime. Ví dụ: dddd/MM/yyyy HH:mm:ss</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>func.date_check</code></td>
+                        <td>- prod_date_time: &lt;thời gian CẦN so sánh&gt;<br>- prod_date_time_format: &lt;định dạng
+                            thời gian
+                            của prod_date_time (theo C#)&gt;<br>- source: &lt;nguồn, chọn pc | mes&gt;</td>
+                        <td>true false</td>
+                        <td>Kiểm tra ngày có có khớp không.</td>
+                        <td>- Định dạng thời gian theo chuẩn C# datetime. Ví dụ: dddd/MM/yyyy HH:mm:ss</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>func.string_match</code></td>
+                        <td>- source: &lt;nguồn&gt;<br>- expect: &lt;giá trị mong đợi&gt;</td>
+                        <td>true false</td>
+                        <td>Kiểm tra xem giá trị nguồn có chứa chuỗi mong đợi hay không</td>
+                        <td><code>expect</code>: dùng chuỗi string hoặc <code>re_&lt;expression&gt;</code> để khớp với
+                            một biểu
+                            thức chính quy.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>func.read_value</code></td>
+                        <td>- source: &lt;nguồn&gt;<br>- expect: &lt;chuỗi mong đợi&gt;<br>- match_index: &lt;index của
+                            chỗi
+                            match cần lấy&gt;<br>- replace: &lt;chuỗi cần thay thế&gt;<br>replace_with: &lt;giá trị thay
+                            thế&gt;<br>- convert: &lt;to_lower, to_upper&gt;<br>- var_name: &lt;tên biến lưu giá trị&gt;
+                        </td>
+                        <td>true false</td>
+                        <td>Đọc một giá trị từ log nhận được và lưu vào <code>context</code>.</td>
+                        <td>- Trả về <code>false</code> nếu không tìm thấy.<br>- <code>expect</code>: dùng chuỗi string
+                            hoặc
+                            <code>re_&lt;expression&gt;</code> để khớp với một biểu thức chính quy.<br>-
+                            <code>index</code>: vị
+                            trí nhóm cần lấy<br>- <code>replace</code>: dùng trực tiếp regex<br>-
+                            <code>replace_with</code>:
+                            dùng chuỗi string
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>func.reverse_string</code></td>
+                        <td>- source: &lt;nguồn chuỗi dữ liệu&gt;<br>- var_name: &lt;tên biến để lưu vào context&gt;
+                        </td>
+                        <td>true</td>
+                        <td>Đảo ngược chuỗi dữ liệu từ nguồn và lưu vào biến trong <code>context</code>.</td>
+                        <td>- Đảo ngược chuỗi, vì dụ <code>abcde</code> -> <code>edcba</code></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>func.reverse_mac</code></td>
+                        <td>- source: &lt;nguồn chuỗi dữ liệu&gt;<br>- var_name: &lt;tên biến để lưu vào context&gt;
+                        </td>
+                        <td>true</td>
+                        <td>Đảo ngược chuỗi mac đọc từ lệnh AT</td>
+                        <td>- Đảo ngược chuỗi mac, vì dụ <code>6f5d4e3c2b1a</code> -> <code>1a2b3c4d5e6f</code></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>func.get_imei_from_response</code></td>
+                        <td>- source: &lt;nguồn chuỗi dữ liệu&gt;<br>- var_name: &lt;tên biến để lưu vào context&gt;
+                        </td>
+                        <td>true</td>
+                        <td>Convert chuỗi text thành IMEI. Dùng cho sử dụng lệnh adb
+                            <code>adb shell service call iphonesubinfo 3 i32 0</code>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>func.cm5_picture_measure</code></td>
+                        <td>- lower_limit: &lt;giá trị dưới&gt;<br>- upper_limit: &lt;giá trị trên&gt;<br>-
+                            picture_name:
+                            &lt;tên ảnh&gt;<br>- golden_sample_folder_path: &lt;đường dẫn đến thư mục GOLDEN SAMPLE&gt;
+                        </td>
+                        <td>true false</td>
+                        <td>Tính MSE ảnh cho trạm CM5 CAMERA</td>
+                        <td>- <code>picture_name</code> lấy tên ảnh và định dạng, ví dụ <code>FRONT_LIGHT_ON.jpg</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>func.generate_imei2_from_imei1</code></td>
+                        <td>- imei1: &lt;giá trị imei1&gt;</td>
+                        <td>true</td>
+                        <td>Tính giá trị imei2 từ imei1 (2 imei sẽ liên tiếp nhau) và lưu vào
+                            <code>context["PROD[imei2]"]</code>
+                        </td>
+                        <td>- <code>imei1</code> phải là imei 15 ký tự.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>func.check_com_device_exist</code></td>
+                        <td>- com_name: &lt;tên cổng com&gt;</td>
+                        <td>true false</td>
+                        <td>Kiểm tra xem có cổng com xuất hiện không. Cho UX300. Kiểm tra cổng com dạng
+                            <code>USB Serial Device</code> trên device manager
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>if</code> - điều kiện</td>
+                        <td><code>if.condition</code></td>
+                        <td>- condition: &lt;biểu thức điều kiện&gt;</td>
+                        <td>true false</td>
+                        <td>Thực hiện kiểm tra logic điều kiện (Phương thức này cũ rồi, dùng bên dưới dễ sử dụng hơn)
+                        </td>
+                        <td>- Trả về <code>false</code> nếu lệnh CMD lỗi hoặc timeout, trả về <code>true</code> nếu lệnh
+                            CMD
+                            thành công.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>if.is_equal</code></td>
+                        <td>- source: &lt;giá trị cần so sánh&gt;<br>- expect: &lt;giá trị mong muốn&gt;</td>
+                        <td>true false</td>
+                        <td>Kiểm tra điều kiện <code>source == expect</code>. Lưu ý là kiểm tra cho số, k kiểm tra cho
+                            chuỗi
+                            string, nếu chuỗi string dùng <code>func.string_match</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>if.is_greater_than</code></td>
+                        <td>- source: &lt;giá trị cần so sánh&gt;<br>- lower_limit: &lt;giá trị so sánh&gt;</td>
+                        <td>true false</td>
+                        <td>Kiểm tra điều kiện <code>source &gt; lower_limit</code>.</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>if.is_greater_than_or_equal</code></td>
+                        <td>- source: &lt;giá trị cần so sánh&gt;<br>- lower_limit: &lt;giá trị so sánh&gt;</td>
+                        <td>true false</td>
+                        <td>Kiểm tra điều kiện <code>source &gt;= lower_limit</code>.</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>if.is_less_than</code></td>
+                        <td>- source: &lt;giá trị cần so sánh&gt;<br>- upper_limit: &lt;giá trị so sánh&gt;</td>
+                        <td>true false</td>
+                        <td>Kiểm tra điều kiện <code>source &lt; upper_limit</code>.</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>if.is_less_than_or_equal</code></td>
+                        <td>- source: &lt;giá trị cần so sánh&gt;<br>- upper_limit: &lt;giá trị so sánh&gt;</td>
+                        <td>true false</td>
+                        <td>Kiểm tra điều kiện <code>source &lt; upper_limit</code>.</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>if.in_between</code></td>
+                        <td>- source: &lt;giá trị cần so sánh&gt;<br>- lower_limit: &lt;giá trị so sánh&gt;<br>-
+                            upper_limit:
+                            &lt;giá trị so sánh&gt;</td>
+                        <td>true false</td>
+                        <td>Kiểm tra điều kiện <code>source &gt;= lower_limit &amp; source &lt;= upper_limit</code>.
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>atmel</code> - tool AtmelSecureAccess</td>
+                        <td><code>atmel.AUTO</code></td>
+                        <td>- working_path: đường dẫn chuong trình AtmelSecureAccess.</td>
+                        <td>PASS FAIL</td>
+                        <td>Sử dụng tool AtmelSecureAccess flash key vào sản phẩm. Dùng cho UX100/UX110</td>
+                        <td>- Config để tự tải tool AtmelSecureAccess xuống. Ở lần tải đầu tiên. Cần configuration
+                            AtmelSecureAccess ở thư mục tải về.</td>
+                    </tr>
+                    <tr>
+                        <td><code>icimei</code> - tool icimei.exe</td>
+                        <td><code>icimei.AUTO</code></td>
+                        <td>- working_path: &lt;đường dẫn thư mục chứa chương trình&gt;<br>- comport: &lt;cổng com để
+                            ghi
+                            imei&gt;<br>- imei: &lt;imei ghi vào (độ dài là 15)&gt;</td>
+                        <td>PASS FAIL</td>
+                        <td>Sử dụng tool <code>icimie.exe</code> ghi imei vào sản phẩm.</td>
+                        <td>- Config để tự tải tool xuống.<br>- trước khi chạy tool sản phẩm cần được vào chế độ AT
+                            trước.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>icimei.auto</code></td>
+                        <td>- working_path: &lt;đường dẫn thư mục chứa chương trình&gt;<br>- comport: &lt;cổng com để
+                            ghi
+                            imei&gt;<br>- imei: &lt;imei ghi vào (độ dài là 15)&gt;</td>
+                        <td>true false</td>
+                        <td>Tương tự <code>AUTO</code>, nhưng sẽ thực hiện <code>on_success</code> nếu thành công, ngược
+                            lại
+                            thực hiện <code>on_fail</code>. Lưu ý: Chỉ lỗi <code>ICIMEI_TIMEOUT</code> và
+                            <code>ICIMEI_WRITE_IMEI_FAIL</code> mới trả về <code>true</code> <code>false</code>. Lỗi
+                            khác sẽ
+                            <code>FAIL</code>
+                        </td>
+                        <td>- Config để tự tải tool xuống.<br>- trước khi chạy tool sản phẩm cần được vào chế độ AT
+                            trước.</td>
+                    </tr>
+                    <tr>
+                        <td><code>jlink</code> - tool AtmelSecureAccess</td>
+                        <td><code>jlink.AUTO</code></td>
+                        <td>- working_path: đường dẫn chuong trình AtmelSecureAccess.<br>- project_path: &lt;đường dẫn
+                            chứa file
+                            project&gt;<br>- flash_file_path: &lt;đường dẫn chứa file .bin<br>- usb_sn: &lt;usb_sn của
+                            jlink&gt;
+                        </td>
+                        <td>PASS FAIL</td>
+                        <td>Sử dụng tool JFlash flash bootloader vào sản phẩm.</td>
+                        <td>- Config để tự tải tool JLink và file project, bin xuống. Đối với USB_SN, nếu cần nhiều cổng
+                            thì đặt
+                            USB cố định. Nếu muốn tự động thì để là ~</td>
+                    </tr>
+                    <tr>
+                        <td><code>mib</code> - tool mib</td>
+                        <td><code>mib.AUTO</code></td>
+                        <td>- customer_pn: &lt;PN&gt;<br>- customer_pn: &lt;bomver&gt;<br>- sn: &lt;CSN&gt;<br>- ptid:
+                            &lt;PTID&gt;<br>- wifi_mac: &lt;WIFI_MAC&gt;<br>- bt_mac: &lt;BT_MAC&gt;<br>- lan_mac:
+                            &lt;LAN_MAC&gt;<br>- uwb_mac: &lt;UWB_MAC&gt;</td>
+                        <td>PASS FAIL</td>
+                        <td>Tự động chạy TOOL MIB sử dụng thông tin các trường cung cấp.</td>
+                        <td>- Tool <code>MIB</code> và <code>WinConnect</code> cần được mở và config thủ công trước khi
+                            chạy.<br>- Nếu trường nào không sử dụng, để giá trị nó là <code>NA</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>mt</code> - điều khiển tool MT (T650 series)</td>
+                        <td><code>mt.AUTO</code></td>
+                        <td>- working_path: &lt;đường dẫn thư mục làm việc&gt;<br>- exe_name: &lt;tên file thực
+                            thi&gt;<br>-
+                            ict_sn_01: &lt;serial number cho board 1&gt;<br>- ict_sn_02: &lt;serial number cho board
+                            2&gt;</td>
+                        <td>PASS FAIL</td>
+                        <td>Tự động chạy tool MT với các tham số đã cho.</td>
+                        <td>Lưu ý:<br>- exe_path lấy bản PCBA_tests.exe<br>- ict_sn_01, ict_sn_02 nếu không dùng để null
+                            (~),
+                            nếu sử dụng dùng $context input_str<br>- Sử dụng kèm các method check bên dưới để kiểm tra
+                            kết quả
+                            test</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>mt.check_log</code></td>
+                        <td>- expect: &lt;chuỗi mong đợi&gt;</td>
+                        <td>true false</td>
+                        <td>Kiểm tra xem chuỗi mong đợi có xuất hiện trong log của tool MT hay không.</td>
+                        <td>- Trả về <code>false</code> nếu không tìm thấy.<br>- <code>expect</code>: dùng chuỗi string
+                            hoặc
+                            <code>re_&lt;expression&gt;</code> để khớp với một biểu thức chính quy.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>mt.check_board_log</code></td>
+                        <td>- board_id: &lt;id của board&gt;<br>- expect: &lt;chuỗi mong đợi&gt;</td>
+                        <td>true false</td>
+                        <td>Kiểm tra xem chuỗi mong đợi có xuất hiện trong log của board cụ thể trong tool MT hay không.
+                        </td>
+                        <td>- Trả về <code>false</code> nếu không tìm thấy.<br>- <code>expect</code>: dùng chuỗi string
+                            hoặc
+                            <code>re_&lt;expression&gt;</code> để khớp với một biểu thức chính quy.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>mt.check_tasklist</code></td>
+                        <td>- board_id: &lt;id của board&gt;<br>- expect: &lt;chuỗi mong đợi&gt;</td>
+                        <td>true false</td>
+                        <td>Kiểm tra xem chuỗi mong đợi có xuất hiện trong tasklist của board cụ thể trong tool MT hay
+                            không.
+                        </td>
+                        <td>- Trả về <code>false</code> nếu không tìm thấy.<br>- <code>expect</code>: dùng chuỗi string
+                            hoặc
+                            <code>re_&lt;expression&gt;</code> để khớp với một biểu thức chính quy.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>pms</code> - điều khiển tool PMS (T650 series)</td>
+                        <td><code>pms.AUTO</code></td>
+                        <td>- working_path: &lt;đường dẫn thư mục làm việc&gt;<br>- exe_name: &lt;tên file thực
+                            thi&gt;<br>-
+                            bt_mac: &lt;địa chỉ mac bluetooth&gt;<br>- wifi_mac: &lt;địa chỉ mac wifi&gt;<br>- eth_mac:
+                            &lt;địa
+                            chỉ mac ethernet&gt;</td>
+                        <td>PASS FAIL</td>
+                        <td>Tự động chạy tool PMS với các tham số đã cho.</td>
+                        <td>Lưu ý:<br>- exe_path lấy bản PMS_Simulation_Window_V1.09.exe<br>- bt_mac, wifi_mac, eth_mac
+                            nếu
+                            không dùng để null (~)</td>
+                    </tr>
+                    <tr>
+                        <td><code>qcm</code> - tool QCMWriteImei</td>
+                        <td><code>qcm.AUTO</code></td>
+                        <td>- imei: &lt;imei ghi vào, thường là $context MES[imei]&gt;</td>
+                        <td>PASS FAIL</td>
+                        <td>Ghi IMEI vào thiết bị sử dụng tool QCMWriteImei.</td>
+                        <td>- Chương trình <b>QCMWriteImei</b> cần được ĐĂNG NHẬP VÀ MỞ BẰNG TAY.<br></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>qcm.auto</code></td>
+                        <td>- imei: &lt;imei ghi vào, thường là $context MES[imei]&gt;</td>
+                        <td>true false</td>
+                        <td>Ghi IMEI vào thiết bị sử dụng tool QCMWriteImei. Tương tự như <code>AUTO</code> nhưng không
+                            thoát
+                            ngay.</td>
+                        <td>- Chương trình <b>QCMWriteImei</b> cần được ĐĂNG NHẬP VÀ MỞ BẰNG TAY.<br>- Sử dụng khi cần
+                            thoát màn
+                            hình <code>AT</code> bằng cách thêm một vài lệnh ở <code>on_success</code> và
+                            <code>on_fail</code>.<br>- Lưu ý: GHI NHẬN tool <b>QCMWriteImei</b> bug khi fail, COM vãn bị
+                            sử dụng
+                            nên k gửi lệnh thoát được.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>qfil</code> - tool QFIL Flash Image</td>
+                        <td><code>qfil.AUTO</code></td>
+                        <td>- working_path: đường dẫn QFIL.<br>- comport: cổng COM để FLASH, sử dụng 1, 2 3 thay vì
+                            COM1, COM2
+                            COM3. Để null nếu chỉ dùng 1 slot<br>- image_path: đường dẫn thư mục chứa image .mbn<br>-
+                            timeout:
+                            &lt;thời gian chờ tối đa (s)&gt;</td>
+                        <td>PASS FAIL</td>
+                        <td>Flash image vào thiết bị sử dụng tool QFIL.</td>
+                        <td>- Nên configure để QFIL tự tải về và dùng luôn QFIL đã được tải về đó.</td>
+                    </tr>
+                    <tr>
+                        <td><code>qwit</code> - tool Quectel_Write_IMEI_OFFLINE_V1.8.1</td>
+                        <td><code>qwit.AUTO</code></td>
+                        <td>- working_path: &lt;đường dẫn thư mục chứa chương trình&gt;<br>- exe_name: &lt;tên chương
+                            trình&gt;<br>- imei: &lt;imei ghi vào (độ dài là 15)&gt;</td>
+                        <td>PASS FAIL</td>
+                        <td>Sử dụng tool <code>Quectel_Write_IMEI_OFFLINE_V1.8.1.exe</code> ghi imei vào sản phẩm.</td>
+                        <td>- Config để tự tải tool xuống.<br>- trước khi chạy tool sản phẩm cần được vào chế độ AT
+                            trước. Để
+                            giá trị mặc định <code>exe_name: Quectel_Write_IMEI_OFFLINE_V1.8.1.exe</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>vtp</code> - tự động tool VTP</td>
+                        <td><code>vtp.AUTO</code></td>
+                        <td>- working_path: đường dẫn thư mục chứa VTP.exe<br>- exe_name: tên file thực thi VTP.exe<br>-
+                            xml_name: tên script xml vtp cần chạy<br>- timeout: thời gian chờ tối đa (s)</td>
+                        <td>PASS FAIL</td>
+                        <td>Tự động chạy tool VTP với các tham số đã cho.</td>
+                        <td>- Nên configure vtp để tự tải xuống.<br>- Đảm bảo tool vtp có thê chạy bình thường. Chú ý số
+                            SN_LENGTH ở vtp phải là 14</td>
+                    </tr>
+                    <tr>
+                        <td><code>cam</code> - Tương tác với <b>CAMERA</b></td>
+                        <td><code>cam.set_operation_image</code></td>
+                        <td>- image_path: đường dẫn file ảnh mẫu</td>
+                        <td>true</td>
+                        <td>Thiết lập ảnh thao tác</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>cam.check_ocr_string</code></td>
+                        <td>- wait_string: Chuỗi OCR mong đợi.<br>- timeout: Thời gian chờ (s)<br>-
+                            save_image_with_name: tên
+                            file lưu chữ ảnh chụp.<br>- expect: Chuỗi kiểm tra mong đợi</td>
+                        <td>true false</td>
+                        <td>Đọc text từ ảnh camera, đợi <code>wait_string</code> xuất hiện, sau đó kiểm tra
+                            <code>wait_string</code> có chứa <code>expect</code> hay không.
+                        </td>
+                        <td>- Trả về <code>false</code> nếu không tìm thấy.<br>- <code>wait_string</code> &amp;
+                            <code>expect</code>: dùng chuỗi string hoặc <code>re_&lt;expression&gt;</code> để khớp với
+                            một biểu
+                            thức chính quy.<br>- <code>save_image_with_name</code>: Lưu ảnh đã được xử lý OCR lại, nếu k
+                            lưu thì
+                            để là null <code>~</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><code>cam.get_ocr_string</code></td>
+                        <td>- wait_string: Chuỗi OCR mong đợi.<br>- timeout: Thời gian chờ (s)<br>-
+                            save_image_with_name: tên
+                            file lưu chữ ảnh chụp.<br>- var_name: tên biến sẽ được lưu vào <code>context</code></td>
+                        <td>true false</td>
+                        <td>Đọc text từ ảnh camera, đợi <code>wait_string</code> xuất hiện, sau đó lưu chuỗi
+                            <code>wait_string</code> vào <code>context</code> với tên <code>var_name</code>.
+                        </td>
+                        <td>- Trả về <code>false</code> nếu không tìm thấy.<br>- <code>wait_string</code>: dùng chuỗi
+                            string
+                            hoặc <code>re_&lt;expression&gt;</code> để khớp với một biểu thức chính quy.<br>-
+                            <code>save_image_with_name</code>: Lưu ảnh đã được xử lý OCR lại, nếu k lưu thì để là null
+                            <code>~</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>cmd</code> - thưc thi lệnh CMD và lấy log</td>
+                        <td><code>cmd.execute</code></td>
+                        <td>- name: tên lệnh<br>- command: lệnh thực thi - working_path: thư mục thực thi lệnh<br>-
+                            timeout:
+                            thời gian timeout của lệnh</td>
+                        <td>true false</td>
+                        <td>Thực thi lệnh CMD và lấy log trả về</td>
+                        <td>- Trả về <code>false</code> nếu lệnh thực thi lỗi hoặc timeout.<br>- Log của lệnh được lưu
+                            vào
+                            <code>context</code> với tên <code>CMD[&lt;name&gt;][log]</code>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    </main>
+</body>
+
+</html>

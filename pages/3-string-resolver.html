@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>String Resolver</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+    <main>
+        <h1 id="string_resolver">String Resolver</h1>
+        <p>Hướng dẫn sử dụng String Resolver, các pattern và ví dụ thực tế.</p>
+        <p><b>Cung cấp các biến động để sử dụng trong `with`. Cú pháp sử dụng là: <code>${key} {value}</code></b></p>
+        <pre><code class="language-yaml">
+- do: logger.info
+  with:
+    message: $str người dùng đã nhập MBSNO là {$context input_str}
+        </code></pre>
+        <b>Các biến động có thể sử dụng:</b>
+        <table>
+            <thead>
+                <tr>
+                    <th>Dạng</th>
+                    <th>Mô tả</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>$context input_str</code></td>
+                    <td>Lấy giá trị <code>MBSNO</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>$context &lt;key&gt;</code></td>
+                    <td>Lấy giá trị biến <code>key</code> hiện tại.</td>
+                </tr>
+                <tr>
+                    <td><code>$script_config &lt;key&gt;</code></td>
+                    <td>Lấy giá trị <code>key</code> từ <code>script_configuration</code> trong
+                        <code>test_configurations</code>.
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>$user_config mes_on</code></td>
+                    <td>Lấy chế độ chương trình hiện tại. <b>True</b>: PRODUCTION MODE, <b>False</b>: OFFLINE MODE.</td>
+                </tr>
+                <tr>
+                    <td><code>$if &lt;condition&gt; &lt;toán tử&gt; &lt;giá trị&gt;</code></td>
+                    <td>Biểu thức điều kiện if. Trả về True hoặc False. Xem ví dụ bên dưới.</td>
+                </tr>
+                <tr>
+                    <td><code>$path &lt;relative_path&gt;</code></td>
+                    <td>Lấy đường dẫn tuyệt đối từ đường dẫn tương đối. Ví dụ: <code>$path ./setup/vtp</code> sẽ trả về
+                        <code>D:\TestRunner\setup\{PRODUCT}\{STATION}\{MODEL_ID}\setup\vtp</code> nếu thư mục exe là
+                        <code>D:\TestRunner</code>.
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>$func &lt;function_name&gt; &lt;param1&gt; &lt;param2&gt; ...</code></td>
+                    <td>Gọi hàm tùy chỉnh đã được định nghĩa trong chương trình. Hàm đang được phát triển.</td>
+                </tr>
+                <tr>
+                    <td><code>$str &lt;text&gt;</code></td>
+                    <td>Trả về chuỗi text. Dùng để nối chuỗi động.</td>
+                </tr>
+            </tbody>
+        </table>
+        <b>Hỗ trợ lồng nhiều biểu thức với nhau, mỗi biểu thức con được bọc trong `{ biểu thức }` . Ví dụ:</b>
+        <pre><code class="language-yaml">
+- do: logger.info
+  with:
+    message: $str Giá trị imei là { $context MES[imei] }
+        </code></pre>
+    </main>
+</body>
+
+</html>
