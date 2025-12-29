@@ -72,6 +72,7 @@
             </thead>
             <tbody>
                 <tr>
+                    <td><b>mes</b> - giao tiếp với MES</td>
                     <td><b>mes.is_online</b></td>
                     <td>~</td>
                     <td>true false</td>
@@ -349,7 +350,7 @@
                     <td>
                         <pre>
 <b>- name: </b> tên định danh.
-<b>- command: </b> chuỗi gửi.
+<b></b>- command: </b> chuỗi gửi.
 <b>- sleep: </b> thời gian delay sau khi gửi (s)
                     </pre>
                     </td>
@@ -363,7 +364,7 @@
                     <td>
                         <pre>
 <b>- name: </b> tên định danh.
-<b>- command:</b> chuỗi gửi.
+<b></b>- command: </b> chuỗi gửi.
 <b>- retry_times: </b> số lần retry.
 <b>- expect: </b> chuỗi mong đợi.
 <b>- timeout: </b> thời gian chờ (s).
@@ -425,9 +426,9 @@ Trả về false nếu không thành công.
                     <td>
                         <pre>
 <b>- name:</b> tên định danh.
-<b>- expect_wait:</b>- chuỗi mong đợi.
+<b> expect_wait:</b>- chuỗi mong đợi.
 <b>- expect_check:</b> chuỗi kiểm tra.
-<b>- timeout:</b> thời gian chờ (s).
+- <b>- timeout:</b> thời gian chờ (s).
                     </pre>
                     </td>
                     <td>true false</td>
@@ -455,6 +456,7 @@ Trả về false nếu không thành công.
                 </tr>
             </tbody>
         </table>
+        <hr>
 
         <h2>dialog: hiển thị hộp thoại</h2>
         <table class="doc-table">
@@ -470,80 +472,46 @@ Trả về false nếu không thành công.
             <tbody>
                 <tr>
                     <td><b>func.sleep</b></td>
-                    <td>
-                        <pre>
-<b>- time:</b> thời gian tạm dừng (s).
-                </pre>
-                    </td>
+                    <td>- time: &lt;thời gian (s)&gt;</td>
                     <td>true</td>
-                    <td>Tạm dừng thực thi trong một khoảng thời gian.</td>
-                    <td>-</td>
+                    <td>Tạm dừng một khoảng thời gian.</td>
                 </tr>
-
                 <tr>
                     <td><b>dialog.show</b></td>
-                    <td>
-                        <pre>
-<b>- title:</b> tiêu đề hộp thoại.
-<b>- message:</b> nội dung hiển thị.
-                </pre>
-                    </td>
+                    <td>- title: &lt;tiêu đề&gt;<br>- message: &lt;nội dung&gt;</td>
                     <td>true</td>
-                    <td>Hiển thị hộp thoại thông báo và chờ người dùng xác nhận <b>OK</b>.</td>
-                    <td>-</td>
-                </tr>
+                    <td>Hiển thị một hộp thoại thông báo và chờ xác nhận OK.</td>
 
+                </tr>
                 <tr>
                     <td><b>dialog.confirm</b></td>
-                    <td>
-                        <pre>
-<b>- title:</b> tiêu đề hộp thoại.
-<b>- message:</b> nội dung hiển thị.
-                </pre>
-                    </td>
+                    <td>- title: &lt;tiêu đề&gt;<br>- message: &lt;nội dung&gt;</td>
                     <td>true false</td>
-                    <td>
-                        Hiển thị hộp thoại xác nhận và chờ người dùng chọn
-                        <b>YES / OK</b> hoặc <b>NO / Cancel</b>.
+                    <td>Hiển thị một hộp thoại xác nhận và chờ người dùng chọn <b>YES/OK</b> hoặc
+                        <b>No/Cancel</b>.
                     </td>
-                    <td>-</td>
                 </tr>
-
                 <tr>
                     <td><b>dialog.input</b></td>
-                    <td>
-                        <pre>
-<b>- title:</b> tiêu đề hộp thoại.
-<b>- message:</b> nội dung hiển thị.
-<b>- var_name:</b> tên biến lưu giá trị vào <b>context</b>.
-                </pre>
+                    <td>- title: &lt;tiêu đề&gt;<br>- message: &lt;nội dung&gt;<br>- var_name: &lt;tên biến lưu giá
+                        trị&gt;
                     </td>
                     <td>true</td>
-                    <td>
-                        Hiển thị hộp thoại nhập liệu và lưu giá trị người dùng nhập vào
-                        <b>context</b>.
-                    </td>
-                    <td>-</td>
+                    <td>Hiển thị một hộp thoại nhập liệu và lưu giá trị nhập vào vào <b>context</b>.</td>
                 </tr>
-
                 <tr>
+
                     <td><b>dialog.show_with_auto_close</b></td>
-                    <td>
-                        <pre>
-<b>- title:</b> tiêu đề hộp thoại.
-<b>- message:</b> nội dung hiển thị.
-<b>- timeout:</b> thời gian hiển thị tối đa (s).
-                </pre>
+                    <td>- title: &lt;tiêu đề&gt;<br>- message: &lt;nội dung&gt;<br>- timeout: &lt;thời gian hiển
+                        thị&gt;
                     </td>
                     <td>true</td>
-                    <td>
-                        Hiển thị hộp thoại thông báo, tự động đóng sau thời gian
-                        <b>timeout</b>.
-                    </td>
-                    <td>-</td>
+                    <td>Hiển thị một hộp thoại thông báo và chờ xác nhận OK, sẽ tự thoát sau thời gian timeout.</td>
                 </tr>
             </tbody>
         </table>
+        <hr>
+
 
         <h2>func: các hàm tuỳ chỉnh</h2>
         <table class="doc-table">
@@ -559,192 +527,118 @@ Trả về false nếu không thành công.
             <tbody>
                 <tr>
                     <td><b>func.check_context_key_exist</b></td>
-                    <td>
-                        <pre>
-<b>- key:</b> tên key cần kiểm tra trong context.
-                </pre>
-                    </td>
+                    <td>- key: &lt;tên key&gt;</td>
                     <td>true false</td>
-                    <td>Kiểm tra xem trong <b>context</b> có tồn tại key hay không.</td>
-                    <td>
-                        - Thường dùng khi lấy thông tin từ MES.<br>
-                        - Giúp xác định lỗi do MES không trả dữ liệu.<br>
-                        - Không bắt buộc phải dùng.
-                    </td>
+                    <td>Kiểm tra xem trong context có key đó không.</td>
+                    <td>- Thông thường, dùng hàm này khi lấy thông tin trên MES. Và kiểm tra xem có trường thông tin
+                        được
+                        trả về không. Cần dùng khi xác định luôn lỗi là bên MES. Nếu k dùng, k sao cả.</td>
                 </tr>
-
                 <tr>
                     <td><b>func.date_time_check</b></td>
-                    <td>
-                        <pre>
-<b>- prod_date_time:</b> thời gian cần so sánh.
-<b>- prod_date_time_format:</b> định dạng thời gian (theo C#).
-<b>- prod_date_time_utc:</b> dùng nếu giờ sản phẩm là UTC.
-<b>- source:</b> nguồn thời gian (pc | mes).
-<b>- duration:</b> sai lệch cho phép (s).
-                </pre>
-                    </td>
+                    <td>- prod_date_time: &lt;thời gian CẦN so sánh&gt;<br>- prod_date_time_format: &lt;định dạng
+                        thời gian
+                        của prod_date_time (theo C#)&gt;<br>- prod_date_time_utc: &lt;dùng khi giờ sản phẩm là giờ
+                        UTC&gt;<br>- source: &lt;nguồn, chọn pc | mes&gt;<br>- duration: &lt;khoảng thời gian cho
+                        phép sai
+                        lệch (s)&gt;</td>
                     <td>true false</td>
-                    <td>Kiểm tra thời gian có nằm trong khoảng cho phép hay không.</td>
-                    <td>
-                        - Định dạng thời gian theo chuẩn C# DateTime.<br>
-                        - Ví dụ: <b>dd/MM/yyyy HH:mm:ss</b>
-                    </td>
+                    <td>Kiểm tra ngày giờ có nằm trong khoảng thời gian cho phép không.</td>
+                    <td>- Định dạng thời gian theo chuẩn C# datetime. Ví dụ: dddd/MM/yyyy HH:mm:ss</td>
                 </tr>
-
                 <tr>
                     <td><b>func.date_check</b></td>
-                    <td>
-                        <pre>
-<b>- prod_date_time:</b> thời gian cần so sánh.
-<b>- prod_date_time_format:</b> định dạng thời gian (theo C#).
-<b>- source:</b> nguồn thời gian (pc | mes).
-                </pre>
-                    </td>
+                    <td>- prod_date_time: &lt;thời gian CẦN so sánh&gt;<br>- prod_date_time_format: &lt;định dạng
+                        thời gian
+                        của prod_date_time (theo C#)&gt;<br>- source: &lt;nguồn, chọn pc | mes&gt;</td>
                     <td>true false</td>
-                    <td>Kiểm tra ngày có khớp với ngày hiện tại hay không.</td>
-                    <td>
-                        - Định dạng thời gian theo chuẩn C# DateTime.
-                    </td>
+                    <td>Kiểm tra ngày có có khớp không.</td>
+                    <td>- Định dạng thời gian theo chuẩn C# datetime. Ví dụ: dddd/MM/yyyy HH:mm:ss</td>
                 </tr>
-
                 <tr>
                     <td><b>func.string_match</b></td>
-                    <td>
-                        <pre>
-<b>- source:</b> chuỗi nguồn.
-<b>- expect:</b> chuỗi hoặc biểu thức mong đợi.
-                </pre>
-                    </td>
+                    <td>- source: &lt;nguồn&gt;<br>- expect: &lt;giá trị mong đợi&gt;</td>
                     <td>true false</td>
-                    <td>Kiểm tra chuỗi nguồn có chứa giá trị mong đợi hay không.</td>
-                    <td>
-                        - <b>expect</b>: string hoặc <b>re_&lt;expression&gt;</b>.
-                    </td>
+                    <td>Kiểm tra xem giá trị nguồn có chứa chuỗi mong đợi hay không</td>
+                    <td><b>expect</b>: dùng chuỗi string hoặc <b>re_&lt;expression&gt;</b> để khớp với
+                        một biểu
+                        thức chính quy.</td>
                 </tr>
-
                 <tr>
                     <td><b>func.read_value</b></td>
-                    <td>
-                        <pre>
-<b>- source:</b> chuỗi nguồn.
-<b>- expect:</b> chuỗi / regex để match.
-<b>- match_index:</b> index nhóm cần lấy.
-<b>- replace:</b> regex cần thay thế.
-<b>- replace_with:</b> chuỗi thay thế.
-<b>- convert:</b> to_lower | to_upper.
-<b>- var_name:</b> tên biến lưu vào context.
-                </pre>
+                    <td>- source: &lt;nguồn&gt;<br>- expect: &lt;chuỗi mong đợi&gt;<br>- match_index: &lt;index của
+                        chỗi
+                        match cần lấy&gt;<br>- replace: &lt;chuỗi cần thay thế&gt;<br>replace_with: &lt;giá trị thay
+                        thế&gt;<br>- convert: &lt;to_lower, to_upper&gt;<br>- var_name: &lt;tên biến lưu giá trị&gt;
                     </td>
                     <td>true false</td>
-                    <td>Đọc giá trị từ log và lưu vào <b>context</b>.</td>
-                    <td>
-                        - Trả về <b>false</b> nếu không match.<br>
-                        - <b>expect</b>: string hoặc regex.<br>
-                        - <b>match_index</b>: vị trí nhóm regex.<br>
-                        - <b>replace</b>: dùng regex.
+                    <td>Đọc một giá trị từ log nhận được và lưu vào <b>context</b>.</td>
+                    <td>- Trả về <b>false</b> nếu không tìm thấy.<br>- <b>expect</b>: dùng chuỗi string
+                        hoặc
+                        <b>re_&lt;expression&gt;</b> để khớp với một biểu thức chính quy.<br>-
+                        <b>index</b>: vị
+                        trí nhóm cần lấy<br>- <b>replace</b>: dùng trực tiếp regex<br>-
+                        <b>replace_with</b>:
+                        dùng chuỗi string
                     </td>
                 </tr>
-
                 <tr>
                     <td><b>func.reverse_string</b></td>
-                    <td>
-                        <pre>
-<b>- source:</b> chuỗi dữ liệu nguồn.
-<b>- var_name:</b> biến lưu vào context.
-                </pre>
+                    <td>- source: &lt;nguồn chuỗi dữ liệu&gt;<br>- var_name: &lt;tên biến để lưu vào context&gt;
                     </td>
                     <td>true</td>
-                    <td>Đảo ngược chuỗi và lưu kết quả vào <b>context</b>.</td>
-                    <td>
-                        - Ví dụ: <b>abcde</b> → <b>edcba</b>
-                    </td>
+                    <td>Đảo ngược chuỗi dữ liệu từ nguồn và lưu vào biến trong <b>context</b>.</td>
+                    <td>- Đảo ngược chuỗi, vì dụ <b>abcde</b> -> <b>edcba</b></td>
                 </tr>
-
                 <tr>
                     <td><b>func.reverse_mac</b></td>
-                    <td>
-                        <pre>
-<b>- source:</b> chuỗi MAC nguồn.
-<b>- var_name:</b> biến lưu vào context.
-                </pre>
+                    <td>- source: &lt;nguồn chuỗi dữ liệu&gt;<br>- var_name: &lt;tên biến để lưu vào context&gt;
                     </td>
                     <td>true</td>
-                    <td>Đảo ngược chuỗi MAC đọc từ lệnh AT.</td>
-                    <td>
-                        - Ví dụ: <b>6f5d4e3c2b1a</b> → <b>1a2b3c4d5e6f</b>
-                    </td>
+                    <td>Đảo ngược chuỗi mac đọc từ lệnh AT</td>
+                    <td>- Đảo ngược chuỗi mac, vì dụ <b>6f5d4e3c2b1a</b> -> <b>1a2b3c4d5e6f</b></td>
                 </tr>
-
                 <tr>
                     <td><b>func.get_imei_from_response</b></td>
-                    <td>
-                        <pre>
-<b>- source:</b> chuỗi dữ liệu nguồn.
-<b>- var_name:</b> biến lưu IMEI vào context.
-                </pre>
+                    <td>- source: &lt;nguồn chuỗi dữ liệu&gt;<br>- var_name: &lt;tên biến để lưu vào context&gt;
                     </td>
                     <td>true</td>
-                    <td>
-                        Convert text response thành IMEI.<br>
-                        Dùng cho lệnh:
+                    <td>Convert chuỗi text thành IMEI. Dùng cho sử dụng lệnh adb
                         <b>adb shell service call iphonesubinfo 3 i32 0</b>
                     </td>
-                    <td>-</td>
                 </tr>
-
                 <tr>
                     <td><b>func.cm5_picture_measure</b></td>
-                    <td>
-                        <pre>
-<b>- lower_limit:</b> giá trị dưới.
-<b>- upper_limit:</b> giá trị trên.
-<b>- picture_name:</b> tên file ảnh.
-<b>- golden_sample_folder_path:</b> thư mục GOLDEN SAMPLE.
-                </pre>
+                    <td>- lower_limit: &lt;giá trị dưới&gt;<br>- upper_limit: &lt;giá trị trên&gt;<br>-
+                        picture_name:
+                        &lt;tên ảnh&gt;<br>- golden_sample_folder_path: &lt;đường dẫn đến thư mục GOLDEN SAMPLE&gt;
                     </td>
                     <td>true false</td>
-                    <td>Tính MSE ảnh cho trạm CM5 CAMERA.</td>
-                    <td>
-                        - <b>picture_name</b>: ví dụ <b>FRONT_LIGHT_ON.jpg</b>
+                    <td>Tính MSE ảnh cho trạm CM5 CAMERA</td>
+                    <td>- <b>picture_name</b> lấy tên ảnh và định dạng, ví dụ <b>FRONT_LIGHT_ON.jpg</b>
                     </td>
                 </tr>
-
                 <tr>
                     <td><b>func.generate_imei2_from_imei1</b></td>
-                    <td>
-                        <pre>
-<b>- imei1:</b> giá trị IMEI1 (15 ký tự).
-                </pre>
-                    </td>
+                    <td>- imei1: &lt;giá trị imei1&gt;</td>
                     <td>true</td>
-                    <td>
-                        Sinh IMEI2 từ IMEI1 và lưu vào
-                        <b>context["PROD[imei2]"]</b>.
+                    <td>Tính giá trị imei2 từ imei1 (2 imei sẽ liên tiếp nhau) và lưu vào
+                        <b>context["PROD[imei2]"]</b>
                     </td>
-                    <td>
-                        - <b>imei1</b> bắt buộc đủ 15 ký tự.
-                    </td>
+                    <td>- <b>imei1</b> phải là imei 15 ký tự.</td>
                 </tr>
-
                 <tr>
                     <td><b>func.check_com_device_exist</b></td>
-                    <td>
-                        <pre>
-<b>- com_name:</b> tên cổng COM cần kiểm tra.
-                </pre>
-                    </td>
+                    <td>- com_name: &lt;tên cổng com&gt;</td>
                     <td>true false</td>
-                    <td>
-                        Kiểm tra cổng COM có xuất hiện trên Device Manager hay không.
-                    </td>
-                    <td>
-                        - Dùng cho UX300.<br>
-                        - Kiểm tra thiết bị dạng <b>USB Serial Device</b>.
+                    <td>Kiểm tra xem có cổng com xuất hiện không. Cho UX300. Kiểm tra cổng com dạng
+                        <b>USB Serial Device</b> trên device manager
                     </td>
                 </tr>
             </tbody>
         </table>
+        <hr>
+
 
         <h2>if: hàm thực hiện logic</h2>
         <table class="doc-table">
@@ -760,120 +654,60 @@ Trả về false nếu không thành công.
             <tbody>
                 <tr>
                     <td><b>if.condition</b></td>
-                    <td>
-                        <pre>
-<b>- condition:</b> biểu thức điều kiện logic.
-                </pre>
-                    </td>
+                    <td>- condition: &lt;biểu thức điều kiện&gt;</td>
                     <td>true false</td>
-                    <td>
-                        Thực hiện kiểm tra logic theo biểu thức điều kiện.
-                        <br>(Phương thức cũ – khuyến nghị dùng các hàm bên dưới)
+                    <td>Thực hiện kiểm tra logic điều kiện (Phương thức này cũ rồi, dùng bên dưới dễ sử dụng hơn)
                     </td>
-                    <td>
-                        - Trả về <b>false</b> nếu lệnh CMD lỗi hoặc timeout.<br>
-                        - Trả về <b>true</b> nếu lệnh CMD thực thi thành công.
-                    </td>
+                    <td>- Trả về <b>false</b> nếu lệnh CMD lỗi hoặc timeout, trả về <b>true</b> nếu lệnh
+                        CMD
+                        thành công.</td>
                 </tr>
-
                 <tr>
                     <td><b>if.is_equal</b></td>
-                    <td>
-                        <pre>
-<b>- source:</b> giá trị cần so sánh.
-<b>- expect:</b> giá trị mong đợi.
-                </pre>
-                    </td>
+                    <td>- source: &lt;giá trị cần so sánh&gt;<br>- expect: &lt;giá trị mong muốn&gt;</td>
                     <td>true false</td>
-                    <td>
-                        Kiểm tra điều kiện <b>source == expect</b>.
-                    </td>
-                    <td>
-                        - Chỉ dùng cho <b>giá trị số</b>.<br>
-                        - So sánh chuỗi dùng <b>func.string_match</b>.
-                    </td>
+                    <td>Kiểm tra điều kiện <b>source == expect</b>. Lưu ý là kiểm tra cho số, k kiểm tra cho
+                        chuỗi
+                        string, nếu chuỗi string dùng <b>func.string_match</b></td>
                 </tr>
-
                 <tr>
                     <td><b>if.is_greater_than</b></td>
-                    <td>
-                        <pre>
-<b>- source:</b> giá trị cần so sánh.
-<b>- lower_limit:</b> giá trị so sánh.
-                </pre>
-                    </td>
+                    <td>- source: &lt;giá trị cần so sánh&gt;<br>- lower_limit: &lt;giá trị so sánh&gt;</td>
                     <td>true false</td>
-                    <td>
-                        Kiểm tra điều kiện <b>source &gt; lower_limit</b>.
-                    </td>
-                    <td>-</td>
+                    <td>Kiểm tra điều kiện <b>source &gt; lower_limit</b>.</td>
                 </tr>
-
                 <tr>
                     <td><b>if.is_greater_than_or_equal</b></td>
-                    <td>
-                        <pre>
-<b>- source:</b> giá trị cần so sánh.
-<b>- lower_limit:</b> giá trị so sánh.
-                </pre>
-                    </td>
+                    <td>- source: &lt;giá trị cần so sánh&gt;<br>- lower_limit: &lt;giá trị so sánh&gt;</td>
                     <td>true false</td>
-                    <td>
-                        Kiểm tra điều kiện <b>source &gt;= lower_limit</b>.
-                    </td>
-                    <td>-</td>
+                    <td>Kiểm tra điều kiện <b>source &gt;= lower_limit</b>.</td>
                 </tr>
-
                 <tr>
                     <td><b>if.is_less_than</b></td>
-                    <td>
-                        <pre>
-<b>- source:</b> giá trị cần so sánh.
-<b>- upper_limit:</b> giá trị so sánh.
-                </pre>
-                    </td>
+                    <td>- source: &lt;giá trị cần so sánh&gt;<br>- upper_limit: &lt;giá trị so sánh&gt;</td>
                     <td>true false</td>
-                    <td>
-                        Kiểm tra điều kiện <b>source &lt; upper_limit</b>.
-                    </td>
-                    <td>-</td>
+                    <td>Kiểm tra điều kiện <b>source &lt; upper_limit</b>.</td>
                 </tr>
-
                 <tr>
                     <td><b>if.is_less_than_or_equal</b></td>
-                    <td>
-                        <pre>
-<b>- source:</b> giá trị cần so sánh.
-<b>- upper_limit:</b> giá trị so sánh.
-                </pre>
-                    </td>
+                    <td>- source: &lt;giá trị cần so sánh&gt;<br>- upper_limit: &lt;giá trị so sánh&gt;</td>
                     <td>true false</td>
-                    <td>
-                        Kiểm tra điều kiện <b>source &lt;= upper_limit</b>.
-                    </td>
-                    <td>-</td>
+                    <td>Kiểm tra điều kiện <b>source &lt; upper_limit</b>.</td>
                 </tr>
-
                 <tr>
                     <td><b>if.in_between</b></td>
-                    <td>
-                        <pre>
-<b>- source:</b> giá trị cần so sánh.
-<b>- lower_limit:</b> giá trị dưới.
-<b>- upper_limit:</b> giá trị trên.
-                </pre>
-                    </td>
+                    <td>- source: &lt;giá trị cần so sánh&gt;<br>- lower_limit: &lt;giá trị so sánh&gt;<br>-
+                        upper_limit:
+                        &lt;giá trị so sánh&gt;</td>
                     <td>true false</td>
-                    <td>
-                        Kiểm tra điều kiện
-                        <b>source &gt;= lower_limit &amp; source &lt;= upper_limit</b>.
+                    <td>Kiểm tra điều kiện <b>source &gt;= lower_limit &amp; source &lt;= upper_limit</b>.
                     </td>
-                    <td>-</td>
                 </tr>
             </tbody>
         </table>
+        <hr>
 
-        <h2>Các hàm thao tác với phần mềm bên thứ 3</h2>
+        <h2>Các hàm thao tác với phần mềm thứ 3</h2>
         <table class="doc-table">
             <thead>
                 <tr>
@@ -887,269 +721,180 @@ Trả về false nếu không thành công.
             <tbody>
                 <tr>
                     <td><b>atmel.AUTO</b></td>
-                    <td>
-                        - working_path: đường dẫn chương trình <b>AtmelSecureAccess</b>
-                    </td>
-                    <td>PASS / FAIL</td>
-                    <td>
-                        Sử dụng tool <b>AtmelSecureAccess</b> để flash key vào sản phẩm.
-                        Áp dụng cho dòng <b>UX100 / UX110</b>.
-                    </td>
-                    <td>
-                        - Tool <b>AtmelSecureAccess</b> có thể được cấu hình để tự động tải về.<br>
-                        - Ở lần chạy đầu tiên, cần cấu hình thủ công tool trong thư mục đã tải.
-                    </td>
+                    <td>- working_path: đường dẫn chuong trình AtmelSecureAccess.</td>
+                    <td>PASS FAIL</td>
+                    <td>Sử dụng tool AtmelSecureAccess flash key vào sản phẩm. Dùng cho UX100/UX110</td>
+                    <td>- Config để tự tải tool AtmelSecureAccess xuống. Ở lần tải đầu tiên. Cần configuration
+                        AtmelSecureAccess ở thư mục tải về.</td>
                 </tr>
-
                 <tr>
                     <td><b>icimei.AUTO</b></td>
-                    <td>
-                        - working_path: đường dẫn thư mục chứa chương trình<br>
-                        - comport: cổng COM dùng để ghi IMEI<br>
-                        - imei: IMEI cần ghi (độ dài 15 số)
-                    </td>
-                    <td>PASS / FAIL</td>
-                    <td>
-                        Sử dụng tool <b>icimei.exe</b> để ghi IMEI vào sản phẩm.
-                    </td>
-                    <td>
-                        - Tool có thể được cấu hình để tự động tải về.<br>
-                        - Trước khi chạy, sản phẩm phải ở <b>chế độ AT</b>.
-                    </td>
+                    <td>- working_path: &lt;đường dẫn thư mục chứa chương trình&gt;<br>- comport: &lt;cổng com để
+                        ghi
+                        imei&gt;<br>- imei: &lt;imei ghi vào (độ dài là 15)&gt;</td>
+                    <td>PASS FAIL</td>
+                    <td>Sử dụng tool <b>icimie.exe</b> ghi imei vào sản phẩm.</td>
+                    <td>- Config để tự tải tool xuống.<br>- trước khi chạy tool sản phẩm cần được vào chế độ AT
+                        trước.</td>
                 </tr>
-
                 <tr>
                     <td><b>icimei.auto</b></td>
-                    <td>
-                        - working_path: đường dẫn thư mục chứa chương trình<br>
-                        - comport: cổng COM dùng để ghi IMEI<br>
-                        - imei: IMEI cần ghi (độ dài 15 số)
+                    <td>- working_path: &lt;đường dẫn thư mục chứa chương trình&gt;<br>- comport: &lt;cổng com để
+                        ghi
+                        imei&gt;<br>- imei: &lt;imei ghi vào (độ dài là 15)&gt;</td>
+                    <td>true false</td>
+                    <td>Tương tự <b>AUTO</b>, nhưng sẽ thực hiện <b>on_success</b> nếu thành công, ngược
+                        lại
+                        thực hiện <b>on_fail</b>. Lưu ý: Chỉ lỗi <b>ICIMEI_TIMEOUT</b> và
+                        <b>ICIMEI_WRITE_IMEI_FAIL</b> mới trả về <b>true</b> <b>false</b>. Lỗi
+                        khác sẽ
+                        <b>FAIL</b>
                     </td>
-                    <td>true / false</td>
-                    <td>
-                        Tương tự <b>icimei.AUTO</b> nhưng hỗ trợ luồng xử lý <b>on_success</b> và
-                        <b>on_fail</b>.
-                    </td>
-                    <td>
-                        - Chỉ các lỗi <b>ICIMEI_TIMEOUT</b> và <b>ICIMEI_WRITE_IMEI_FAIL</b>
-                        mới trả về <b>true / false</b>.<br>
-                        - Các lỗi khác sẽ trả về <b>FAIL</b>.<br>
-                        - Sản phẩm phải ở <b>chế độ AT</b>.
+                    <td>- Config để tự tải tool xuống.<br>- trước khi chạy tool sản phẩm cần được vào chế độ AT
+                        trước.
                     </td>
                 </tr>
-
                 <tr>
                     <td><b>jlink.AUTO</b></td>
-                    <td>
-                        - working_path: đường dẫn chương trình JLink<br>
-                        - project_path: đường dẫn file project<br>
-                        - flash_file_path: đường dẫn file <b>.bin</b><br>
-                        - usb_sn: serial number của JLink
+                    <td>- working_path: đường dẫn chuong trình AtmelSecureAccess.<br>- project_path: &lt;đường dẫn
+                        chứa file
+                        project&gt;<br>- flash_file_path: &lt;đường dẫn chứa file .bin<br>- usb_sn: &lt;usb_sn của
+                        jlink&gt;
                     </td>
-                    <td>PASS / FAIL</td>
-                    <td>
-                        Sử dụng tool <b>JFlash</b> để flash bootloader vào sản phẩm.
-                    </td>
-                    <td>
-                        - Tool JLink, file project và file bin có thể được cấu hình để tự tải.<br>
-                        - Nếu dùng nhiều JLink, nên cố định <b>usb_sn</b>.<br>
-                        - Đặt <b>usb_sn: ~</b> để tự động chọn.
-                    </td>
+                    <td>PASS FAIL</td>
+                    <td>Sử dụng tool JFlash flash bootloader vào sản phẩm.</td>
+                    <td>- Config để tự tải tool JLink và file project, bin xuống. Đối với USB_SN, nếu cần nhiều cổng
+                        thì đặt
+                        USB cố định. Nếu muốn tự động thì để là ~</td>
                 </tr>
-
                 <tr>
                     <td><b>mib.AUTO</b></td>
-                    <td>
-                        - customer_pn<br>
-                        - bomver<br>
-                        - sn (CSN)<br>
-                        - ptid<br>
-                        - wifi_mac<br>
-                        - bt_mac<br>
-                        - lan_mac<br>
-                        - uwb_mac
-                    </td>
-                    <td>PASS / FAIL</td>
-                    <td>
-                        Tự động chạy tool <b>MIB</b> với các thông tin đầu vào được cung cấp.
-                    </td>
-                    <td>
-                        - Tool <b>MIB</b> và <b>WinConnect</b> cần được mở và cấu hình thủ công trước.<br>
-                        - Trường không sử dụng đặt giá trị là <b>NA</b>.
-                    </td>
+                    <td>- customer_pn: &lt;PN&gt;<br>- customer_pn: &lt;bomver&gt;<br>- sn: &lt;CSN&gt;<br>- ptid:
+                        &lt;PTID&gt;<br>- wifi_mac: &lt;WIFI_MAC&gt;<br>- bt_mac: &lt;BT_MAC&gt;<br>- lan_mac:
+                        &lt;LAN_MAC&gt;<br>- uwb_mac: &lt;UWB_MAC&gt;</td>
+                    <td>PASS FAIL</td>
+                    <td>Tự động chạy TOOL MIB sử dụng thông tin các trường cung cấp.</td>
+                    <td>- Tool <b>MIB</b> và <b>WinConnect</b> cần được mở và config thủ công trước khi
+                        chạy.<br>- Nếu trường nào không sử dụng, để giá trị nó là <b>NA</b></td>
                 </tr>
-
                 <tr>
                     <td><b>mt.AUTO</b></td>
-                    <td>
-                        - working_path: thư mục làm việc<br>
-                        - exe_name: tên file thực thi<br>
-                        - ict_sn_01: serial board 1<br>
-                        - ict_sn_02: serial board 2
-                    </td>
-                    <td>PASS / FAIL</td>
-                    <td>
-                        Tự động chạy tool <b>ManufacturingTool</b> với các tham số được chỉ định.
-                    </td>
-                    <td>
-                        - exe_name thường là <b>PCBA_tests.exe</b>.<br>
-                        - ict_sn_* không dùng thì đặt <b>~</b>.<br>
-                        - Có thể dùng <b>$context</b> làm input.<br>
-                        - Nên kết hợp với các method <b>mt.check*</b> để kiểm tra kết quả.
-                    </td>
+                    <td>- working_path: &lt;đường dẫn thư mục làm việc&gt;<br>- exe_name: &lt;tên file thực
+                        thi&gt;<br>-
+                        ict_sn_01: &lt;serial number cho board 1&gt;<br>- ict_sn_02: &lt;serial number cho board
+                        2&gt;</td>
+                    <td>PASS FAIL</td>
+                    <td>Tự động chạy tool MT (ManufactoringTool.exe) với các tham số đã cho.</td>
+                    <td>Lưu ý:<br>- exe_path lấy bản PCBA_tests.exe<br>- ict_sn_01, ict_sn_02 nếu không dùng để null
+                        (~),
+                        nếu sử dụng dùng $context input_str<br>- Sử dụng kèm các method check bên dưới để kiểm tra
+                        kết quả
+                        test</td>
                 </tr>
-
                 <tr>
                     <td><b>mt.check_log</b></td>
-                    <td>
-                        - expect: chuỗi hoặc biểu thức mong đợi
-                    </td>
-                    <td>true / false</td>
-                    <td>
-                        Kiểm tra chuỗi mong đợi có xuất hiện trong log của tool MT hay không.
-                    </td>
-                    <td>
-                        - Không tìm thấy trả về <b>false</b>.<br>
-                        - Hỗ trợ chuỗi thường hoặc <b>re_&lt;regex&gt;</b>.
+                    <td>- expect: &lt;chuỗi mong đợi&gt;</td>
+                    <td>true false</td>
+                    <td>Kiểm tra xem chuỗi mong đợi có xuất hiện trong log của tool MT hay không.</td>
+                    <td>- Trả về <b>false</b> nếu không tìm thấy.<br>- <b>expect</b>: dùng chuỗi string
+                        hoặc
+                        <b>re_&lt;expression&gt;</b> để khớp với một biểu thức chính quy.
                     </td>
                 </tr>
-
                 <tr>
                     <td><b>mt.check_board_log</b></td>
-                    <td>
-                        - board_id: ID của board<br>
-                        - expect: chuỗi mong đợi
+                    <td>- board_id: &lt;id của board&gt;<br>- expect: &lt;chuỗi mong đợi&gt;</td>
+                    <td>true false</td>
+                    <td>Kiểm tra xem chuỗi mong đợi có xuất hiện trong log của board cụ thể trong tool MT hay không.
                     </td>
-                    <td>true / false</td>
-                    <td>
-                        Kiểm tra log của board cụ thể trong tool MT.
-                    </td>
-                    <td>
-                        - Không tìm thấy trả về <b>false</b>.<br>
-                        - Hỗ trợ regex với <b>re_</b>.
+                    <td>- Trả về <b>false</b> nếu không tìm thấy.<br>- <b>expect</b>: dùng chuỗi string
+                        hoặc
+                        <b>re_&lt;expression&gt;</b> để khớp với một biểu thức chính quy.
                     </td>
                 </tr>
-
                 <tr>
                     <td><b>mt.check_tasklist</b></td>
-                    <td>
-                        - board_id: ID của board<br>
-                        - expect: chuỗi mong đợi
+                    <td>- board_id: &lt;id của board&gt;<br>- expect: &lt;chuỗi mong đợi&gt;</td>
+                    <td>true false</td>
+                    <td>Kiểm tra xem chuỗi mong đợi có xuất hiện trong tasklist của board cụ thể trong tool MT hay
+                        không.
                     </td>
-                    <td>true / false</td>
-                    <td>
-                        Kiểm tra tasklist của board trong tool MT.
-                    </td>
-                    <td>
-                        - Không tìm thấy trả về <b>false</b>.<br>
-                        - Hỗ trợ regex với <b>re_</b>.
+                    <td>- Trả về <b>false</b> nếu không tìm thấy.<br>- <b>expect</b>: dùng chuỗi string
+                        hoặc
+                        <b>re_&lt;expression&gt;</b> để khớp với một biểu thức chính quy.
                     </td>
                 </tr>
-
                 <tr>
                     <td><b>pms.AUTO</b></td>
-                    <td>
-                        - working_path<br>
-                        - exe_name<br>
-                        - bt_mac<br>
-                        - wifi_mac<br>
-                        - eth_mac
-                    </td>
-                    <td>PASS / FAIL</td>
-                    <td>
-                        Tự động chạy tool <b>PMS Simulation</b>.
-                    </td>
-                    <td>
-                        - exe_name thường là <b>PMS_Simulation_Window_V1.09.exe</b>.<br>
-                        - MAC không dùng đặt <b>~</b>.
-                    </td>
+                    <td>- working_path: &lt;đường dẫn thư mục làm việc&gt;<br>- exe_name: &lt;tên file thực
+                        thi&gt;<br>-
+                        bt_mac: &lt;địa chỉ mac bluetooth&gt;<br>- wifi_mac: &lt;địa chỉ mac wifi&gt;<br>- eth_mac:
+                        &lt;địa
+                        chỉ mac ethernet&gt;</td>
+                    <td>PASS FAIL</td>
+                    <td>Tự động chạy tool PMS (PMS_Simulation_Window_V1.09.exe) với các tham số đã cho.</td>
+                    <td>Lưu ý:<br>- exe_path lấy bản PMS_Simulation_Window_V1.09.exe<br>- bt_mac, wifi_mac, eth_mac
+                        nếu
+                        không dùng để null (~)</td>
                 </tr>
-
                 <tr>
                     <td><b>qcm.AUTO</b></td>
-                    <td>
-                        - imei: IMEI cần ghi (thường là <b>$context MES[imei]</b>)
-                    </td>
-                    <td>PASS / FAIL</td>
-                    <td>
-                        Ghi IMEI bằng tool <b>QCMWriteImei.exe</b>.
-                    </td>
-                    <td>
-                        - Tool phải được <b>đăng nhập và mở thủ công</b> trước khi chạy.
-                    </td>
+                    <td>- imei: &lt;imei ghi vào, thường là $context MES[imei]&gt;</td>
+                    <td>PASS FAIL</td>
+                    <td>Ghi IMEI vào thiết bị sử dụng tool QCMWriteImei.exe</td>
+                    <td>- Chương trình <b>QCMWriteImei</b> cần được ĐĂNG NHẬP VÀ MỞ BẰNG TAY.<br></td>
                 </tr>
-
                 <tr>
                     <td><b>qcm.auto</b></td>
-                    <td>
-                        - imei: IMEI cần ghi
-                    </td>
-                    <td>true / false</td>
-                    <td>
-                        Giống <b>qcm.AUTO</b> nhưng không thoát ngay sau khi ghi.
-                    </td>
-                    <td>
-                        - Dùng khi cần gửi thêm lệnh AT ở <b>on_success</b> / <b>on_fail</b>.<br>
-                        - Tool QCM có bug: khi fail COM vẫn bị giữ, không thoát được AT.
+                    <td>- imei: &lt;imei ghi vào, thường là $context MES[imei]&gt;</td>
+                    <td>true false</td>
+                    <td>Ghi IMEI vào thiết bị sử dụng tool QCMWriteImei.exe. Tương tự như <b>AUTO</b> nhưng không
+                        thoát
+                        ngay.</td>
+                    <td>- Chương trình <b>QCMWriteImei</b> cần được ĐĂNG NHẬP VÀ MỞ BẰNG TAY.<br>- Sử dụng khi cần
+                        thoát màn
+                        hình <b>AT</b> bằng cách thêm một vài lệnh ở <b>on_success</b> và
+                        <b>on_fail</b>.<br>- Lưu ý: GHI NHẬN tool <b>QCMWriteImei</b> bug khi fail, COM vãn bị
+                        sử dụng
+                        nên k gửi lệnh thoát được.
                     </td>
                 </tr>
-
                 <tr>
                     <td><b>qfil.AUTO</b></td>
-                    <td>
-                        - working_path: thư mục QFIL<br>
-                        - comport: số slot (1,2,3) hoặc <b>~</b><br>
-                        - image_path: thư mục chứa file <b>.mbn</b><br>
-                        - timeout: thời gian chờ (giây)
-                    </td>
-                    <td>PASS / FAIL</td>
-                    <td>
-                        Flash image vào thiết bị bằng tool <b>QFIL</b>.
-                    </td>
-                    <td>
-                        - Nên cấu hình để QFIL tự tải về và sử dụng bản đó.
-                    </td>
+                    <td>- working_path: đường dẫn QFIL.<br>- comport: cổng COM để FLASH, sử dụng 1, 2 3 thay vì
+                        COM1, COM2
+                        COM3. Để null nếu chỉ dùng 1 slot<br>- image_path: đường dẫn thư mục chứa image .mbn<br>-
+                        timeout:
+                        &lt;thời gian chờ tối đa (s)&gt;</td>
+                    <td>PASS FAIL</td>
+                    <td>Flash image vào thiết bị sử dụng tool QFIL.</td>
+                    <td>- Nên configure để QFIL tự tải về và dùng luôn QFIL đã được tải về đó.</td>
                 </tr>
-
                 <tr>
                     <td><b>qwit.AUTO</b></td>
-                    <td>
-                        - working_path<br>
-                        - exe_name<br>
-                        - imei (15 số)
-                    </td>
-                    <td>PASS / FAIL</td>
-                    <td>
-                        Ghi IMEI bằng tool <b>Quectel_Write_IMEI_OFFLINE</b>.
-                    </td>
-                    <td>
-                        - Mặc định exe_name:
-                        <b>Quectel_Write_IMEI_OFFLINE_V1.8.1.exe</b><br>
-                        - Sản phẩm phải ở chế độ AT.
-                    </td>
+                    <td>- working_path: &lt;đường dẫn thư mục chứa chương trình&gt;<br>- exe_name: &lt;tên chương
+                        trình&gt;<br>- imei: &lt;imei ghi vào (độ dài là 15)&gt;</td>
+                    <td>PASS FAIL</td>
+                    <td>Sử dụng tool <b>Quectel_Write_IMEI_OFFLINE_V1.8.1.exe</b> ghi imei vào sản phẩm.</td>
+                    <td>- Config để tự tải tool xuống.<br>- trước khi chạy tool sản phẩm cần được vào chế độ AT
+                        trước. Để
+                        giá trị mặc định <b>exe_name: Quectel_Write_IMEI_OFFLINE_V1.8.1.exe</b></td>
                 </tr>
-
                 <tr>
                     <td><b>vtp.AUTO</b></td>
-                    <td>
-                        - working_path<br>
-                        - exe_name<br>
-                        - xml_name<br>
-                        - timeout
-                    </td>
-                    <td>PASS / FAIL</td>
-                    <td>
-                        Tự động chạy tool <b>VTP</b> với script XML chỉ định.
-                    </td>
-                    <td>
-                        - Nên cấu hình để tool VTP tự tải.<br>
-                        - Đảm bảo <b>SN_LENGTH = 14</b> trong cấu hình VTP.
-                    </td>
+                    <td>- working_path: đường dẫn thư mục chứa VTP.exe<br>- exe_name: tên file thực thi VTP.exe<br>-
+                        xml_name: tên script xml vtp cần chạy<br>- timeout: thời gian chờ tối đa (s)</td>
+                    <td>PASS FAIL</td>
+                    <td>Tự động chạy tool VTP với các tham số đã cho.</td>
+                    <td>- Nên configure vtp để tự tải xuống.<br>- Đảm bảo tool vtp có thê chạy bình thường. Chú ý số
+                        SN_LENGTH ở vtp phải là 14</td>
                 </tr>
             </tbody>
         </table>
+        <hr>
 
-        <h2>cmd: Thực thi lệnh CMD và lấy log</h2>
+
+        <h2>cmd: thưc thi lệnh CMD và lấy log</h2>
         <table class="doc-table">
             <thead>
                 <tr>
@@ -1163,23 +908,84 @@ Trả về false nếu không thành công.
             <tbody>
                 <tr>
                     <td><b>cmd.execute</b></td>
-                    <td>
-                        - name: tên định danh của lệnh CMD<br>
-                        - command: lệnh CMD cần thực thi<br>
-                        - working_path: thư mục thực thi lệnh (tuỳ chọn)<br>
-                        - timeout: thời gian chờ tối đa (giây)
+                    <td>- name: tên lệnh<br>- command: lệnh thực thi - working_path: thư mục thực thi lệnh<br>-
+                        timeout:
+                        thời gian timeout của lệnh</td>
+                    <td>true false</td>
+                    <td>Thực thi lệnh CMD và lấy log trả về</td>
+                    <td>- Trả về <b>false</b> nếu lệnh thực thi lỗi hoặc timeout.<br>- Log của lệnh được lưu
+                        vào
+                        <b>context</b> với tên <b>CMD[&lt;name&gt;][log]</b>
                     </td>
-                    <td>true / false</td>
-                    <td>
-                        Thực thi một lệnh CMD và thu thập toàn bộ log (stdout / stderr) trả về.
+                </tr>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+
+        <h2>cam:Tương tác với <b>CAMERA</b></h2>
+        <table class="doc-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>with</th>
+                    <th>Kết quả</th>
+                    <th>Mô tả</th>
+                    <th>Chú ý</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>cam.set_operation_image</b></td>
+                    <td>- image_path: đường dẫn file ảnh mẫu</td>
+                    <td>true</td>
+                    <td>Thiết lập ảnh thao tác</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td><b>cam.check_ocr_string</b></td>
+                    <td>- wait_string: Chuỗi OCR mong đợi.<br>- timeout: Thời gian chờ (s)<br>-
+                        save_image_with_name: tên
+                        file lưu chữ ảnh chụp.<br>- expect: Chuỗi kiểm tra mong đợi</td>
+                    <td>true false</td>
+                    <td>Đọc text từ ảnh camera, đợi <b>wait_string</b> xuất hiện, sau đó kiểm tra
+                        <b>wait_string</b> có chứa <b>expect</b> hay không.
                     </td>
-                    <td>
-                        - Trả về <b>false</b> nếu lệnh thực thi lỗi hoặc vượt quá <b>timeout</b>.<br>
-                        - Trả về <b>true</b> nếu lệnh kết thúc thành công.<br>
-                        - Log của lệnh được lưu vào <b>context</b> với key:
-                        <b>CMD[&lt;name&gt;][log]</b>.<br>
-                        - Có thể dùng log này cho các bước kiểm tra tiếp theo
-                        (ví dụ: <b>if</b>, <b>func.string_match</b>, …).
+                    <td>- Trả về <b>false</b> nếu không tìm thấy.<br>- <b>wait_string</b> &amp;
+                        <b>expect</b>: dùng chuỗi string hoặc <b>re_&lt;expression&gt;</b> để khớp với
+                        một biểu
+                        thức chính quy.<br>- <b>save_image_with_name</b>: Lưu ảnh đã được xử lý OCR lại, nếu k
+                        lưu thì
+                        để là null <b>~</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>cam.get_ocr_string</b></td>
+                    <td>- wait_string: Chuỗi OCR mong đợi.<br>- timeout: Thời gian chờ (s)<br>-
+                        save_image_with_name: tên
+                        file lưu chữ ảnh chụp.<br>- var_name: tên biến sẽ được lưu vào <b>context</b></td>
+                    <td>true false</td>
+                    <td>Đọc text từ ảnh camera, đợi <b>wait_string</b> xuất hiện, sau đó lưu chuỗi
+                        <b>wait_string</b> vào <b>context</b> với tên <b>var_name</b>.
+                    </td>
+                    <td>- Trả về <b>false</b> nếu không tìm thấy.<br>- <b>wait_string</b>: dùng chuỗi
+                        string
+                        hoặc <b>re_&lt;expression&gt;</b> để khớp với một biểu thức chính quy.<br>-
+                        <b>save_image_with_name</b>: Lưu ảnh đã được xử lý OCR lại, nếu k lưu thì để là null
+                        <b>~</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>cmd</b> - thưc thi lệnh CMD và lấy log</td>
+                    <td><b>cmd.execute</b></td>
+                    <td>- name: tên lệnh<br>- command: lệnh thực thi - working_path: thư mục thực thi lệnh<br>-
+                        timeout:
+                        thời gian timeout của lệnh</td>
+                    <td>true false</td>
+                    <td>Thực thi lệnh CMD và lấy log trả về</td>
+                    <td>- Trả về <b>false</b> nếu lệnh thực thi lỗi hoặc timeout.<br>- Log của lệnh được lưu
+                        vào
+                        <b>context</b> với tên <b>CMD[&lt;name&gt;][log]</b>
                     </td>
                 </tr>
             </tbody>
