@@ -643,12 +643,14 @@ Trả về false nếu không thành công.
                     </td>
                     <td>true false</td>
                     <td>Đọc giá trị từ log và lưu vào <b>context</b>.</td>
-                    <td><spec>
-- Trả về <b>false</b> nếu không match.
-- <b>expect</b>: string hoặc regex.
-- <b>match_index</b>: vị trí nhóm regex.
-- <b>replace</b>: dùng regex.
-                    </spec></td>
+                    <td>
+                        <spec>
+                            - Trả về <b>false</b> nếu không match.
+                            - <b>expect</b>: string hoặc regex.
+                            - <b>match_index</b>: vị trí nhóm regex.
+                            - <b>replace</b>: dùng regex.
+                        </spec>
+                    </td>
                 </tr>
 
                 <tr>
@@ -690,9 +692,11 @@ Trả về false nếu không thành công.
                 </pre>
                     </td>
                     <td>true</td>
-                    <td><pre>
+                    <td>
+                        <pre>
 Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call iphonesubinfo 3 i32 0</b>
-                    </pre></td>
+                    </pre>
+                    </td>
                     <td>-</td>
                 </tr>
 
@@ -731,9 +735,11 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
 
                 <tr>
                     <td><b>func.check_com_device_exist</b></td>
-                    <td><pre>
+                    <td>
+                        <pre>
 <b>- com_name:</b> tên cổng COM cần kiểm tra.
-                    </pre></td>
+                    </pre>
+                    </td>
                     <td>true false</td>
                     <td>
                         Kiểm tra cổng COM có xuất hiện trên Device Manager hay không.
@@ -767,7 +773,8 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
                     </td>
                     <td>true false</td>
                     <td>
-                        Thực hiện kiểm tra logic theo biểu thức điều kiện. (Phương thức cũ – khuyến nghị dùng các hàm bên dưới)
+                        Thực hiện kiểm tra logic theo biểu thức điều kiện. (Phương thức cũ – khuyến nghị dùng các hàm
+                        bên dưới)
                     </td>
                     <td>
                         - Trả về <b>false</b> nếu lệnh CMD lỗi hoặc timeout.<br>
@@ -787,18 +794,22 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
                     <td>
                         Kiểm tra điều kiện <b>source == expect</b>.
                     </td>
-                    <td><pre>
+                    <td>
+                        <pre>
 - Chỉ dùng cho <b>giá trị số</b>.
 - So sánh chuỗi dùng <b>func.string_match</b>.
-                    </pre></td>
+                    </pre>
+                    </td>
                 </tr>
 
                 <tr>
                     <td><b>if.is_greater_than</b></td>
-                    <td><pre>
+                    <td>
+                        <pre>
 <b>- source:</b> giá trị cần so sánh.
 <b>- lower_limit:</b> giá trị so sánh.
-                    </pre></td>
+                    </pre>
+                    </td>
                     <td>true false</td>
                     <td>
                         Kiểm tra điều kiện <b>source &gt; lower_limit</b>.
@@ -808,10 +819,12 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
 
                 <tr>
                     <td><b>if.is_greater_than_or_equal</b></td>
-                    <td><pre>
+                    <td>
+                        <pre>
 <b>- source:</b> giá trị cần so sánh.
 <b>- lower_limit:</b> giá trị so sánh.
-                    </pre></td>
+                    </pre>
+                    </td>
                     <td>true false</td>
                     <td>
                         Kiểm tra điều kiện <b>source &gt;= lower_limit</b>.
@@ -821,10 +834,12 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
 
                 <tr>
                     <td><b>if.is_less_than</b></td>
-                    <td><pre>
+                    <td>
+                        <pre>
 <b>- source:</b> giá trị cần so sánh.
 <b>- upper_limit:</b> giá trị so sánh.
-                    </pre></td>
+                    </pre>
+                    </td>
                     <td>true false</td>
                     <td>
                         Kiểm tra điều kiện <b>source &lt; upper_limit</b>.
@@ -880,9 +895,11 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
             <tbody>
                 <tr>
                     <td><b>atmel.AUTO</b></td>
-                    <td><pre>
+                    <td>
+                        <pre>
 - working_path: đường dẫn chương trình <b>AtmelSecureAccess</b>
-                    </pre></td>
+                    </pre>
+                    </td>
                     <td>PASS / FAIL</td>
                     <td>
                         Sử dụng tool <b>AtmelSecureAccess</b> để flash key vào sản phẩm.
@@ -896,11 +913,13 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
 
                 <tr>
                     <td><b>icimei.AUTO</b></td>
-                    <td><pre>
+                    <td>
+                        <pre>
 - working_path: đường dẫn thư mục chứa chương trình.
 - comport: cổng COM dùng để ghi IMEI.
 - imei: IMEI cần ghi (độ dài 15 số).
-                    </pre></td>
+                    </pre>
+                    </td>
                     <td>PASS / FAIL</td>
                     <td>
                         Sử dụng tool <b>icimei.exe</b> để ghi IMEI vào sản phẩm.
@@ -913,17 +932,20 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
 
                 <tr>
                     <td><b>icimei.auto</b></td>
-                    <td><pre>
+                    <td>
+                        <pre>
 - working_path: đường dẫn thư mục chứa chương trình.
 - comport: cổng COM dùng để ghi IMEI.
 - imei: IMEI cần ghi (độ dài 15 số).
-                    </pre></td>
+                    </pre>
+                    </td>
                     <td>true / false</td>
                     <td>
                         Tương tự <b>icimei.AUTO</b> nhưng hỗ trợ luồng xử lý <b>on_success</b> và <b>on_fail</b>.
                     </td>
                     <td>
-                        - Chỉ các lỗi <b>ICIMEI_TIMEOUT</b> và <b>ICIMEI_WRITE_IMEI_FAIL</b> mới trả về <b>true / false</b>.<br>
+                        - Chỉ các lỗi <b>ICIMEI_TIMEOUT</b> và <b>ICIMEI_WRITE_IMEI_FAIL</b> mới trả về <b>true /
+                            false</b>.<br>
                         - Các lỗi khác sẽ trả về <b>FAIL</b>.<br>
                         - Sản phẩm phải ở <b>chế độ AT</b>.
                     </td>
@@ -931,12 +953,14 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
 
                 <tr>
                     <td><b>jlink.AUTO</b></td>
-                    <td><pre>
+                    <td>
+                        <pre>
 <b>- working_path: </b>đường dẫn chương trình JLink.
 <b>- project_path: </b> đường dẫn file project.
 <b>- flash_file_path: </b> đường dẫn file `.bin`.
 <b>- usb_sn: </b> serial number của JLink.
-                    </pre></td>
+                    </pre>
+                    </td>
                     <td>PASS / FAIL</td>
                     <td>
                         Sử dụng tool <b>JFlash</b> để flash bootloader vào sản phẩm.
@@ -972,29 +996,35 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
 
                 <tr>
                     <td><b>mt.AUTO</b></td>
-                    <td><pre>
+                    <td>
+                        <pre>
 <b>- working_path:</b> thư mục làm việc.
 <b>- exe_name:</b> tên file thực thi.
 <b>- ict_sn_01:</b> serial board 1.
 <b>- ict_sn_02:</b> serial board 2.
-                    </pre></td>
+                    </pre>
+                    </td>
                     <td>PASS / FAIL</td>
                     <td>
                         Tự động chạy tool <b>ManufacturingTool</b> với các tham số được chỉ định.
                     </td>
-                    <td><pre>
+                    <td>
+                        <pre>
 - exe_name thường là <b>PCBA_tests.exe</b>.<br>
 - ict_sn_* không dùng thì đặt <b>~</b>.<br>
 - Có thể dùng <b>$context</b> làm input.<br>
 - Nên kết hợp với các method <b>mt.check*</b> để kiểm tra kết quả.
-                    </pre></td>
+                    </pre>
+                    </td>
                 </tr>
 
                 <tr>
                     <td><b>mt.check_log</b></td>
-                    <td><pre>
+                    <td>
+                        <pre>
 <b>- expect:</b> chuỗi hoặc biểu thức mong đợi
-                    </pre></td>
+                    </pre>
+                    </td>
                     <td>true / false</td>
                     <td>
                         Kiểm tra chuỗi mong đợi có xuất hiện trong log của tool MT hay không.
@@ -1007,10 +1037,12 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
 
                 <tr>
                     <td><b>mt.check_board_log</b></td>
-                    <td><pre>
+                    <td>
+                        <pre>
 <b>- board_id:</b> ID của board.
 <b>- expect:</b> chuỗi mong đợi.
-                    </pre></td>
+                    </pre>
+                    </td>
                     <td>true / false</td>
                     <td>
                         Kiểm tra log của board cụ thể trong tool MT.
@@ -1023,10 +1055,12 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
 
                 <tr>
                     <td><b>mt.check_tasklist</b></td>
-                    <td><pre>   
+                    <td>
+                        <pre>
 <b>- board_id:</b> ID của board.
 <b>- expect:</b> chuỗi mong đợi.
-                    </pre></td>
+                    </pre>
+                    </td>
                     <td>true / false</td>
                     <td>
                         Kiểm tra tasklist của board trong tool MT.
@@ -1039,13 +1073,15 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
 
                 <tr>
                     <td><b>pms.AUTO</b></td>
-                    <td><pre>   
+                    <td>
+                        <pre>
 <b>- working_path: </b>
 <b>- exe_name: </b>
 <b>- bt_mac: </b>
 <b>- wifi_mac: </b>
 <b>- eth_mac: </b>
-                    </pre></td>
+                    </pre>
+                    </td>
                     <td>PASS / FAIL</td>
                     <td>
                         Tự động chạy tool <b>PMS Simulation</b>.
@@ -1105,17 +1141,16 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
                 <tr>
                     <td><b>qwit.AUTO</b></td>
                     <td>
-                        - working_path<br>
-                        - exe_name<br>
-                        - imei (15 số)
+                        <b>- working_path:</b><br>
+                        <b>- exe_name:</b><br>
+                        <b>- imei:</b> (15 số)
                     </td>
                     <td>PASS / FAIL</td>
                     <td>
                         Ghi IMEI bằng tool <b>Quectel_Write_IMEI_OFFLINE</b>.
                     </td>
                     <td>
-                        - Mặc định exe_name:
-                        <b>Quectel_Write_IMEI_OFFLINE_V1.8.1.exe</b><br>
+                        - Mặc định exe_name: <b>Quectel_Write_IMEI_OFFLINE_V1.8.1.exe</b><br>
                         - Sản phẩm phải ở chế độ AT.
                     </td>
                 </tr>
@@ -1123,10 +1158,10 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
                 <tr>
                     <td><b>vtp.AUTO</b></td>
                     <td>
-                        - working_path<br>
-                        - exe_name<br>
-                        - xml_name<br>
-                        - timeout
+                        <b>- working_path:</b><br>
+                        <b>- exe_name:</b><br>
+                        <b>- xml_name:</b><br>
+                        <b>- timeout:</b>
                     </td>
                     <td>PASS / FAIL</td>
                     <td>
@@ -1155,10 +1190,10 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
                 <tr>
                     <td><b>cmd.execute</b></td>
                     <td>
-                        - name: tên định danh của lệnh CMD<br>
-                        - command: lệnh CMD cần thực thi<br>
-                        - working_path: thư mục thực thi lệnh (tuỳ chọn)<br>
-                        - timeout: thời gian chờ tối đa (giây)
+                        <b>- name:</b> tên định danh của lệnh CMD<br>
+                        <b>- command:</b> lệnh CMD cần thực thi<br>
+                        <b>- working_path:</b> thư mục thực thi lệnh (tuỳ chọn)<br>
+                        <b>- timeout:</b> thời gian chờ tối đa (giây)
                     </td>
                     <td>true / false</td>
                     <td>
@@ -1167,10 +1202,9 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
                     <td>
                         - Trả về <b>false</b> nếu lệnh thực thi lỗi hoặc vượt quá <b>timeout</b>.<br>
                         - Trả về <b>true</b> nếu lệnh kết thúc thành công.<br>
-                        - Log của lệnh được lưu vào <b>context</b> với key:
-                        <b>CMD[&lt;name&gt;][log]</b>.<br>
-                        - Có thể dùng log này cho các bước kiểm tra tiếp theo
-                        (ví dụ: <b>if</b>, <b>func.string_match</b>, …).
+                        - Log của lệnh được lưu vào context với key: <b>CMD[{name}][log]</b>.<br>
+                        - Có thể dùng log này cho các bước kiểm tra tiếp theo (ví dụ: <b>if</b>,
+                        <b>func.string_match</b>, …).
                     </td>
                 </tr>
             </tbody>
@@ -1217,10 +1251,8 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
                     </td>
                     <td>
                         - Trả về <b>false</b> nếu không tìm thấy.<br>
-                        - <b>wait_string</b>, <b>expect</b>: dùng string hoặc
-                        <b>re_&lt;expression&gt;</b> (regex).<br>
-                        - <b>save_image_with_name</b>: lưu ảnh OCR đã xử lý,
-                        không lưu thì để <b>~</b>.
+                        - <b>wait_string</b>, <b>expect</b>: dùng string hoặc `re_expression`.<br>
+                        - <b>save_image_with_name</b>: lưu ảnh OCR đã xử lý, không lưu thì để <b>~</b>.
                     </td>
                 </tr>
 
@@ -1228,23 +1260,21 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
                     <td><b>cam.get_ocr_string</b></td>
                     <td>
                         <pre>
-<b>- wait_string:</b> chuỗi OCR mong đợi
-<b>- timeout:</b> thời gian chờ (giây)
-<b>- save_image_with_name:</b> tên file lưu ảnh OCR
-<b>- var_name:</b> tên biến lưu vào context
+<b>- wait_string:</b> chuỗi OCR mong đợi.
+<b>- timeout:</b> thời gian chờ (giây).
+<b>- save_image_with_name:</b> tên file lưu ảnh OCR.
+<b>- var_name:</b> tên biến lưu vào context.
                 </pre>
                     </td>
                     <td>true / false</td>
                     <td>
-                        Đọc text từ ảnh camera, chờ <b>wait_string</b> xuất hiện,
-                        sau đó lưu chuỗi vào <b>context</b> với tên <b>var_name</b>.
+                        Đọc text từ ảnh camera, chờ <b>wait_string</b> xuất hiện, sau đó lưu chuỗi vào <b>context</b>
+                        với tên <b>var_name</b>.
                     </td>
                     <td>
                         - Trả về <b>false</b> nếu không tìm thấy.<br>
-                        - <b>wait_string</b>: dùng string hoặc
-                        <b>re_&lt;expression&gt;</b> (regex).<br>
-                        - <b>save_image_with_name</b>: lưu ảnh OCR đã xử lý,
-                        không lưu thì để <b>~</b>.
+                        - <b>wait_string</b>: dùng string hoặc `re_expression`<br>
+                        - <b>save_image_with_name</b>: lưu ảnh OCR đã xử lý, không lưu thì để <b>~</b>.
                     </td>
                 </tr>
             </tbody>
