@@ -346,6 +346,20 @@
                 </tr>
 
                 <tr>
+                    <td><b>com.send_bytes</b></td>
+                    <td>
+                        <pre>
+<b>- name: </b> tên định danh.
+<b>- command: </b> chuỗi gửi.
+<b>- sleep: </b> thời gian delay sau khi gửi (s)
+                    </pre>
+                    </td>
+                    <td>true</td>
+                    <td>Gửi một chuỗi dạng bytes đến cổng COM.</td>
+                    <td>- chuỗi dạng hex ví dụ: "0A 1B 2C"</td>
+                </tr>
+
+                <tr>
                     <td><b>com.send_string</b></td>
                     <td>
                         <pre>
@@ -358,6 +372,7 @@
                     <td>Gửi một chuỗi đến cổng COM.</td>
                     <td>- Gửi enter bằng cách sử dụng `\r\n`</td>
                 </tr>
+
 
                 <tr>
                     <td><b>com.send_wait</b></td>
