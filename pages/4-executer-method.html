@@ -614,6 +614,7 @@ Trả về false nếu không thành công.
 <b>- source:</b> nguồn thời gian (pc | mes).
 <b>- format:</b> định dạng thời gian (theo C#).
 <b>- var_name:</b> tên biến lưu vào context.
+<b>- add_hours:</b> số giờ cần cộng thêm (có thể âm).
                 </pre>
                     </td>
                     <td>true</td>
@@ -621,7 +622,8 @@ Trả về false nếu không thành công.
                     <td>
                         - Định dạng thời gian theo chuẩn C# DateTime.<br>
                         - Ví dụ: <b>ddMMyyyyHHmmss</b><br>
-                        - dùng cho các trạm cần ghi datetime.
+                        - dùng cho các trạm cần ghi datetime.<br>
+                        - <b>add_hours</b>: số giờ cần cộng thêm (có thể âm). Ví dụ giờ MES đang lấy theo VN là +7, nên nếu dùng giờ UTC sẽ cần để giá trị là -7.
                     </td>
                 </tr>
 
