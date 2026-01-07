@@ -373,6 +373,20 @@
                     <td>- Gửi enter bằng cách sử dụng `\r\n`</td>
                 </tr>
 
+                <tr>
+                    <td><b>com.send_chars</b></td>
+                    <td>
+                        <pre>
+<b>- name: </b> tên định danh.
+<b>- command: </b> chuỗi gửi.
+<b>delay: </b> thời gian delay giữa các ký tự (s). Dùng 0.01 là 10ms
+<b>- sleep: </b> thời gian delay sau khi gửi (s)
+                    </pre>
+                    </td>
+                    <td>true</td>
+                    <td>Gửi một chuỗi đến cổng COM.</td>
+                    <td>- Gửi enter bằng cách sử dụng `\r\n`</td>
+                </tr>
 
                 <tr>
                     <td><b>com.send_wait</b></td>
@@ -590,6 +604,24 @@ Trả về false nếu không thành công.
 - Giúp xác định lỗi do MES không trả dữ liệu.<br>
 - Không bắt buộc phải dùng.
                     </pre>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>func.get_current_datetime</b></td>
+                    <td>
+                        <pre>
+<b>- source:</b> nguồn thời gian (pc | mes).
+<b>- format:</b> định dạng thời gian (theo C#).
+<b>- var_name:</b> tên biến lưu vào context.
+                </pre>
+                    </td>
+                    <td>true</td>
+                    <td>Lấy thời gian (PC|MES) và lưu vào context dạng string.</td>
+                    <td>
+                        - Định dạng thời gian theo chuẩn C# DateTime.<br>
+                        - Ví dụ: <b>ddMMyyyyHHmmss</b><br>
+                        - dùng cho các trạm cần ghi datetime.
                     </td>
                 </tr>
 
