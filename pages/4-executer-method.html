@@ -32,10 +32,10 @@
                     </td>
                     <td>PASS</td>
                     <td>
-                        Dùng để kết thúc test_item với kết quả PASS. Bỏ qua các bước tiếp theo trong test_item
+                        Dùng để kết thúc test_item với kết quả PASS.
                     </td>
                     <td>
-                        - Nếu test_item có lower_limit hoặc upper_limit là
+                        - Nếu test_item có lower_limit và upper_limit là
                         số, sẽ tự check test_item_value với limit,
                         nếu quá limit sẽ trả về {tên item}_TO_LOW hoặc tên {item}_TO_HIGH
                     </td>
@@ -44,15 +44,14 @@
                     <td><b>return.FAIL</b></td>
                     <td>
                         <pre>
-<b>- error_code:</b> tên lỗi
-<b>- more_infomation:</b> chi tiết, có thể bỏ qua
-<b>- test_item_value:</b>giá trị trả về, có thể bỏ qua
+<b>- error_code:</b> tên lỗi.
+<b>- more_infomation:</b> chi tiết, có thể bỏ qua.
+<b>- test_item_value:</b> giá trị trả về, có thể bỏ qua.
                         </pre>
                     </td>
                     <td>FAIL</td>
                     <td>
-                        Dùng để kết thúc test_item với kết quả FAIL và ghi mã lỗi. Bỏ qua các bước tiếp theo trong
-                        test_item.
+                        Dùng để kết thúc test_item với kết quả FAIL và ghi mã lỗi.
                     </td>
                     <td>Mã lỗi nên đề là UPPER_CASE_WITH_UNDERSCORES.</td>
                 </tr>
@@ -93,16 +92,6 @@
                         Lấy giá trị CSN của MBSNO từ MES và lưu vào context với tên MES[csn]
                     </td>
                     <td>Chế độ OFFLINE sẽ lỗi</td>
-                </tr>
-                <tr>
-
-                    <td><b>mes.GET_CONTROL_TABLE</b></td>
-                    <td>~</td>
-                    <td>PASS FAIL</td>
-                    <td>Lấy thông tin guankongbiao từ MES và lưu vào context lần lượt với tên
-                        MES[{tên biến}]
-                    </td>
-                    <td>Chế độ OFFLINE sẽ lỗi. Liên hệ với MES để lấy các trường thông tin cần thiết.</td>
                 </tr>
                 <tr>
                     <td><b>mes.GET_PTID</b></td>
@@ -407,7 +396,7 @@
                         <pre>
 <b>- name: </b> tên định danh.
 <b>- command: </b> chuỗi gửi.
-<b>delay: </b> thời gian delay giữa các ký tự (s). Dùng 0.01 là 10ms
+<b>- delay: </b> thời gian delay giữa các ký tự (s). Dùng 0.01 là 10ms
 <b>- sleep: </b> thời gian delay sau khi gửi (s)
                     </pre>
                     </td>
@@ -529,18 +518,6 @@ Trả về false nếu không thành công.
             </thead>
             <tbody>
                 <tr>
-                    <td><b>func.sleep</b></td>
-                    <td>
-                        <pre>
-<b>- time:</b> thời gian tạm dừng (s).
-                </pre>
-                    </td>
-                    <td>true</td>
-                    <td>Tạm dừng thực thi trong một khoảng thời gian.</td>
-                    <td>-</td>
-                </tr>
-
-                <tr>
                     <td><b>dialog.show</b></td>
                     <td>
                         <pre>
@@ -618,6 +595,17 @@ Trả về false nếu không thành công.
             </thead>
             <tbody>
                 <tr>
+                    <td><b>func.sleep</b></td>
+                    <td>
+                        <pre>
+<b>- time:</b> thời gian tạm dừng (s).
+                </pre>
+                    </td>
+                    <td>true</td>
+                    <td>Tạm dừng thực thi trong một khoảng thời gian.</td>
+                    <td>-</td>
+                </tr>
+                <tr>
                     <td><b>func.check_context_key_exist</b></td>
                     <td>
                         <pre>
@@ -632,26 +620,6 @@ Trả về false nếu không thành công.
 - Giúp xác định lỗi do MES không trả dữ liệu.<br>
 - Không bắt buộc phải dùng.
                     </pre>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>func.get_current_datetime</b></td>
-                    <td>
-                        <pre>
-<b>- source:</b> nguồn thời gian (pc | mes).
-<b>- format:</b> định dạng thời gian (theo C#).
-<b>- var_name:</b> tên biến lưu vào context.
-<b>- add_hours:</b> số giờ cần cộng thêm (có thể âm).
-                </pre>
-                    </td>
-                    <td>true</td>
-                    <td>Lấy thời gian (PC|MES) và lưu vào context dạng string.</td>
-                    <td>
-                        - Định dạng thời gian theo chuẩn C# DateTime.<br>
-                        - Ví dụ: <b>ddMMyyyyHHmmss</b><br>
-                        - dùng cho các trạm cần ghi datetime.<br>
-                        - <b>add_hours</b>: số giờ cần cộng thêm (có thể âm). Ví dụ giờ MES đang lấy theo VN là +7, nên nếu dùng giờ UTC sẽ cần để giá trị là -7.
                     </td>
                 </tr>
 
@@ -687,6 +655,27 @@ Trả về false nếu không thành công.
                     <td>Kiểm tra ngày có khớp với ngày hiện tại hay không.</td>
                     <td>
                         - Định dạng thời gian theo chuẩn C# DateTime.
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td><b>func.get_current_datetime</b></td>
+                    <td>
+                        <pre>
+<b>- source:</b> nguồn thời gian (pc | mes).
+<b>- format:</b> định dạng thời gian (theo C#).
+<b>- var_name:</b> tên biến lưu vào context.
+<b>- add_hours:</b> số giờ cần cộng thêm (có thể âm).
+                </pre>
+                    </td>
+                    <td>true</td>
+                    <td>Lấy thời gian (PC|MES) và lưu vào context dạng string.</td>
+                    <td>
+                        - Định dạng thời gian theo chuẩn C# DateTime.<br>
+                        - Ví dụ: <b>ddMMyyyyHHmmss</b><br>
+                        - dùng cho các trạm cần ghi datetime.<br>
+                        - <b>add_hours</b>: số giờ cần cộng thêm (có thể âm). Ví dụ giờ MES đang lấy theo VN là +7, nên
+                        nếu dùng giờ UTC sẽ cần để giá trị là -7.
                     </td>
                 </tr>
 
@@ -773,6 +762,22 @@ Trả về false nếu không thành công.
                         <pre>
 Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call iphonesubinfo 3 i32 0</b>
                     </pre>
+                    </td>
+                    <td>-</td>
+                </tr>
+
+                <tr>
+                    <td><b>func.cm5_capture_image</b></td>
+                    <td>
+                        <pre>
+<b>- camera_name:</b> Chụp bằng camera trước hoặc sau. Chọn <i>front | back.</i>
+<b>- picture_name:</b> Tên ảnh sẽ lưu. 
+<b>- working_path:</b> Thư mục adb tool.
+                </pre>
+                    </td>
+                    <td>true|false</td>
+                    <td>
+                        Sẽ chạy 1 tập hợp lệnh để chụp ảnh và copy ảnh vào thư mục log.
                     </td>
                     <td>-</td>
                 </tr>
@@ -1262,6 +1267,7 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
                     <td>
                         - Nên cấu hình để tool VTP tự tải.<br>
                         - Đảm bảo <b>SN_LENGTH = 14</b> trong cấu hình VTP.
+                        - log vtp sẽ được lưu ở <b>contextvtp[document_log]</b>.
                     </td>
                 </tr>
             </tbody>

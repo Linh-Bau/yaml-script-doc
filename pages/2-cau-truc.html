@@ -11,14 +11,16 @@
     <main>
         <h1 id="cau-truc">Cấu trúc script</h1>
         <p>Giới thiệu cấu trúc tổng thể của một file YAML script, các trường bắt buộc và ví dụ mẫu.</p>
-        <pre><code class="language-yaml">
+        <pre>
+            <code class="language-yaml">
 script:
   mes_defect_code: ~
   test_environments: ~ 
   test_configurations: ~
   test_sequences: ~
   test_targets: ~ 
-        </code></pre>
+            </code>
+        </pre>
         <p><b>File script.yaml bao gồm 5 phần chính:</b></p>
         <ul>
             <li><b>mes_defect_code:</b> Khai báo các mã lỗi dùng chung trong MES.</li>
@@ -87,6 +89,7 @@ script:
       to: "./setup/vtp"
       extract_to: ~
 </code></pre>
+
         <table>
             <thead>
                 <tr>
@@ -201,13 +204,40 @@ script:
                 </tr>
             </tbody>
         </table>
+
+        <b>Danh sách flags:</b>
+        <table>
+            <thead>
+                <tr>
+                    <th>Cờ</th>
+                    <th>Ý nghĩa</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>enable_camera_window</td>
+                    <td>Trạm camera vision</td>
+                </tr>
+                <tr>
+                    <td>skip_upload_defect_code</td>
+                    <td>Bỏ upload lỗi nếu test FAIL (Trường hợp k có defect_code cũng sẽ k gửi.)</td>
+                </tr>
+                <tr>
+                    <td>fixture_control</td>
+                    <td>Thêm fixture_id trước khi test.</td>
+                </tr>
+            </tbody>
+        </table>
+
+
         <h2>3 - test_configurations</h2>
         <p><b>Mô tả:</b> Cấu hình test cho từng script, từng slot.<br>
             <b>Type:</b> Danh sách object
         </p>
-        <pre><code class="language-yaml">script:
+        <pre><code class="language-yaml">
+script:
   test_configurations:
-    - &t650c_configuration
+    - &cf_t650c
       flags: ~
       script_information:
         station_name: Tên trạm
@@ -215,15 +245,16 @@ script:
         script_version: "1.0.0.0"
       script_configuration:
         general:
-        working_dir: "C:\\Test\\T650C"
-      fixture_configuration:
-        - fixture_1:
-            port: "COM3"
-            baud_rate: "9600"
-        - fixture_2:
-            port: "COM4"
-            baud_rate: "115200"
+          working_dir: "C:\\Test\\T650C"
+        fixture_configuration:
+          - fixture_1:
+              port: "COM3"
+              baud_rate: "9600"
+          - fixture_2:
+              port: "COM4"
+              baud_rate: "115200"
 </code></pre>
+
         <table>
             <thead>
                 <tr>
@@ -300,20 +331,25 @@ script:
                 </tr>
             </tbody>
         </table>
+
         <h2>4 - test_targets</h2>
         <p><b>Mô tả:</b> Configure các script tương ứng với các MODEL_ID khác nhau.<br>
             <b>Type:</b> Danh sách object
         </p>
-        <pre><code class="language-yaml">test_targets:
+        <pre><code class="language-yaml">
+test_targets:
   - model_id: VN6503ABMX0B | VN6503ABMX01
     environment: *env_saa
-    test_config: *t650_saa
-    test_sequence: *t650c_test_sequence
+    test_config: *cf_t650_saa
+    test_sequence: *seq
+
   - model_id: VN6503ABMX0C
     environment: *env_naa
-    test_config: *t650_naa
-    test_sequence: *t650c_test_sequence
+    test_config: *cf_t650_naa
+    test_sequence: *seq
+
 </code></pre>
+
         <table>
             <thead>
                 <tr>
@@ -368,7 +404,7 @@ script:
             <b>Type:</b> Danh sách object
         </p>
         <pre><code class="language-yaml">test_sequences:
-  - &t650c_test_sequence
+  - &seq_t650c
     test_items:
       - name: CHECK_MBS_NO
         lower_limit: ~
