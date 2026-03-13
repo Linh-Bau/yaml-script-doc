@@ -502,6 +502,22 @@ Trả về false nếu không thành công.
                         `check_log` phía trên.
                     </td>
                 </tr>
+
+                <tr>
+                    <td><b>com.wait_list_string</b></td>
+                    <td>
+                        <pre>
+<b>- name: </b> tên định danh.
+<b>- expect_strings:</b> danh sách các chuỗi mong đợi. ngăn cách bởi dấu |
+<b>- var_name:</b> tên giá trị biến sẽ lưu.
+<b>- timeout: </b> thời gian chờ (s).
+                    </pre>
+                    </td>
+                    <td>true</td>
+                    <td>
+- Chờ 1 chuỗi xuất hiện trong danh sách các chuỗi mong đợi. Nếu chuỗi bắt được thì sẽ lưu vào context với tên là 'var_name', giá trị là vị trí chuỗi trong danh sách đấy (0,1,2 ...).Nếu k bắt được chuỗi nào thì nó sẽ trả vê on_fail.
+                    </td>
+                </tr>
             </tbody>
         </table>
 
@@ -1224,6 +1240,8 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
                         <b>- working_path:</b> thư mục QFIL<br>
                         <b>- comport:</b> số slot (1,2,3) hoặc <b>~</b><br>
                         <b>- image_path:</b> thư mục chứa file <b>.mbn</b><br>
+                        <b>- raw_program:</b> [Tuỳ chọn - có thể bỏ qua, mặc định rawprogram_unsparse.xml] Tên file raw, lấy cả .xml</b><br>
+                        <b>- patch:</b> [Tuỳ chọn - có thể bỏ qua, mặc định patch0.xml] Tên file patch, lấy cả .xml</b><br>
                         <b>- timeout:</b> thời gian chờ (giây)
                     </td>
                     <td>PASS / FAIL</td>
@@ -1232,6 +1250,7 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
                     </td>
                     <td>
                         - Nên cấu hình để QFIL tự tải về và sử dụng bản đó.
+                        - <b>[CHÚ Ý] Một vài IMAGE của khách hàng cần phải sửa lấy đúng tên raw_program và patch, nếu không config để load tự động có thể sai IMAGE</b>
                     </td>
                 </tr>
 
