@@ -10,8 +10,17 @@
 <body>
     <main>
         <h1 id="executers-and-methods">Executer &amp; Method</h1>
+        <ul>Bổ xung quy tắc đặt tên cho các method để rõ vai trò và kết quả trả về:</ul>
+        <li><b>UPPER_CASE</b>Các item này kết thúc luôn test item này. Mọi item bên trong <i>on_success</i>,
+            <i>on_fail</i>, bên dưới sẽ không được thực thi.</li>
+        <li><b>Mix_case</b>Các item này là các method mà chỉ có success hoặc sẽ FAIL luôn. Không thưc thi <i>on_fail</i>
+        </li>
+        <li><b>lower_case</b>Các item này sẽ thực thi và có kết quả test với <i>on_success</i> hoặc <i>on_fail</i>.</li>
+        <p>Vì để tương thích với các hàm cũ, các method tên <i>lower_case</i> sẽ vẫn được giữ lại, nhưng nếu viết mới
+            nên ưu tiên sử dụng <i>UpperCamelCase</i> để dễ đọc và bảo trì hơn.</p>
         <p>Bảng các executer và method hỗ trợ, mô tả chi tiết từng method.</p>
-        <h2>RETURN: điều khiển kết quả trả về</h2>
+        
+        <h2>return: điều khiển kết quả trả về</h2>
         <table class="doc-table">
             <thead>
                 <tr>
@@ -54,6 +63,75 @@
                         Dùng để kết thúc test_item với kết quả FAIL và ghi mã lỗi.
                     </td>
                     <td>Mã lỗi nên đề là UPPER_CASE_WITH_UNDERSCORES.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>ni: gửi command/query cho thiết bị (Yêu cầu cài NI)</h2>
+        <table class="doc-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>with</th>
+                    <th>Kết quả</th>
+                    <th>Mô tả</th>
+                    <th>Chú ý</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>ni.is_installed</b></td>
+                    <td>
+                    </td>
+                    <td>true / false</td>
+                    <td>
+                        Kiểm tra xem NI đã được cài đặt trên máy hay chưa
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>ni.show_resources</b></td>
+                    <td>
+                    </td>
+                    <td>true / false</td>
+                    <td>
+                        Hiển thị các resource trên máy. Nếu NI không tìm được resource nào thì sẽ trả về false.
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><b>ni.send_command</b></td>
+                    <td>
+                        <pre>
+<b>- resource:</b> tên resource. Có thể dùng regex để match tự động với resource.
+<b>- query:</b> query.
+                        </pre>
+                    </td>
+                    <td>true / false</td>
+                    <td>
+                        query lấy theo lệnh test trên NI. query sẽ được tự động thêm \r\n ở cuối.
+                    </td>
+                    <td>Resource match với GPIB ví dụ GPIB0::14::INSTR, có thể dùng GPIB0::\d+::INSTR (khớp với GPIB đã kết nỗi, bất kể cổng)</td>
+                </tr>
+                <tr>
+                    <td><b>ni.measure</b></td>
+                    <td>
+                        <pre>
+<b>- resource:</b> tên resource. Có thể dùng regex để match tự động với resource.
+<b>- query:</b> query.
+<b>- var_name:</b> tên biến để lưu kết quả.
+<b>- base:</b> giá trị cơ sở sẽ được cộng vào kết quả.
+<b>- lower_limit:</b> giới hạn dưới.
+<b>- upper_limit:</b> giới hạn trên.
+<b>- unit:</b> đơn vị. (mA, mV, A, V)
+                        </pre>
+                    </td>
+                    <td>true / false</td>
+                    <td>
+                        query gửi lệnh đọc kết quả đo từ thiết bị. Kết quả đo sẽ được lưu vào context với tên var_name, đồng thời sẽ tự động check với limit nếu có, và trả về true/false.
+                    </td>
+                    <td>Resource match với GPIB ví dụ GPIB0::14::INSTR, có thể dùng GPIB0::\d+::INSTR (khớp với GPIB đã kết nỗi, bất kể cổng)</td>
                 </tr>
             </tbody>
         </table>
@@ -276,7 +354,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><b>logger.info</b></td>
+                    <td><b>logger.info | logger.Info</b></td>
                     <td>
                         <pre>
  <b>- message:</b> chuỗi cần log.
@@ -285,580 +363,6 @@
                     <td>true</td>
                     <td>Ghi một thông điệp ở mức INFO vào log.</td>
                     <td>chuỗi có thể là chuỗi tĩnh hoặc sử dụng String Resolve để tạo chuỗi động.</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h2>com: giao tiếp cổng COM</h2>
-        <table class="doc-table">
-            <thead>
-                <tr>
-                    <th>Method</th>
-                    <th>with</th>
-                    <th>Kết quả</th>
-                    <th>Mô tả</th>
-                    <th>Chú ý</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><b>com.open</b></td>
-                    <td>
-                        <pre>
-<b>- name:</b> tên định danh.
-<b>- port:</b> tên cổng.
-<b>- baudrate:</b> tốc độ baud.
-                    </pre>
-                    </td>
-                    <td>true</td>
-                    <td>Mở kết nối đến cổng COM.</td>
-                    <td>tên định danh dùng để tham chiếu cổng COM này trong các lệnh tiếp theo.</td>
-                </tr>
-
-                <tr>
-                    <td><b>com.close</b></td>
-                    <td>
-                        <pre>
-<b>- name:</b> tên định danh.
-                    </pre>
-                    </td>
-                    <td>true</td>
-                    <td>Đóng kết nối đến cổng COM.</td>
-                    <td>- Chương trình sẽ tự đóng cổng COM tự động. Cần dùng khi cần kiểm soát đóng cổng COM để thực
-                        hiện lệnh tiếp theo.
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>com.wait_bytes_count</b></td>
-                    <td>
-                        <pre>
-<b>- name: </b> tên định danh.
-<b>- expect_count: </b> số byte.
-<b>- timeout: </b> thời gian chờ (s).
-                    </pre>
-                    </td>
-                    <td>true false</td>
-                    <td>Chờ đến khi có đủ số byte nhận được từ cổng COM.</td>
-                    <td>Trả về false nếu vượt quá thời gian chờ.</td>
-                </tr>
-
-                <tr>
-                    <td><b>com.wait_string</b></td>
-                    <td>
-                        <pre>
-<b>- name: </b> tên định danh.
-<b>- expect: </b> chuỗi mong đợi.
-<b>- timeout: </b> thời gian chờ (s).
-                    </pre>
-                    </td>
-                    <td>true false</td>
-                    <td>Chờ đến khi nhận được chuỗi mong đợi từ cổng COM.</td>
-                    <td>
-                        <pre>
-- Trả về false nếu vượt quá thời gian chờ.
-- <b>expect</b>: dùng chuỗi string hoặc `re_expression` để khớp với một biểu thức chính quy.
-                        </pre>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>com.send_bytes</b></td>
-                    <td>
-                        <pre>
-<b>- name: </b> tên định danh.
-<b>- command: </b> chuỗi gửi.
-<b>- sleep: </b> thời gian delay sau khi gửi (s)
-                    </pre>
-                    </td>
-                    <td>true</td>
-                    <td>Gửi một chuỗi dạng bytes đến cổng COM.</td>
-                    <td>- chuỗi dạng hex ví dụ: "0A 1B 2C"</td>
-                </tr>
-
-                <tr>
-                    <td><b>com.send_string</b></td>
-                    <td>
-                        <pre>
-<b>- name: </b> tên định danh.
-<b>- command: </b> chuỗi gửi.
-<b>- sleep: </b> thời gian delay sau khi gửi (s)
-                    </pre>
-                    </td>
-                    <td>true</td>
-                    <td>Gửi một chuỗi đến cổng COM.</td>
-                    <td>- Gửi enter bằng cách sử dụng `\r\n`</td>
-                </tr>
-
-                <tr>
-                    <td><b>com.send_chars</b></td>
-                    <td>
-                        <pre>
-<b>- name: </b> tên định danh.
-<b>- command: </b> chuỗi gửi.
-<b>- delay: </b> thời gian delay giữa các ký tự (s). Dùng 0.01 là 10ms
-<b>- sleep: </b> thời gian delay sau khi gửi (s)
-                    </pre>
-                    </td>
-                    <td>true</td>
-                    <td>Gửi một chuỗi đến cổng COM.</td>
-                    <td>- Gửi enter bằng cách sử dụng `\r\n`</td>
-                </tr>
-
-                <tr>
-                    <td><b>com.send_wait</b></td>
-                    <td>
-                        <pre>
-<b>- name: </b> tên định danh.
-<b>- command:</b> chuỗi gửi.
-<b>- retry_times: </b> số lần retry.
-<b>- expect: </b> chuỗi mong đợi.
-<b>- timeout: </b> thời gian chờ (s).
-                        </pre>
-                    </td>
-                    <td>true false</td>
-                    <td>Gửi một chuỗi đến cổng COM và chờ phản hồi mong đợi.</td>
-                    <td>
-                        <pre>
-Trả về false nếu không thành công.
-- <b>expect</b>: dùng chuỗi string hoặc `re_expression` để khớp với một biểu thức chính quy.
-                        </pre>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>com.check_log</b></td>
-                    <td>
-                        <pre>
-<b>- name:</b> tên định danh.
-<b>- expect:</b> chuỗi mong đợi.
-                        </pre>
-                    </td>
-                    <td>true false</td>
-                    <td>Kiểm tra xem chuỗi mong đợi có xuất hiện trong log nhận được từ cổng COM hay không.</td>
-                    <td>
-                        <pre>
-- Trả về false nếu không tìm thấy.
-<b>- expect</b>: dùng chuỗi string hoặc `re_expression` để khớp với một biểu thức chính quy.
-                        </pre>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>com.read_value</b></td>
-                    <td>
-                        <pre>
-<b>- name:</b> tên định danh.
-<b>- expect:</b> chuỗi mong đợi.
-<b>- match_index:</b> index của chuỗi match cần lấy.
-<b>- replace:</b> chuỗi cần thay thế.
-<b>- replace_with:</b> giá trị thay thế.
-<b>- convert:</b> to_lower | to_upper.
-<b>- var_name:</b> tên biến lưu giá trị.
-                    </pre>
-                    </td>
-                    <td>true false</td>
-                    <td>Đọc một giá trị từ log nhận được và lưu vào <b>context</b>.</td>
-                    <td>
-                        <pre>Trả về false nếu không tìm thấy.
-- <b>expect</b>: dùng chuỗi string hoặc `re_expression` để khớp với một biểu thức chính quy.
-- <b>index</b>: vị trí nhóm cần lấy.
-- <b>replace</b>: dùng trực tiếp regex.
-- <b>replace_with</b>: dùng chuỗi string.
-                    </pre>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>com.wait_check</b></td>
-                    <td>
-                        <pre>
-<b>- name:</b> tên định danh.
-<b>- expect_wait:</b>- chuỗi mong đợi.
-<b>- expect_check:</b> chuỗi kiểm tra.
-<b>- timeout:</b> thời gian chờ (s).
-                    </pre>
-                    </td>
-                    <td>true false</td>
-                    <td>Chờ đến khi nhận được chuỗi mong đợi và kiểm tra chuỗi kiểm tra có xuất hiện trong log hay
-                        không.
-                    </td>
-                    <td>
-                        <pre>Trả về false nếu không thành công.
-- <b>expect_wait</b>, <b>expect_check</b>: dùng chuỗi string hoặc `re_expression` để khớp với một biểu thức chính quy.
-                    </pre>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>com.clear_log</b></td>
-                    <td>
-                        <pre>
-<b>- name: </b> tên định danh.
-                    </pre>
-                    </td>
-                    <td>true</td>
-                    <td>- Xóa log tạm của com hiện tại. Thường dùng với `read_value`,
-                        `check_log` phía trên.
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>com.wait_list_string</b></td>
-                    <td>
-                        <pre>
-<b>- name: </b> tên định danh.
-<b>- expect_strings:</b> danh sách các chuỗi mong đợi. ngăn cách bởi dấu |
-<b>- var_name:</b> tên giá trị biến sẽ lưu.
-<b>- timeout: </b> thời gian chờ (s).
-                    </pre>
-                    </td>
-                    <td>true</td>
-                    <td>
-- Chờ 1 chuỗi xuất hiện trong danh sách các chuỗi mong đợi. Nếu chuỗi bắt được thì sẽ lưu vào context với tên là 'var_name', giá trị là vị trí chuỗi trong danh sách đấy (0,1,2 ...).Nếu k bắt được chuỗi nào thì nó sẽ trả vê on_fail.
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h2>dialog: hiển thị hộp thoại</h2>
-        <table class="doc-table">
-            <thead>
-                <tr>
-                    <th>Method</th>
-                    <th>with</th>
-                    <th>Kết quả</th>
-                    <th>Mô tả</th>
-                    <th>Chú ý</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><b>dialog.show</b></td>
-                    <td>
-                        <pre>
-<b>- title:</b> tiêu đề hộp thoại.
-<b>- message:</b> nội dung hiển thị.
-                </pre>
-                    </td>
-                    <td>true</td>
-                    <td>Hiển thị hộp thoại thông báo và chờ người dùng xác nhận <b>OK</b>.</td>
-                    <td>-</td>
-                </tr>
-
-                <tr>
-                    <td><b>dialog.confirm</b></td>
-                    <td>
-                        <pre>
-<b>- title:</b> tiêu đề hộp thoại.
-<b>- message:</b> nội dung hiển thị.
-                </pre>
-                    </td>
-                    <td>true false</td>
-                    <td>
-                        Hiển thị hộp thoại xác nhận và chờ người dùng chọn
-                        <b>YES / OK</b> hoặc <b>NO / Cancel</b>.
-                    </td>
-                    <td>-</td>
-                </tr>
-
-                <tr>
-                    <td><b>dialog.input</b></td>
-                    <td>
-                        <pre>
-<b>- title:</b> tiêu đề hộp thoại.
-<b>- message:</b> nội dung hiển thị.
-<b>- var_name:</b> tên biến lưu giá trị vào <b>context</b>.
-                </pre>
-                    </td>
-                    <td>true</td>
-                    <td>
-                        Hiển thị hộp thoại nhập liệu và lưu giá trị người dùng nhập vào
-                        <b>context</b>.
-                    </td>
-                    <td>-</td>
-                </tr>
-
-                <tr>
-                    <td><b>dialog.show_with_auto_close</b></td>
-                    <td>
-                        <pre>
-<b>- title:</b> tiêu đề hộp thoại.
-<b>- message:</b> nội dung hiển thị.
-<b>- timeout:</b> thời gian hiển thị tối đa (s).
-                </pre>
-                    </td>
-                    <td>true</td>
-                    <td>
-                        Hiển thị hộp thoại thông báo, tự động đóng sau thời gian
-                        <b>timeout</b>.
-                    </td>
-                    <td>-</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h2>func: các hàm tuỳ chỉnh</h2>
-        <table class="doc-table">
-            <thead>
-                <tr>
-                    <th>Method</th>
-                    <th>with</th>
-                    <th>Kết quả</th>
-                    <th>Mô tả</th>
-                    <th>Chú ý</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><b>func.sleep</b></td>
-                    <td>
-                        <pre>
-<b>- time:</b> thời gian tạm dừng (s).
-                </pre>
-                    </td>
-                    <td>true</td>
-                    <td>Tạm dừng thực thi trong một khoảng thời gian.</td>
-                    <td>-</td>
-                </tr>
-                <tr>
-                    <td><b>func.check_context_key_exist</b></td>
-                    <td>
-                        <pre>
-<b>- key:</b> tên key cần kiểm tra trong context.
-                </pre>
-                    </td>
-                    <td>true false</td>
-                    <td>Kiểm tra xem trong context có tồn tại key hay không.</td>
-                    <td>
-                        <pre>
-- Thường dùng khi lấy thông tin từ MES.<br>
-- Giúp xác định lỗi do MES không trả dữ liệu.<br>
-- Không bắt buộc phải dùng.
-                    </pre>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>func.date_time_check</b></td>
-                    <td>
-                        <pre>
-<b>- prod_date_time:</b> thời gian cần so sánh.
-<b>- prod_date_time_format:</b> định dạng thời gian (theo C#).
-<b>- prod_date_time_utc:</b> dùng nếu giờ sản phẩm là UTC.
-<b>- source:</b> nguồn thời gian (pc | mes).
-<b>- tolerance:</b> sai lệch cho phép (s).
-                </pre>
-                    </td>
-                    <td>true false</td>
-                    <td>Kiểm tra thời gian có nằm trong khoảng cho phép hay không.</td>
-                    <td>
-                        - Định dạng thời gian theo chuẩn C# DateTime.<br>
-                        - Ví dụ: <b>dd/MM/yyyy HH:mm:ss</b>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>func.date_check</b></td>
-                    <td>
-                        <pre>
-<b>- prod_date_time:</b> thời gian cần so sánh.
-<b>- prod_date_time_format:</b> định dạng thời gian (theo C#).
-<b>- source:</b> nguồn thời gian (pc | mes).
-                </pre>
-                    </td>
-                    <td>true false</td>
-                    <td>Kiểm tra ngày có khớp với ngày hiện tại hay không.</td>
-                    <td>
-                        - Định dạng thời gian theo chuẩn C# DateTime.
-                    </td>
-                </tr>
-                
-                <tr>
-                    <td><b>func.get_current_datetime</b></td>
-                    <td>
-                        <pre>
-<b>- source:</b> nguồn thời gian (pc | mes).
-<b>- format:</b> định dạng thời gian (theo C#).
-<b>- var_name:</b> tên biến lưu vào context.
-<b>- add_hours:</b> số giờ cần cộng thêm (có thể âm).
-                </pre>
-                    </td>
-                    <td>true</td>
-                    <td>Lấy thời gian (PC|MES) và lưu vào context dạng string.</td>
-                    <td>
-                        - Định dạng thời gian theo chuẩn C# DateTime.<br>
-                        - Ví dụ: <b>ddMMyyyyHHmmss</b><br>
-                        - dùng cho các trạm cần ghi datetime.<br>
-                        - <b>add_hours</b>: số giờ cần cộng thêm (có thể âm). Ví dụ giờ MES đang lấy theo VN là +7, nên
-                        nếu dùng giờ UTC sẽ cần để giá trị là -7.
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>func.string_match</b></td>
-                    <td>
-                        <pre>
-<b>- source:</b> chuỗi nguồn.
-<b>- expect:</b> chuỗi hoặc biểu thức mong đợi.
-                </pre>
-                    </td>
-                    <td>true false</td>
-                    <td>Kiểm tra chuỗi nguồn có chứa giá trị mong đợi hay không.</td>
-                    <td>
-                        - <b>expect</b>: string hoặc `re_expression`</b>.
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>func.read_value</b></td>
-                    <td>
-                        <pre>
-<b>- source:</b> chuỗi nguồn.
-<b>- expect:</b> chuỗi / regex để match.
-<b>- match_index:</b> index nhóm cần lấy.
-<b>- replace:</b> regex cần thay thế.
-<b>- replace_with:</b> chuỗi thay thế.
-<b>- convert:</b> to_lower | to_upper.
-<b>- var_name:</b> tên biến lưu vào context.
-                </pre>
-                    </td>
-                    <td>true false</td>
-                    <td>Đọc giá trị từ log và lưu vào <b>context</b>.</td>
-                    <td>
-                        <spec>
-                            - Trả về <b>false</b> nếu không match.
-                            - <b>expect</b>: string hoặc regex.
-                            - <b>match_index</b>: vị trí nhóm regex.
-                            - <b>replace</b>: dùng regex.
-                        </spec>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>func.reverse_string</b></td>
-                    <td>
-                        <pre>
-<b>- source:</b> chuỗi dữ liệu nguồn.
-<b>- var_name:</b> biến lưu vào context.
-                </pre>
-                    </td>
-                    <td>true</td>
-                    <td>Đảo ngược chuỗi và lưu kết quả vào <b>context</b>.</td>
-                    <td>
-                        - Ví dụ: <b>abcde</b> → <b>edcba</b>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>func.reverse_mac</b></td>
-                    <td>
-                        <pre>
-<b>- source:</b> chuỗi MAC nguồn.
-<b>- var_name:</b> biến lưu vào context.
-                </pre>
-                    </td>
-                    <td>true</td>
-                    <td>Đảo ngược chuỗi MAC đọc từ lệnh AT.</td>
-                    <td>
-                        - Ví dụ: <b>6f5d4e3c2b1a</b> → <b>1a2b3c4d5e6f</b>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>func.get_imei_from_response</b></td>
-                    <td>
-                        <pre>
-<b>- source:</b> chuỗi dữ liệu nguồn.
-<b>- var_name:</b> biến lưu IMEI vào context.
-                </pre>
-                    </td>
-                    <td>true</td>
-                    <td>
-                        <pre>
-Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call iphonesubinfo 3 i32 0</b>
-                    </pre>
-                    </td>
-                    <td>-</td>
-                </tr>
-
-                <tr>
-                    <td><b>func.cm5_capture_image</b></td>
-                    <td>
-                        <pre>
-<b>- camera_name:</b> Chụp bằng camera trước hoặc sau. Chọn <i>front | back.</i>
-<b>- picture_name:</b> Tên ảnh sẽ lưu. 
-<b>- working_path:</b> Thư mục adb tool.
-                </pre>
-                    </td>
-                    <td>true|false</td>
-                    <td>
-                        Sẽ chạy 1 tập hợp lệnh để chụp ảnh và copy ảnh vào thư mục log.
-                    </td>
-                    <td>-</td>
-                </tr>
-
-                <tr>
-                    <td><b>func.cm5_picture_measure</b></td>
-                    <td>
-                        <pre>
-<b>- lower_limit:</b> giá trị dưới.
-<b>- upper_limit:</b> giá trị trên.
-<b>- picture_name:</b> tên file ảnh.
-<b>- golden_sample_folder_path:</b> thư mục GOLDEN SAMPLE.
-                </pre>
-                    </td>
-                    <td>true false</td>
-                    <td>Tính MSE ảnh cho trạm CM5 CAMERA.</td>
-                    <td>
-                        - <b>picture_name</b>: ví dụ <b>FRONT_LIGHT_ON.jpg</b>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>func.generate_imei2_from_imei1</b></td>
-                    <td>
-                        <pre>
-<b>- imei1:</b> giá trị IMEI1 (15 ký tự).
-                </pre>
-                    </td>
-                    <td>true</td>
-                    <td>
-                        Sinh IMEI2 từ IMEI1 và lưu vào <b>context["PROD[imei2]"]</b>.
-                    </td>
-                    <td>
-                        - <b>imei1</b> bắt buộc đủ 15 ký tự.
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>func.check_com_device_exist</b></td>
-                    <td>
-                        <pre>
-<b>- com_name:</b> tên cổng COM cần kiểm tra.
-                    </pre>
-                    </td>
-                    <td>true false</td>
-                    <td>
-                        Kiểm tra cổng COM có xuất hiện trên Device Manager hay không.
-                    </td>
-                    <td>
-                        - Dùng cho UX300.<br>
-                        - Kiểm tra thiết bị dạng <b>USB Serial Device</b>.
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>func.append_text_to_file</b></td>
-                    <td>
-                        <pre>
-<b>- file_path:</b> file cần ghi text.
-<b>- text:</b> nội dung cần thêm vào file. Thêm \r\n để xuống dòng.
-                        </pre>
-                    </td>
-                    <td>true</td>
-                    <td>Ghi nội dung text vào file.</td>
-                    <td></td>
                 </tr>
             </tbody>
         </table>
@@ -992,6 +496,633 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
             </tbody>
         </table>
 
+        <h2>func: các hàm tuỳ chỉnh</h2>
+        <table class="doc-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>with</th>
+                    <th>Kết quả</th>
+                    <th>Mô tả</th>
+                    <th>Chú ý</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>func.sleep | func.Sleep</b></td>
+                    <td>
+                        <pre>
+<b>- time:</b> thời gian tạm dừng (s).
+                </pre>
+                    </td>
+                    <td>true</td>
+                    <td>Tạm dừng thực thi trong một khoảng thời gian.</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td><b>func.check_context_key_exist</b></td>
+                    <td>
+                        <pre>
+<b>- key:</b> tên key cần kiểm tra trong context.
+                </pre>
+                    </td>
+                    <td>true false</td>
+                    <td>Kiểm tra xem trong context có tồn tại key hay không.</td>
+                    <td>
+                        <pre>
+- Thường dùng khi lấy thông tin từ MES.<br>
+- Giúp xác định lỗi do MES không trả dữ liệu.<br>
+- Không bắt buộc phải dùng.
+                    </pre>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>func.date_time_check</b></td>
+                    <td>
+                        <pre>
+<b>- prod_date_time:</b> thời gian cần so sánh.
+<b>- prod_date_time_format:</b> định dạng thời gian (theo C#).
+<b>- prod_date_time_utc:</b> dùng nếu giờ sản phẩm là UTC.
+<b>- source:</b> nguồn thời gian (pc | mes).
+<b>- tolerance:</b> sai lệch cho phép (s).
+                </pre>
+                    </td>
+                    <td>true false</td>
+                    <td>Kiểm tra thời gian có nằm trong khoảng cho phép hay không.</td>
+                    <td>
+                        - Định dạng thời gian theo chuẩn C# DateTime.<br>
+                        - Ví dụ: <b>dd/MM/yyyy HH:mm:ss</b>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>func.date_check</b></td>
+                    <td>
+                        <pre>
+<b>- prod_date_time:</b> thời gian cần so sánh.
+<b>- prod_date_time_format:</b> định dạng thời gian (theo C#).
+<b>- source:</b> nguồn thời gian (pc | mes).
+                </pre>
+                    </td>
+                    <td>true false</td>
+                    <td>Kiểm tra ngày có khớp với ngày hiện tại hay không.</td>
+                    <td>
+                        - Định dạng thời gian theo chuẩn C# DateTime.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>func.get_current_datetime | func.Get_current_datetime</b></td>
+                    <td>
+                        <pre>
+<b>- source:</b> nguồn thời gian (pc | mes).
+<b>- format:</b> định dạng thời gian (theo C#).
+<b>- var_name:</b> tên biến lưu vào context.
+<b>- add_hours:</b> số giờ cần cộng thêm (có thể âm).
+                </pre>
+                    </td>
+                    <td>true</td>
+                    <td>Lấy thời gian (PC|MES) và lưu vào context dạng string.</td>
+                    <td>
+                        - Định dạng thời gian theo chuẩn C# DateTime.<br>
+                        - Ví dụ: <b>ddMMyyyyHHmmss</b><br>
+                        - dùng cho các trạm cần ghi datetime.<br>
+                        - <b>add_hours</b>: số giờ cần cộng thêm (có thể âm). Ví dụ giờ MES đang lấy theo VN là +7, nên
+                        nếu dùng giờ UTC sẽ cần để giá trị là -7.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>func.string_match</b></td>
+                    <td>
+                        <pre>
+<b>- source:</b> chuỗi nguồn.
+<b>- expect:</b> chuỗi hoặc biểu thức mong đợi.
+                </pre>
+                    </td>
+                    <td>true false</td>
+                    <td>Kiểm tra chuỗi nguồn có chứa giá trị mong đợi hay không.</td>
+                    <td>
+                        - <b>expect</b>: string hoặc `re_expression`</b>.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>func.read_value</b></td>
+                    <td>
+                        <pre>
+<b>- source:</b> chuỗi nguồn.
+<b>- expect:</b> chuỗi / regex để match.
+<b>- match_index:</b> index nhóm cần lấy.
+<b>- replace:</b> regex cần thay thế.
+<b>- replace_with:</b> chuỗi thay thế.
+<b>- convert:</b> to_lower | to_upper.
+<b>- var_name:</b> tên biến lưu vào context.
+                </pre>
+                    </td>
+                    <td>true false</td>
+                    <td>Đọc giá trị từ log và lưu vào <b>context</b>.</td>
+                    <td>
+                        <spec>
+                            - Trả về <b>false</b> nếu không match.
+                            - <b>expect</b>: string hoặc regex.
+                            - <b>match_index</b>: vị trí nhóm regex.
+                            - <b>replace</b>: dùng regex.
+                        </spec>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>func.reverse_string | func.Reverse_string</b></td>
+                    <td>
+                        <pre>
+<b>- source:</b> chuỗi dữ liệu nguồn.
+<b>- var_name:</b> biến lưu vào context.
+                </pre>
+                    </td>
+                    <td>true</td>
+                    <td>Đảo ngược chuỗi và lưu kết quả vào <b>context</b>.</td>
+                    <td>
+                        - Ví dụ: <b>abcde</b> → <b>edcba</b>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>func.reverse_mac | func.Reverse_mac</b></td>
+                    <td>
+                        <pre>
+<b>- source:</b> chuỗi MAC nguồn.
+<b>- var_name:</b> biến lưu vào context.
+                </pre>
+                    </td>
+                    <td>true</td>
+                    <td>Đảo ngược chuỗi MAC đọc từ lệnh AT.</td>
+                    <td>
+                        - Ví dụ: <b>6f5d4e3c2b1a</b> → <b>1a2b3c4d5e6f</b>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>func.get_imei_from_response</b></td>
+                    <td>
+                        <pre>
+<b>- source:</b> chuỗi dữ liệu nguồn.
+<b>- var_name:</b> biến lưu IMEI vào context.
+                </pre>
+                    </td>
+                    <td>true</td>
+                    <td>
+                        <pre>
+Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call iphonesubinfo 3 i32 0</b>
+                    </pre>
+                    </td>
+                    <td>-</td>
+                </tr>
+
+                <tr>
+                    <td><b>func.cm5_capture_image</b></td>
+                    <td>
+                        <pre>
+<b>- camera_name:</b> Chụp bằng camera trước hoặc sau. Chọn <i>front | back.</i>
+<b>- picture_name:</b> Tên ảnh sẽ lưu. 
+<b>- working_path:</b> Thư mục adb tool.
+                </pre>
+                    </td>
+                    <td>true|false</td>
+                    <td>
+                        Sẽ chạy 1 tập hợp lệnh để chụp ảnh và copy ảnh vào thư mục log.
+                    </td>
+                    <td>-</td>
+                </tr>
+
+                <tr>
+                    <td><b>func.cm5_picture_measure</b></td>
+                    <td>
+                        <pre>
+<b>- lower_limit:</b> giá trị dưới.
+<b>- upper_limit:</b> giá trị trên.
+<b>- picture_name:</b> tên file ảnh.
+<b>- golden_sample_folder_path:</b> thư mục GOLDEN SAMPLE.
+                </pre>
+                    </td>
+                    <td>true false</td>
+                    <td>Tính MSE ảnh cho trạm CM5 CAMERA.</td>
+                    <td>
+                        - <b>picture_name</b>: ví dụ <b>FRONT_LIGHT_ON.jpg</b>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>func.generate_imei2_from_imei1</b></td>
+                    <td>
+                        <pre>
+<b>- imei1:</b> giá trị IMEI1 (15 ký tự).
+                </pre>
+                    </td>
+                    <td>true</td>
+                    <td>
+                        Sinh IMEI2 từ IMEI1 và lưu vào <b>context["PROD[imei2]"]</b>.
+                    </td>
+                    <td>
+                        - <b>imei1</b> bắt buộc đủ 15 ký tự.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>func.check_com_device_exist</b></td>
+                    <td>
+                        <pre>
+<b>- com_name:</b> tên cổng COM cần kiểm tra.
+                    </pre>
+                    </td>
+                    <td>true false</td>
+                    <td>
+                        Kiểm tra cổng COM có xuất hiện trên Device Manager hay không.
+                    </td>
+                    <td>
+                        - Dùng cho UX300.<br>
+                        - Kiểm tra thiết bị dạng <b>USB Serial Device</b>.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>func.append_text_to_file | func.Append_text_to_file</b></td>
+                    <td>
+                        <pre>
+<b>- file_path:</b> file cần ghi text.
+<b>- text:</b> nội dung cần thêm vào file. Thêm \r\n để xuống dòng.
+                        </pre>
+                    </td>
+                    <td>true</td>
+                    <td>Ghi nội dung text vào file.</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>dialog: hiển thị hộp thoại</h2>
+        <table class="doc-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>with</th>
+                    <th>Kết quả</th>
+                    <th>Mô tả</th>
+                    <th>Chú ý</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>dialog.show | dialog.Show</b></td>
+                    <td>
+                        <pre>
+<b>- title:</b> tiêu đề hộp thoại.
+<b>- message:</b> nội dung hiển thị.
+                </pre>
+                    </td>
+                    <td>true</td>
+                    <td>Hiển thị hộp thoại thông báo và chờ người dùng xác nhận <b>OK</b>.</td>
+                    <td>-</td>
+                </tr>
+
+                <tr>
+                    <td><b>dialog.confirm</b></td>
+                    <td>
+                        <pre>
+<b>- title:</b> tiêu đề hộp thoại.
+<b>- message:</b> nội dung hiển thị.
+                </pre>
+                    </td>
+                    <td>true false</td>
+                    <td>
+                        Hiển thị hộp thoại xác nhận và chờ người dùng chọn
+                        <b>YES / OK</b> hoặc <b>NO / Cancel</b>.
+                    </td>
+                    <td>-</td>
+                </tr>
+
+                <tr>
+                    <td><b>dialog.input | dialog.Input</b></td>
+                    <td>
+                        <pre>
+<b>- title:</b> tiêu đề hộp thoại.
+<b>- message:</b> nội dung hiển thị.
+<b>- var_name:</b> tên biến lưu giá trị vào <b>context</b>.
+                </pre>
+                    </td>
+                    <td>true</td>
+                    <td>
+                        Hiển thị hộp thoại nhập liệu và lưu giá trị người dùng nhập vào
+                        <b>context</b>.
+                    </td>
+                    <td>-</td>
+                </tr>
+
+                <tr>
+                    <td><b>dialog.show_with_auto_close | dialog.Show_with_auto_close</b></td>
+                    <td>
+                        <pre>
+<b>- title:</b> tiêu đề hộp thoại.
+<b>- message:</b> nội dung hiển thị.
+<b>- timeout:</b> thời gian hiển thị tối đa (s).
+                </pre>
+                    </td>
+                    <td>true</td>
+                    <td>
+                        Hiển thị hộp thoại thông báo, tự động đóng sau thời gian
+                        <b>timeout</b>.
+                    </td>
+                    <td>-</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>com: giao tiếp cổng COM</h2>
+        <table class="doc-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>with</th>
+                    <th>Kết quả</th>
+                    <th>Mô tả</th>
+                    <th>Chú ý</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>com.open | com.Open</b></td>
+                    <td>
+                        <pre>
+<b>- name:</b> tên định danh.
+<b>- port:</b> tên cổng.
+<b>- baudrate:</b> tốc độ baud.
+                    </pre>
+                    </td>
+                    <td>true</td>
+                    <td>Mở kết nối đến cổng COM.</td>
+                    <td>tên định danh dùng để tham chiếu cổng COM này trong các lệnh tiếp theo.</td>
+                </tr>
+
+                <tr>
+                    <td><b>com.close | com.Close</b></td>
+                    <td>
+                        <pre>
+<b>- name:</b> tên định danh.
+                    </pre>
+                    </td>
+                    <td>true</td>
+                    <td>Đóng kết nối đến cổng COM.</td>
+                    <td>- Chương trình sẽ tự đóng cổng COM tự động. Cần dùng khi cần kiểm soát đóng cổng COM để thực
+                        hiện lệnh tiếp theo.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>com.wait_bytes_count</b></td>
+                    <td>
+                        <pre>
+<b>- name: </b> tên định danh.
+<b>- expect_count: </b> số byte.
+<b>- timeout: </b> thời gian chờ (s).
+                    </pre>
+                    </td>
+                    <td>true false</td>
+                    <td>Chờ đến khi có đủ số byte nhận được từ cổng COM.</td>
+                    <td>Trả về false nếu vượt quá thời gian chờ.</td>
+                </tr>
+
+                <tr>
+                    <td><b>com.wait_string</b></td>
+                    <td>
+                        <pre>
+<b>- name: </b> tên định danh.
+<b>- expect: </b> chuỗi mong đợi.
+<b>- timeout: </b> thời gian chờ (s).
+                    </pre>
+                    </td>
+                    <td>true false</td>
+                    <td>Chờ đến khi nhận được chuỗi mong đợi từ cổng COM.</td>
+                    <td>
+                        <pre>
+- Trả về false nếu vượt quá thời gian chờ.
+- <b>expect</b>: dùng chuỗi string hoặc `re_expression` để khớp với một biểu thức chính quy.
+                        </pre>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>com.send_bytes | com.Send_bytes</b></td>
+                    <td>
+                        <pre>
+<b>- name: </b> tên định danh.
+<b>- command: </b> chuỗi gửi.
+<b>- sleep: </b> thời gian delay sau khi gửi (s)
+                    </pre>
+                    </td>
+                    <td>true</td>
+                    <td>Gửi một chuỗi dạng bytes đến cổng COM.</td>
+                    <td>- chuỗi dạng hex ví dụ: "0A 1B 2C"</td>
+                </tr>
+
+                <tr>
+                    <td><b>com.send_string | com.Send_string</b></td>
+                    <td>
+                        <pre>
+<b>- name: </b> tên định danh.
+<b>- command: </b> chuỗi gửi.
+<b>- sleep: </b> thời gian delay sau khi gửi (s)
+                    </pre>
+                    </td>
+                    <td>true</td>
+                    <td>Gửi một chuỗi đến cổng COM.</td>
+                    <td>- Gửi enter bằng cách sử dụng `\r\n`</td>
+                </tr>
+
+                <tr>
+                    <td><b>com.send_chars | com.Send_chars</b></td>
+                    <td>
+                        <pre>
+<b>- name: </b> tên định danh.
+<b>- command: </b> chuỗi gửi.
+<b>- delay: </b> thời gian delay giữa các ký tự (s). Dùng 0.01 là 10ms
+<b>- sleep: </b> thời gian delay sau khi gửi (s)
+                    </pre>
+                    </td>
+                    <td>true</td>
+                    <td>Gửi một chuỗi đến cổng COM.</td>
+                    <td>- Gửi enter bằng cách sử dụng `\r\n`</td>
+                </tr>
+
+                <tr>
+                    <td><b>com.send_wait</b></td>
+                    <td>
+                        <pre>
+<b>- name: </b> tên định danh.
+<b>- command:</b> chuỗi gửi.
+<b>- retry_times: </b> số lần retry.
+<b>- expect: </b> chuỗi mong đợi.
+<b>- timeout: </b> thời gian chờ (s).
+                        </pre>
+                    </td>
+                    <td>true false</td>
+                    <td>Gửi một chuỗi đến cổng COM và chờ phản hồi mong đợi.</td>
+                    <td>
+                        <pre>
+Trả về false nếu không thành công.
+- <b>expect</b>: dùng chuỗi string hoặc `re_expression` để khớp với một biểu thức chính quy.
+                        </pre>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>com.check_log</b></td>
+                    <td>
+                        <pre>
+<b>- name:</b> tên định danh.
+<b>- expect:</b> chuỗi mong đợi.
+                        </pre>
+                    </td>
+                    <td>true false</td>
+                    <td>Kiểm tra xem chuỗi mong đợi có xuất hiện trong log nhận được từ cổng COM hay không.</td>
+                    <td>
+                        <pre>
+- Trả về false nếu không tìm thấy.
+<b>- expect</b>: dùng chuỗi string hoặc `re_expression` để khớp với một biểu thức chính quy.
+                        </pre>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>com.read_value</b></td>
+                    <td>
+                        <pre>
+<b>- name:</b> tên định danh.
+<b>- expect:</b> chuỗi mong đợi.
+<b>- match_index:</b> index của chuỗi match cần lấy.
+<b>- replace:</b> chuỗi cần thay thế.
+<b>- replace_with:</b> giá trị thay thế.
+<b>- convert:</b> to_lower | to_upper.
+<b>- var_name:</b> tên biến lưu giá trị.
+                    </pre>
+                    </td>
+                    <td>true false</td>
+                    <td>Đọc một giá trị từ log nhận được và lưu vào <b>context</b>.</td>
+                    <td>
+                        <pre>Trả về false nếu không tìm thấy.
+- <b>expect</b>: dùng chuỗi string hoặc `re_expression` để khớp với một biểu thức chính quy.
+- <b>index</b>: vị trí nhóm cần lấy.
+- <b>replace</b>: dùng trực tiếp regex.
+- <b>replace_with</b>: dùng chuỗi string.
+                    </pre>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>com.wait_check</b></td>
+                    <td>
+                        <pre>
+<b>- name:</b> tên định danh.
+<b>- expect_wait:</b>- chuỗi mong đợi.
+<b>- expect_check:</b> chuỗi kiểm tra.
+<b>- timeout:</b> thời gian chờ (s).
+                    </pre>
+                    </td>
+                    <td>true false</td>
+                    <td>Chờ đến khi nhận được chuỗi mong đợi và kiểm tra chuỗi kiểm tra có xuất hiện trong log hay
+                        không.
+                    </td>
+                    <td>
+                        <pre>Trả về false nếu không thành công.
+- <b>expect_wait</b>, <b>expect_check</b>: dùng chuỗi string hoặc `re_expression` để khớp với một biểu thức chính quy.
+                    </pre>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>com.clear_log | com.Clear_log</b></td>
+                    <td>
+                        <pre>
+<b>- name: </b> tên định danh.
+                    </pre>
+                    </td>
+                    <td>true</td>
+                    <td>- Xóa log tạm của com hiện tại. Thường dùng với `read_value`,
+                        `check_log` phía trên.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>com.wait_list_string</b></td>
+                    <td>
+                        <pre>
+<b>- name: </b> tên định danh.
+<b>- expect_strings:</b> danh sách các chuỗi mong đợi. ngăn cách bởi dấu |
+<b>- var_name:</b> tên giá trị biến sẽ lưu.
+<b>- timeout: </b> thời gian chờ (s).
+                    </pre>
+                    </td>
+                    <td>true</td>
+                    <td>
+                        - Chờ 1 chuỗi xuất hiện trong danh sách các chuỗi mong đợi. Nếu chuỗi bắt được thì sẽ lưu vào
+                        context với tên là 'var_name', giá trị là vị trí chuỗi trong danh sách đấy (0,1,2 ...).Nếu k bắt
+                        được chuỗi nào thì nó sẽ trả vê on_fail.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>cmd: Thực thi lệnh CMD và lấy log</h2>
+        <table class="doc-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>with</th>
+                    <th>Kết quả</th>
+                    <th>Mô tả</th>
+                    <th>Chú ý</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>cmd.execute</b></td>
+                    <td>
+                        <b>- name:</b> tên định danh của lệnh CMD<br>
+                        <b>- command:</b> lệnh CMD cần thực thi<br>
+                        <b>- working_path:</b> thư mục thực thi lệnh (tuỳ chọn)<br>
+                        <b>- timeout:</b> thời gian chờ tối đa (giây)
+                    </td>
+                    <td>true / false</td>
+                    <td>
+                        Thực thi một lệnh CMD và thu thập toàn bộ log (stdout / stderr) trả về.
+                    </td>
+                    <td>
+                        - Trả về <b>false</b> nếu lệnh thực thi lỗi hoặc vượt quá <b>timeout</b>.<br>
+                        - Trả về <b>true</b> nếu lệnh kết thúc thành công.<br>
+                        - Log của lệnh được lưu vào context với key: <b>CMD[{name}][log]</b>.<br>
+                        - Có thể dùng log này cho các bước kiểm tra tiếp theo (ví dụ: <b>if</b>,
+                        <b>func.string_match</b>, …).
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>cam: Tương tác với <b>CAMERA</b></h2>
+        <table class="doc-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>with</th>
+                    <th>Kết quả</th>
+                    <th>Mô tả</th>
+                    <th>Chú ý</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+
         <h2>Các hàm thao tác với phần mềm bên thứ 3</h2>
         <table class="doc-table">
             <thead>
@@ -1042,23 +1173,19 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
                 </tr>
 
                 <tr>
-                    <td><b>icimei.auto</b></td>
+                    <td><b>ipp_tool.key_remove | ipp_tool.key_injection_1DES | ipp_tool.key_injection_3DES</b></td>
                     <td>
                         <pre>
 <b>- working_path: </b>đường dẫn thư mục chứa chương trình.
-<b>- comport: </b>cổng COM dùng để ghi IMEI.
-<b>- imei: </b>IMEI cần ghi (độ dài 15 số).
+<b>- com: </b>cổng COM thực thi.
                     </pre>
                     </td>
                     <td>true / false</td>
                     <td>
-                        Tương tự <b>icimei.AUTO</b> nhưng hỗ trợ luồng xử lý <b>on_success</b> và <b>on_fail</b>.
+                        Sử dụng tool <b>IPP.exe</b> để remove_key.
                     </td>
                     <td>
-                        - Chỉ các lỗi <b>ICIMEI_TIMEOUT</b> và <b>ICIMEI_WRITE_IMEI_FAIL</b> mới trả về <b>true /
-                            false</b>.<br>
-                        - Các lỗi khác sẽ trả về <b>FAIL</b>.<br>
-                        - Sản phẩm phải ở <b>chế độ AT</b>.
+                        - Tool có thể được cấu hình để tự động tải về.<br>
                     </td>
                 </tr>
 
@@ -1240,8 +1367,10 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
                         <b>- working_path:</b> thư mục QFIL<br>
                         <b>- comport:</b> số slot (1,2,3) hoặc <b>~</b><br>
                         <b>- image_path:</b> thư mục chứa file <b>.mbn</b><br>
-                        <b>- raw_program:</b> [Tuỳ chọn - có thể bỏ qua, mặc định rawprogram_unsparse.xml] Tên file raw, lấy cả .xml</b><br>
-                        <b>- patch:</b> [Tuỳ chọn - có thể bỏ qua, mặc định patch0.xml] Tên file patch, lấy cả .xml</b><br>
+                        <b>- raw_program:</b> [Tuỳ chọn - có thể bỏ qua, mặc định rawprogram_unsparse.xml] Tên file raw,
+                        lấy cả .xml</b><br>
+                        <b>- patch:</b> [Tuỳ chọn - có thể bỏ qua, mặc định patch0.xml] Tên file patch, lấy cả
+                        .xml</b><br>
                         <b>- timeout:</b> thời gian chờ (giây)
                     </td>
                     <td>PASS / FAIL</td>
@@ -1250,7 +1379,8 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
                     </td>
                     <td>
                         - Nên cấu hình để QFIL tự tải về và sử dụng bản đó.
-                        - <b>[CHÚ Ý] Một vài IMAGE của khách hàng cần phải sửa lấy đúng tên raw_program và patch, nếu không config để load tự động có thể sai IMAGE</b>
+                        - <b>[CHÚ Ý] Một vài IMAGE của khách hàng cần phải sửa lấy đúng tên raw_program và patch, nếu
+                            không config để load tự động có thể sai IMAGE</b>
                     </td>
                 </tr>
 
@@ -1292,110 +1422,6 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
             </tbody>
         </table>
 
-        <h2>cmd: Thực thi lệnh CMD và lấy log</h2>
-        <table class="doc-table">
-            <thead>
-                <tr>
-                    <th>Method</th>
-                    <th>with</th>
-                    <th>Kết quả</th>
-                    <th>Mô tả</th>
-                    <th>Chú ý</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><b>cmd.execute</b></td>
-                    <td>
-                        <b>- name:</b> tên định danh của lệnh CMD<br>
-                        <b>- command:</b> lệnh CMD cần thực thi<br>
-                        <b>- working_path:</b> thư mục thực thi lệnh (tuỳ chọn)<br>
-                        <b>- timeout:</b> thời gian chờ tối đa (giây)
-                    </td>
-                    <td>true / false</td>
-                    <td>
-                        Thực thi một lệnh CMD và thu thập toàn bộ log (stdout / stderr) trả về.
-                    </td>
-                    <td>
-                        - Trả về <b>false</b> nếu lệnh thực thi lỗi hoặc vượt quá <b>timeout</b>.<br>
-                        - Trả về <b>true</b> nếu lệnh kết thúc thành công.<br>
-                        - Log của lệnh được lưu vào context với key: <b>CMD[{name}][log]</b>.<br>
-                        - Có thể dùng log này cho các bước kiểm tra tiếp theo (ví dụ: <b>if</b>,
-                        <b>func.string_match</b>, …).
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h2>cam: Tương tác với <b>CAMERA</b></h2>
-        <table class="doc-table">
-            <thead>
-                <tr>
-                    <th>Method</th>
-                    <th>with</th>
-                    <th>Kết quả</th>
-                    <th>Mô tả</th>
-                    <th>Chú ý</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><b>cam.set_operation_image</b></td>
-                    <td>
-                        <pre>
-<b>- image_path:</b> đường dẫn file ảnh mẫu
-                </pre>
-                    </td>
-                    <td>true</td>
-                    <td>Thiết lập ảnh thao tác cho camera.</td>
-                    <td>-</td>
-                </tr>
-
-                <tr>
-                    <td><b>cam.check_ocr_string</b></td>
-                    <td>
-                        <pre>
-<b>- wait_string:</b> chuỗi OCR mong đợi
-<b>- timeout:</b> thời gian chờ (giây)
-<b>- save_image_with_name:</b> tên file lưu ảnh OCR
-<b>- expect:</b> chuỗi kiểm tra mong đợi
-                </pre>
-                    </td>
-                    <td>true / false</td>
-                    <td>
-                        Đọc text từ ảnh camera, chờ <b>wait_string</b> xuất hiện,
-                        sau đó kiểm tra <b>wait_string</b> có chứa <b>expect</b> hay không.
-                    </td>
-                    <td>
-                        - Trả về <b>false</b> nếu không tìm thấy.<br>
-                        - <b>wait_string</b>, <b>expect</b>: dùng string hoặc `re_expression`.<br>
-                        - <b>save_image_with_name</b>: lưu ảnh OCR đã xử lý, không lưu thì để <b>~</b>.
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>cam.get_ocr_string</b></td>
-                    <td>
-                        <pre>
-<b>- wait_string:</b> chuỗi OCR mong đợi.
-<b>- timeout:</b> thời gian chờ (giây).
-<b>- save_image_with_name:</b> tên file lưu ảnh OCR.
-<b>- var_name:</b> tên biến lưu vào context.
-                </pre>
-                    </td>
-                    <td>true / false</td>
-                    <td>
-                        Đọc text từ ảnh camera, chờ <b>wait_string</b> xuất hiện, sau đó lưu chuỗi vào <b>context</b>
-                        với tên <b>var_name</b>.
-                    </td>
-                    <td>
-                        - Trả về <b>false</b> nếu không tìm thấy.<br>
-                        - <b>wait_string</b>: dùng string hoặc `re_expression`<br>
-                        - <b>save_image_with_name</b>: lưu ảnh OCR đã xử lý, không lưu thì để <b>~</b>.
-                    </td>
-                </tr>
-            </tbody>
-        </table>
     </main>
 </body>
 
