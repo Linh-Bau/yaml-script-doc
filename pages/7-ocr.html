@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Giới thiệu</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+    <main>
+        <h1 id="ocr">OCR</h1>
+        <p>Hướng dẫn setup trạm Camera.</p>
+        <h2>Ý TƯỞNG VÀ CÁCH HOẠT ĐỘNG</h2>
+        <p>Chương trình sử dụng 1 ảnh temple làm mốc, tìm ảnh temple trong frame camera hiện tại. Sau đó crop 1
+            vùng lớn hơn theo mốc toạ độ đó. Dùng vùng đó để đọc OCR để có độ chính xác cao nhất.</p>
+        <h2>Yêu cầu</h2>
+        <ol>
+            <li>Script bật flag <b>enable_camera_window</b></li>
+            <li>Chuẩn bị các templates ảnh cần thiết</b></li>
+        </ol>
+        <h2>Cách chuẩn bị các templates</h2>
+        <ol>
+            <li>Mở camera ở camera_window, chọn độ phân giải cao nhất (4k)</b></li>
+            <li>
+                <ul>
+                    <p>Di chuyển chuột và kéo vùng lấy làm ảnh template, vùng này phải cố định không phụ thuộc vào từng
+                        sản phẩm. Khi kéo vùng đó sẽ được tô đậm. Sau đó ấn <b>SAVE IMAGE</b></p>
+                    <li>Ảnh làm mốc phải giống nhau trên từng sản phẩm (ví dụ lấy mã SN là k được)</li>
+                    <li>Ảnh làm mốc không được quá nhỏ, nếu không sẽ dễ sai.</li>
+                    <li>Ảnh làm mốc phải duy nhất trên mỗi màn hình.</li>
+                </ul>
+            </li>
+            <li>
+                <ol>
+                    <p>Ảnh sẽ được lưu ở thư mục chương trình <i>./images</i>. Sau khi thực hiện xong phải test như sau:
+                    </p>
+                    <li>Ấn <b>SELECT TEMPLE IMAGE</b>, chọn ảnh vừa tìm được</li>
+                    <li>Click vào frame camera để xoá vùng chọn trước đó, Ấn <b>FIND TEMP RECT</b>, nếu tìm được ảnh
+                        template nó sẽ bôi đậm vùng đó. Nếu không tìm được thì lấy template khác</li>
+                    <li>Thử nhiều lần với nhiều sản phẩm khác nhau để xem kết quả có đủ tốt không.</li>
+                </ol>
+            </li>
+            <li>
+                <p>Di chuyển chuột và kéo vùng cần đọc ocr (vùng quá rộng sẽ kém chính xác), ấn <b>GET OCR ON
+                        REGION</b>. Kiểm tra kết quả đọc OCR có chính xác không. Sau đó ấn <b>SAVE IMAGE</b> để lưu ảnh
+                    lại. Ảnh này sẽ lấy để tạo thông tin ROI</p>
+            </li>
+            <li>
+                <ol>
+                    <p>Quy tắc tính ROI</p>: Ví dụ ảnh temple tìm được ở vị trí X, Y <b>roi</b> là: offset_x, offset_y,
+                    width, height. Thì ảnh đọc ocr sẽ được crop theo rectange [x+offset_x, y+offset_y, width, height].
+                    <li>Đổi tên ảnh temples cho dễ hiểu. Ví dụ sn_location.png</li>
+                    <li>Tính ROI</li>
+                    <li>copy toàn bộ templates vào thư mục ./setup/templates lên sftp.</li>
+                </ol>
+            </li>
+        </ol>
+        <h2>Nâng cao</h2>
+        <p>Có thể sử dụng nhiều flags cùng lúc, ngăn cách bởi dấu ','</p>
+        <p>'expect' có thể dùng re_{expression} để match tốt hơn.</p>
+        <p>flag áp dụng với ocr_text cũng sẽ áp dụng với 'expect', ngoại trừ 'expect' là re_{expression}</p>
+        <ul>
+            <p>FLAG: ý nghĩa</p>
+            <li>
+                <p><b>remove_space</b>: xoá bỏ mọi khoảng trống.</p>
+            </li>
+            <li>
+                <p><b>remove_underscore</b>: xoá bỏ mọi dấu '_'.</p>
+            </li>
+            <li>
+                <p><b>remove_colon</b>: xoá bỏ mọi dấu ':'.</p>
+            </li>
+            <li>
+                <p><b>to_uppercase</b>: chuyển thành chữ in hoa.</p>
+            </li>
+            <li>
+                <p><b>to_lowercase</b>: chuyển thành chữ thường.</p>
+            </li>
+            <li>
+                <p><b>normalize_ocr_text</b>: chuyển các ký tự gần giống nhau thành cùng 1 ký tự.</p>
+            </li>
+        </ul>
+    </main>
+</body>
+
+</html>
