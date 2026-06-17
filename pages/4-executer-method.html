@@ -11,13 +11,12 @@
     <main>
         <h1 id="executers-and-methods">Executer &amp; Method</h1>
         <ul>Bổ xung quy tắc đặt tên cho các method để rõ vai trò và kết quả trả về:</ul>
-        <li><b>UPPER_CASE</b>Các item này kết thúc luôn test item này. Mọi item bên trong <i>on_success</i>,
+        <li><b>UPPER_CASE</b>: Các item này kết thúc luôn test item này. Mọi item bên trong <i>on_success</i>,
             <i>on_fail</i>, bên dưới sẽ không được thực thi.</li>
-        <li><b>Mix_case</b>Các item này là các method mà chỉ có success hoặc sẽ FAIL luôn. Không thưc thi <i>on_fail</i>
+        <li><b>Mix_case</b>: Các item này là các method mà chỉ có success hoặc sẽ FAIL luôn. Không thưc thi <i>on_fail</i>
         </li>
-        <li><b>lower_case</b>Các item này sẽ thực thi và có kết quả test với <i>on_success</i> hoặc <i>on_fail</i>.</li>
-        <p>Vì để tương thích với các hàm cũ, các method tên <i>lower_case</i> sẽ vẫn được giữ lại, nhưng nếu viết mới
-            nên ưu tiên sử dụng <i>UpperCamelCase</i> để dễ đọc và bảo trì hơn.</p>
+        <li><b>lower_case</b>: Các item này sẽ thực thi và có kết quả test với <i>on_success</i> hoặc <i>on_fail</i>.</li>
+        <p>Vì để tương thích với các hàm cũ, các method tên <i>lower_case</i> sẽ vẫn được giữ lại, nhưng nếu viết mới nên ưu tiên sử dụng <i>UpperCamelCase</i> để dễ đọc và bảo trì hơn.</p>
         <p>Bảng các executer và method hỗ trợ, mô tả chi tiết từng method.</p>
         
         <h2>return: điều khiển kết quả trả về</h2>
@@ -54,7 +53,7 @@
                     <td>
                         <pre>
 <b>- error_code:</b> tên lỗi.
-<b>- more_infomation:</b> chi tiết, có thể bỏ qua.
+<b>- more_information:</b> chi tiết, có thể bỏ qua.
 <b>- test_item_value:</b> giá trị trả về, có thể bỏ qua.
                         </pre>
                     </td>
@@ -538,9 +537,9 @@
                 </tr>
 
                 <tr>
-                    <td><b>func.date_time_check</b></td>
+                    <td><b>func.date_time_check</b> (dùng executer dt thay thế) </td>
                     <td>
-                        <pre>
+                        <pre>                            
 <b>- prod_date_time:</b> thời gian cần so sánh.
 <b>- prod_date_time_format:</b> định dạng thời gian (theo C#).
 <b>- prod_date_time_utc:</b> dùng nếu giờ sản phẩm là UTC.
@@ -557,7 +556,7 @@
                 </tr>
 
                 <tr>
-                    <td><b>func.date_check</b></td>
+                    <td><b>func.date_check</b> (dùng executer dt thay thế) </td>
                     <td>
                         <pre>
 <b>- prod_date_time:</b> thời gian cần so sánh.
@@ -573,7 +572,7 @@
                 </tr>
 
                 <tr>
-                    <td><b>func.get_current_datetime | func.Get_current_datetime</b></td>
+                    <td><b>func.get_current_datetime | func.Get_current_datetime</b> (dùng executer dt thay thế)</td>
                     <td>
                         <pre>
 <b>- source:</b> nguồn thời gian (pc | mes).
@@ -757,6 +756,77 @@ Convert text response thành IMEI. Dùng cho lệnh: <b>adb shell service call i
                     <td>true</td>
                     <td>Ghi nội dung text vào file.</td>
                     <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>dt: executer chuyên xử lý datetime</h2>
+        <table class="doc-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>with</th>
+                    <th>Kết quả</th>
+                    <th>Mô tả</th>
+                    <th>Chú ý</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>dt.Get_current_datetime</b></td>
+                    <td>
+                        <pre>
+<b>- source:</b> nguồn thời gian (pc | mes).
+<b>- format:</b> định dạng thời gian (theo C#).
+<b>- var_name:</b> tên biến lưu vào context.
+<b>- add_hours_to_source:</b> số giờ sẽ cộng thêm vào source. 
+                </pre>
+                    </td>
+                    <td>true</td>
+                    <td>Lấy thời gian (PC|MES) và lưu vào context dạng string.</td>
+                    <td>
+                        - Định dạng thời gian theo chuẩn C# DateTime.<br>
+                        - Ví dụ: <b>ddMMyyyyHHmmss</b><br>
+                        - dùng cho các trạm cần ghi datetime.<br>
+                        - <b>add_hours</b>: số giờ cần cộng thêm (có thể âm). Ví dụ giờ MES đang lấy theo VN là +7, nên
+                        nếu dùng giờ UTC sẽ cần để giá trị là -7.
+                    </td>
+                </tr>
+
+                 <tr>
+                    <td><b>dt.date_time_check</b></td>
+                    <td>
+                        <pre>                            
+<b>- prod_date_time:</b> thời gian cần so sánh.
+<b>- prod_date_time_format:</b> định dạng thời gian (theo C#).
+<b>- source:</b> nguồn thời gian (pc | mes).
+<b>- add_hours_to_source:</b> số giờ sẽ cộng thêm vào source.
+<b>- tolerance:</b> sai lệch cho phép (s).
+                </pre>
+                    </td>
+                    <td>true false</td>
+                    <td>Kiểm tra thời gian có nằm trong khoảng cho phép hay không.</td>
+                    <td>
+                        - Định dạng thời gian theo chuẩn C# DateTime.<br>
+                        - Ví dụ: <b>dd/MM/yyyy HH:mm:ss</b>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>dt.date_check</b> (dùng executer dt thay thế) </td>
+                    <td>
+                        <pre>
+<b>- prod_date_time:</b> thời gian cần so sánh.
+<b>- prod_date_time_format:</b> định dạng thời gian (theo C#).
+<b>- add_hours_to_source:</b> số giờ sẽ cộng thêm vào source.
+<b>- source:</b> nguồn thời gian (pc | mes).
+                </pre>
+                    </td>
+                    <td>true false</td>
+                    <td>Kiểm tra ngày có khớp với ngày hiện tại hay không.</td>
+                    <td>
+                        - Định dạng thời gian theo chuẩn C# DateTime.
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -1107,7 +1177,7 @@ Trả về false nếu không thành công.
             </tbody>
         </table>
 
-        <h2>cam: Tương tác với <b>CAMERA</b></h2>
+        <h2>cam: Tương tác với <b>CAMERA</b>, xem thêm OCR</h2>
         <table class="doc-table">
             <thead>
                 <tr>
@@ -1119,7 +1189,83 @@ Trả về false nếu không thành công.
                 </tr>
             </thead>
             <tbody>
+                <tr>
+                    <td><b>cam.Save_image</b></td>
+                    <td>
+                        <pre>
+<b>- image: </b> Tên ảnh sẽ lưu. ví dụ screen_1.png 
+                        </pre>
+                    </td>
+                    <td>true</td>
+                    <td>
+                        Lưu frame hiện tại vào thư mục {log}/images/{image}.
+                    </td>
+                    <td>
+                        
+                    </td>
+                </tr>
 
+                <tr>
+                    <td><b>cam.check_ocr_string</b></td>
+                    <td>
+                        <pre>
+<b>- template_image_path: </b> ảnh template.<br>
+<b>- roi: </b> rectange of image, vùng sẽ đọc ocr.<br>
+<b>- confidence: </b> ngưỡng khớp tối thiểu chấp nhận [0-1], để 0.5 .<br>
+<b>- flags: </b> cờ để xử lý text OCR.<br>
+<b>- expect: </b> chuỗi cần khớp.<br>
+                        </pre>
+                    </td>
+                    <td>true</td>
+                    <td>
+                        Đọc ocr từ vùng roi dựa trên ảnh khớp được theo template_image_path
+                    </td>
+                    <td>
+                        
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><b>cam.check_ocr_string_2</b></td>
+                    <td>
+                        <pre>
+<b>- template_image_path: </b> ảnh template.<br>
+<b>- roi: </b> rectange of image, vùng sẽ đọc ocr.<br>
+<b>- confidence: </b> ngưỡng khớp tối thiểu chấp nhận [0-1], để 0.5 .<br>
+<b>- flags: </b> cờ để xử lý text OCR.<br>
+<b>- expect: </b> chuỗi cần khớp.<br>
+<b>- timeout: </b> thời gian timeout.<br>
+                        </pre>
+                    </td>
+                    <td>true</td>
+                    <td>
+                        sử dụng check_ocr_string, nếu đọc kết quả không khớp sẽ thử lại, quá thời gian timeout sẽ fail. Dùng khi ảnh đọc được kết quả kém ổn định, cần thử nhiều lần (VD đọc MAC trong trạm T650)
+                    </td>
+                    <td>
+                        
+                    </td>
+                </tr>
+
+                 <tr>
+                    <td><b>cam.get_ocr_string</b></td>
+                    <td>
+                        <pre>
+<b>- template_image_path: </b> ảnh template.<br>
+<b>- roi: </b> rectange of image, vùng sẽ đọc ocr.<br>
+<b>- confidence: </b> ngưỡng khớp tối thiểu chấp nhận [0-1], để 0.5 .<br>
+<b>- flags: </b> cờ để xử lý text OCR.<br>
+<b>- var_name: </b> tên biến lưu giá trị.<br>
+                        </pre>
+                    </td>
+                    <td>true</td>
+                    <td>
+                        Đọc ocr từ vùng roi dựa trên ảnh khớp được theo template_image_path. Lưu biến.
+                        Dùng khi cần đọc và xử lý giá trị. Nếu chỉ so sánh khớp hay k khớp thì dùng check_ocr_string.
+                    </td>
+                    <td>
+                        
+                    </td>
+                </tr>
             </tbody>
         </table>
 
